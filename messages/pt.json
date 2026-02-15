@@ -20,9 +20,33 @@
       "emailPlaceholder": "voce@mail.com",
       "passwordLabel": "Palavra-passe",
       "passwordPlaceholder": "Preencha com a sua palavra-passe",
-      "send": "Enviar",
+      "send": "Iniciar",
       "noAccount": "Não tem uma conta?",
       "backHome": "Voltar ao Início"
+    },
+    "register": {
+      "title": "Registrar-se",
+      "subtitle": "Junte-se à plataforma KEY protocol",
+      "fullNameLabel": "Nome e Sobrenome",
+      "fullNamePlaceholder": "ex. João Silva",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@mail.com",
+      "organizationLabel": "Organização",
+      "organizationPlaceholder": "ex. KEY Protocol",
+      "roleLabel": "Cargo",
+      "rolePlaceholder": "ex. Desenvolvedor",
+      "passwordLabel": "Palavra-passe",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "confirmPasswordLabel": "Confirmar palavra-passe",
+      "confirmPasswordPlaceholder": "Repita sua palavra-passe",
+      "submit": "Registrar-se",
+      "backHome": "Volver ao início"
+    },
+    "confirmation": {
+      "title": "Verifique seu e-mail",
+      "subtitle": "Enviamos um link de confirmação para sua caixa de entrada. Por favor, verifique sua conta para continuar.",
+      "backLogin": "Voltar ao Iniciar Sessão",
+      "resendEmail": "Não recebeu o e-mail? Reenviar"
     }
   },
   "notFound": {

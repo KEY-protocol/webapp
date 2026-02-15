@@ -1,6 +1,5 @@
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { Send } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 
 type Props = {
@@ -63,7 +62,6 @@ function HomeContent() {
               className="w-full bg-[#28a745] hover:bg-[#218838] text-white font-poppins font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-green-950/20"
             >
               {t("send")}
-              <Send size={18} />
             </Link>
 
             <Link

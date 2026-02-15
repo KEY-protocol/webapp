@@ -20,9 +20,33 @@
       "emailPlaceholder": "you@mail.com",
       "passwordLabel": "Password",
       "passwordPlaceholder": "Fill with your password",
-      "send": "Send",
+      "send": "Login",
       "noAccount": "Don't have an account?",
       "backHome": "Back to Home"
+    },
+    "register": {
+      "title": "Register",
+      "subtitle": "Join the KEY protocol platform",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "e.g. John Doe",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "you@mail.com",
+      "organizationLabel": "Organization",
+      "organizationPlaceholder": "e.g. Key Protocol",
+      "roleLabel": "Role",
+      "rolePlaceholder": "e.g. Developer",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Minimum 8 characters",
+      "confirmPasswordLabel": "Confirm Password",
+      "confirmPasswordPlaceholder": "Repeat your password",
+      "submit": "Register",
+      "backHome": "Back to Home"
+    },
+    "confirmation": {
+      "title": "Check your email",
+      "subtitle": "We've sent a confirmation link to your inbox. Please verify your account to continue.",
+      "backLogin": "Back to Login",
+      "resendEmail": "Didn't receive the email? Resend"
     }
   },
   "notFound": {

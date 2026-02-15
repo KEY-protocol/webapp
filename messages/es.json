@@ -20,9 +20,33 @@
       "emailPlaceholder": "tu@mail.com",
       "passwordLabel": "Contraseña",
       "passwordPlaceholder": "Ingresa tu contraseña",
-      "send": "Enviar",
+      "send": "Iniciar",
       "noAccount": "¿No tienes cuenta?",
       "backHome": "Volver al Inicio"
+    },
+    "register": {
+      "title": "Registrarse",
+      "subtitle": "Unete a la plataforma de KEY protocol",
+      "fullNameLabel": "Nombre y Apellido",
+      "fullNamePlaceholder": "ej. Juan Pérez",
+      "emailLabel": "Correo Electronico",
+      "emailPlaceholder": "tu@correo.com",
+      "organizationLabel": "Organizacion",
+      "organizationPlaceholder": "ej. KEY Protocol",
+      "roleLabel": "Rol",
+      "rolePlaceholder": "ej. Desarrollador",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Mínimo 8 caracteres",
+      "confirmPasswordLabel": "Confirmar contraseña",
+      "confirmPasswordPlaceholder": "Repite tu contraseña",
+      "submit": "Registrarse",
+      "backHome": "Volver al inicio"
+    },
+    "confirmation": {
+      "title": "Revisa tu correo",
+      "subtitle": "Hemos enviado un enlace de confirmación a tu bandeja de entrada. Por favor, verifica tu cuenta para continuar.",
+      "backLogin": "Volver al Inicio Sesión",
+      "resendEmail": "¿No recibiste el correo? Reenviar"
     }
   },
   "notFound": {
