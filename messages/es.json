@@ -19,5 +19,9 @@
     "title": "Página no encontrada",
     "description": "La página que buscas no existe o ha sido movida a otra ubicación.",
     "backHome": "Volver al inicio"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "slogan": "Escribiendo código para regenerar el mundo"
   }
 }

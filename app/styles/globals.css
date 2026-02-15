@@ -20,9 +20,10 @@ html {
     color 0.3s ease;
 }
 
-/* Global text color - white by default */
+/* Global text color and base font - Poppins by default */
 body {
   color: white;
+  font-family: var(--font-family-poppins);
 }
 
 /* Responsive image and video handling */
@@ -38,15 +39,13 @@ video {
   }
 }
 
+/* Headings use Montserrat */
 h1,
 h2,
 h3,
 h4,
 h5,
-h6 {
-  font-family: var(--font-family-montserrat);
-}
-
+h6,
 .font-montserrat {
   font-family: var(--font-family-montserrat);
 }

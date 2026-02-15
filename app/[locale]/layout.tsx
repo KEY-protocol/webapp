@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Header } from "@/app/components/header";
+import { Footer } from "@/app/components/footer";
 import "@/app/styles/globals.css";
 
 type Props = {
@@ -38,10 +39,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale}>
-      <body className="bg-primary">
+      <body className="bg-primary min-h-screen flex flex-col">
         <NextIntlClientProvider>
           <Header />
-          {children}
+          <main className="grow">{children}</main>
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>

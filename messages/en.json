@@ -19,5 +19,9 @@
     "title": "Page not found",
     "description": "The page you are looking for doesn't exist or has been moved to another location.",
     "backHome": "Back to home"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "slogan": "Writing code to regenerate the world"
   }
 }
