@@ -10,3 +10,4 @@ trigger: always_on
 - No utilizar testing aún.
 - El proyecto involucra tanto web2 como web3.
 - El proyecto utiliza husky para los commits hacía git.
+- No hace falta que pruebes como se ve la página, lo hago yo manualmente.

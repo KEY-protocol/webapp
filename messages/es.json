@@ -5,5 +5,10 @@
   },
   "home": {
     "greeting": "hola"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida a otra ubicación.",
+    "backHome": "Volver al inicio"
   }
 }
