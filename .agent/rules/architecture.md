@@ -11,3 +11,4 @@ trigger: always_on
 - El proyecto involucra tanto web2 como web3.
 - El proyecto utiliza husky para los commits hacía git.
 - No hace falta que pruebes como se ve la página, lo hago yo manualmente.
+- No hace falta verificar que el dev server no tenga errores.

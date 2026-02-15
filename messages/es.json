@@ -3,6 +3,15 @@
     "title": "Key Protocol",
     "description": "Key Protocol - Plataforma de Identidad Descentralizada"
   },
+  "header": {
+    "nav": {
+      "services": "Servicios",
+      "about": "Nosotros",
+      "roadmap": "Hoja de Ruta",
+      "partners": "Partners",
+      "launchApp": "Abrir App"
+    }
+  },
   "home": {
     "greeting": "hola"
   },
