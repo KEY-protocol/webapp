@@ -12,8 +12,18 @@
       "launchApp": "Abrir App"
     }
   },
-  "home": {
-    "greeting": "olá"
+  "auth": {
+    "login": {
+      "title": "Iniciar Sessão",
+      "subtitle": "Aceda à sua conta KEY protocol",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@mail.com",
+      "passwordLabel": "Palavra-passe",
+      "passwordPlaceholder": "Preencha com a sua palavra-passe",
+      "send": "Enviar",
+      "noAccount": "Não tem uma conta?",
+      "backHome": "Voltar ao Início"
+    }
   },
   "notFound": {
     "title": "Página não encontrada",

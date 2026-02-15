@@ -8,7 +8,7 @@ export function Footer() {
   const year = getCurrentYear();
 
   return (
-    <footer className="bg-primary py-10 px-4 border-t border-white/5">
+    <footer className="bg-primary py-6 px-4 border-t border-white/5">
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-center text-center space-y-2">
         <p className="text-white/70 text-sm sm:text-base font-poppins tracking-wide">
           © {year} KEY protocol. {t("rights")}

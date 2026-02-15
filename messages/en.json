@@ -12,8 +12,18 @@
       "launchApp": "Launch App"
     }
   },
-  "home": {
-    "greeting": "hello"
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Access your KEY protocol account",
+      "emailLabel": "Email Address",
+      "emailPlaceholder": "you@mail.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Fill with your password",
+      "send": "Send",
+      "noAccount": "Don't have an account?",
+      "backHome": "Back to Home"
+    }
   },
   "notFound": {
     "title": "Page not found",

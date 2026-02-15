@@ -12,8 +12,18 @@
       "launchApp": "Abrir App"
     }
   },
-  "home": {
-    "greeting": "hola"
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "subtitle": "Accede a tu cuenta de KEY protocol",
+      "emailLabel": "Correo Electrónico",
+      "emailPlaceholder": "tu@mail.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Ingresa tu contraseña",
+      "send": "Enviar",
+      "noAccount": "¿No tienes cuenta?",
+      "backHome": "Volver al Inicio"
+    }
   },
   "notFound": {
     "title": "Página no encontrada",

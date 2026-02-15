@@ -15,7 +15,7 @@ export function Header() {
         className="fixed top-0 left-0 right-0 z-50 bg-[#007A1C] shadow-lg shadow-black/5"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <Link
               href="/"
@@ -35,7 +35,7 @@ export function Header() {
       </header>
 
       {/* Spacer to push content below fixed header */}
-      <div className="h-16 sm:h-20" aria-hidden="true" />
+      <div className="h-14 sm:h-16" aria-hidden="true" />
     </>
   );
 }
