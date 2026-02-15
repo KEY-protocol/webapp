@@ -8,4 +8,5 @@ trigger: always_on
 - Las fuentes de texto que se utilizan son montserrat para titulos y subtitulos, poppins para el resto.
 - El proyecto tiene su paleta de colores ya definida en el globals.css.
 - No utilizar testing aún.
-- El proyecto involucra tanto web2 como web3. 
+- El proyecto involucra tanto web2 como web3.
+- El proyecto utiliza husky para los commits hacía git.
