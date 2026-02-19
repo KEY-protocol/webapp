@@ -53,3 +53,13 @@ h6,
 .font-poppins {
   font-family: var(--font-family-poppins);
 }
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

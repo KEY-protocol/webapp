@@ -57,5 +57,23 @@
   "footer": {
     "rights": "Todos os direitos reservados.",
     "slogan": "Escrevendo código para regenerar o mundo"
+  },
+  "sidebar": {
+    "user": {
+      "name": "Maria Gonzalez",
+      "role": "Administrador"
+    },
+    "menu": {
+      "dashboard": "Painel",
+      "projects": "Projetos",
+      "technicians": "Técnicos",
+      "training": "Capacitação",
+      "aiAgents": "Agentes IA"
+    },
+    "footer": {
+      "profile": "Perfil",
+      "settings": "Configuração",
+      "logout": "Encerrar sessão"
+    }
   }
 }

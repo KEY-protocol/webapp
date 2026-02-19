@@ -57,5 +57,23 @@
   "footer": {
     "rights": "All rights reserved.",
     "slogan": "Writing code to regenerate the world"
+  },
+  "sidebar": {
+    "user": {
+      "name": "Maria Gonzalez",
+      "role": "Administrator"
+    },
+    "menu": {
+      "dashboard": "Dashboard",
+      "projects": "Projects",
+      "technicians": "Technicians",
+      "training": "Training",
+      "aiAgents": "AI Agents"
+    },
+    "footer": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Log Out"
+    }
   }
 }
