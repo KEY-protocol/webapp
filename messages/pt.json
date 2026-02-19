@@ -64,7 +64,7 @@
       "role": "Administrador"
     },
     "menu": {
-      "dashboard": "Painel",
+      "home": "Início",
       "projects": "Projetos",
       "technicians": "Técnicos",
       "training": "Capacitação",
@@ -76,8 +76,8 @@
       "logout": "Encerrar sessão"
     }
   },
-  "dashboard": {
+  "home": {
     "welcome": "Bem-vindo",
-    "description": "Esta é a plataforma do KEY Protocol, aqui você encontrará as informações relacionadas à sua equipe que fazem parte do painel de monitoramento da organização"
+    "description": "Esta é a plataforma do KEY Protocol, aqui você encontrará as informações relacionadas à sua equipe que fazem parte do painel de monitoramento da organización"
   }
 }

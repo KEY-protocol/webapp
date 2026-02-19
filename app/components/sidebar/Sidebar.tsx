@@ -56,10 +56,10 @@ export const Sidebar = () => {
 
   const menuItems = [
     {
-      id: "dashboard",
+      id: "home",
       icon: LayoutGrid,
-      label: t("menu.dashboard"),
-      href: "/dashboard",
+      label: t("menu.home"),
+      href: "/home",
     },
     {
       id: "projects",

@@ -1,7 +1,7 @@
 import { Sidebar } from "@/app/components/sidebar";
 import { setRequestLocale } from "next-intl/server";
 
-export default async function DashboardLayout({
+export default async function HomeLayout({
   children,
   params,
 }: {

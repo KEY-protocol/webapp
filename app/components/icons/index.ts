@@ -1,6 +1,7 @@
 export * from "./org/LogoIcon";
 export * from "./org/LogoFullIcon";
 export * from "./org/TokenIcon";
+export * from "./home/HiHandIcon";
 export * from "./partners/UtnIcon";
 export * from "./partners/NerdConfIcon";
 export * from "./partners/FundIcon";

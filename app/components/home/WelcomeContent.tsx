@@ -1,16 +1,16 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { LogoIcon } from "@/app/components/icons";
+import { HiHandIcon } from "@/app/components/icons";
 
 export function WelcomeContent() {
-  const t = useTranslations("dashboard");
+  const t = useTranslations("home");
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center text-center p-10 min-h-[calc(100vh-160px)]">
       <div className="flex flex-col items-center max-w-2xl space-y-8 fade-in">
-        <div className="w-52 h-52 text-white">
-          <LogoIcon className="w-full h-full opacity-90" />
+        <div className="w-52 h-52">
+          <HiHandIcon fill="white" />
         </div>
 
         <div className="space-y-6">

@@ -64,7 +64,7 @@
       "role": "Administrador"
     },
     "menu": {
-      "dashboard": "Dashboard",
+      "home": "Inicio",
       "projects": "Proyectos",
       "technicians": "Tecnicos",
       "training": "Capacitaciones",
@@ -76,7 +76,7 @@
       "logout": "Cerrar sesión"
     }
   },
-  "dashboard": {
+  "home": {
     "welcome": "Bienvenido",
     "description": "Esta es la plataforma de KEY Protocol, aqui encontraras las informaciones relacionadas a tu equipo que forman parte del tablero de monitoreo para la organización"
   }
