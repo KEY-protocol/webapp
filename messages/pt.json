@@ -65,6 +65,7 @@
     },
     "menu": {
       "home": "Início",
+      "dashboard": "Dashboard",
       "projects": "Projetos",
       "technicians": "Técnicos",
       "training": "Capacitação",

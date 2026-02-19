@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import {
-  LayoutGrid,
+  LayoutDashboard,
   FolderOpen,
   Users,
   Ticket,
@@ -56,10 +56,10 @@ export const Sidebar = () => {
 
   const menuItems = [
     {
-      id: "home",
-      icon: LayoutGrid,
-      label: t("menu.home"),
-      href: "/home",
+      id: "dashboard",
+      icon: LayoutDashboard,
+      label: t("menu.dashboard"),
+      href: "/dashboard",
     },
     {
       id: "projects",

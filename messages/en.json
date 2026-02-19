@@ -65,6 +65,7 @@
     },
     "menu": {
       "home": "Home",
+      "dashboard": "Dashboard",
       "projects": "Projects",
       "technicians": "Technicians",
       "training": "Training",
