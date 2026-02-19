@@ -64,12 +64,30 @@
       "role": "Administrador"
     },
     "menu": {
-      "home": "Inicio",
-      "dashboard": "Dashboard",
-      "projects": "Proyectos",
-      "technicians": "Tecnicos",
-      "training": "Capacitaciones",
-      "aiAgents": "Agentes IA"
+      "home": {
+        "title": "Inicio",
+        "subtitle": "Bienvenido al panel central de KEY Protocol"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "subtitle": "Vision integral y en tiempo real del progreso y el impacto de los proyectos"
+      },
+      "projects": {
+        "title": "Proyectos",
+        "subtitle": "Desglose de los indicadores por proyecto"
+      },
+      "technicians": {
+        "title": "Tecnicos",
+        "subtitle": "Lista de personas pertenecientes a la organizacion autorizadas a operar la dApp"
+      },
+      "training": {
+        "title": "Capacitaciones",
+        "subtitle": "Tablero para la carga de los contenidos para las capacitaciones"
+      },
+      "aiAgents": {
+        "title": "Agentes IA",
+        "subtitle": "Tablero para la carga del prompt y entrenamiento"
+      }
     },
     "footer": {
       "profile": "Perfil",

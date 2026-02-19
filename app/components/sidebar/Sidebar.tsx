@@ -13,6 +13,8 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
+import { useSidebar } from "@/app/context/SidebarContext";
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -29,7 +31,7 @@ const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
     <Link
       href={href}
       className={`
-        w-full flex items-center gap-6 px-10 py-4 transition-all duration-300
+        w-full flex items-center gap-6 px-10 py-3.5 transition-all duration-300
         hover:bg-white/5 group relative cursor-pointer
         ${active ? "bg-white/10" : ""}
       `}
@@ -51,38 +53,38 @@ const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
 };
 
 export const Sidebar = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
+  const { isOpen, setIsOpen } = useSidebar();
   const t = useTranslations("sidebar");
 
   const menuItems = [
     {
       id: "dashboard",
       icon: LayoutDashboard,
-      label: t("menu.dashboard"),
+      label: t("menu.dashboard.title"),
       href: "/dashboard",
     },
     {
       id: "projects",
       icon: FolderOpen,
-      label: t("menu.projects"),
+      label: t("menu.projects.title"),
       href: "/projects",
     },
     {
       id: "technicians",
       icon: Users,
-      label: t("menu.technicians"),
+      label: t("menu.technicians.title"),
       href: "/technicians",
     },
     {
       id: "training",
       icon: Ticket,
-      label: t("menu.training"),
+      label: t("menu.training.title"),
       href: "/training",
     },
     {
       id: "aiAgents",
       icon: Search,
-      label: t("menu.aiAgents"),
+      label: t("menu.aiAgents.title"),
       href: "/ai-agents",
     },
   ];
@@ -100,37 +102,20 @@ export const Sidebar = () => {
 
   return (
     <>
-      {/* Zona de activación invisible en el borde izquierdo */}
-      <div
-        onMouseEnter={() => setIsVisible(true)}
-        className="fixed top-0 left-0 w-6 h-screen z-40 transition-opacity"
-      />
-
       <aside
-        onMouseEnter={() => setIsVisible(true)}
-        onMouseLeave={() => setIsVisible(false)}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
         className={`
           fixed top-0 left-0 z-50 w-[340px] h-screen bg-primary 
           flex flex-col border-r border-white/20 shadow-[25px_0_60px_-15px_rgba(0,0,0,0.6)]
           transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]
-          ${isVisible ? "translate-x-0" : "-translate-x-full"}
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
       >
-        {/* User Account Section */}
-        <div className="p-10 flex items-center gap-5">
-          <div className="w-16 h-16 rounded-full bg-[#E0E0E0] flex items-center justify-center text-[#1C1C1C] text-3xl font-montserrat font-bold shrink-0">
-            M
-          </div>
-          <div className="flex flex-col overflow-hidden">
-            <h2 className="text-white font-montserrat font-bold text-2xl leading-tight truncate">
-              {t("user.name")}
-            </h2>
-            <span className="text-white/80 text-sm font-poppins font-normal truncate">
-              Fundacion Impacto Social
-            </span>
-            <span className="text-white font-poppins font-bold text-base mt-0.5">
-              {t("user.role")}
-            </span>
+        {/* Company Logo Section */}
+        <div className="px-10 py-4 flex items-center justify-center">
+          <div className="w-full max-w-50">
+            <LogoFullIcon className="w-full h-auto text-white" />
           </div>
         </div>
 
@@ -138,7 +123,7 @@ export const Sidebar = () => {
         <div className="w-full h-px bg-white/30" />
 
         {/* Main Navigation */}
-        <nav className="flex-1 flex flex-col py-6 overflow-y-auto no-scrollbar">
+        <nav className="flex-1 flex flex-col py-4 overflow-y-auto no-scrollbar">
           {menuItems.map((item) => (
             <SidebarItem
               key={item.id}
@@ -152,8 +137,8 @@ export const Sidebar = () => {
         {/* Divider */}
         <div className="w-full h-px bg-white/30" />
 
-        {/* Bottom Actions */}
-        <div className="py-8 flex flex-col">
+        {/* Footer Navigation */}
+        <div className="py-4 border-t border-white/20 flex flex-col">
           {footerItems.map((item) => (
             <SidebarItem
               key={item.id}
@@ -164,15 +149,16 @@ export const Sidebar = () => {
           ))}
         </div>
 
-        {/* Extra space at bottom to match Figma empty area */}
-        <div className="h-40 shrink-0" />
+        {/* Extra space at bottom */}
+        <div className="h-8 shrink-0" />
       </aside>
 
       {/* Overlay sutil para mejorar la profundidad */}
       <div
+        onClick={() => setIsOpen(false)}
         className={`
           fixed inset-0 bg-black/40 backdrop-blur-[2px] z-30 transition-opacity duration-700 pointer-events-none
-          ${isVisible ? "opacity-100" : "opacity-0"}
+          ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0"}
         `}
       />
     </>

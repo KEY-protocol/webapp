@@ -3,9 +3,9 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Header } from "@/app/components/header";
-import { Footer } from "@/app/components/footer";
 import "@/app/styles/globals.css";
+
+import { SidebarProvider } from "@/app/context/SidebarContext";
 
 type Props = {
   children: React.ReactNode;
@@ -40,11 +40,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <body className="bg-primary min-h-screen flex flex-col">
-        <NextIntlClientProvider>
-          <Header />
-          <main className="grow">{children}</main>
-          <Footer />
-        </NextIntlClientProvider>
+        <SidebarProvider>
+          <NextIntlClientProvider>
+            <main className="grow flex flex-col">{children}</main>
+          </NextIntlClientProvider>
+        </SidebarProvider>
       </body>
     </html>
   );

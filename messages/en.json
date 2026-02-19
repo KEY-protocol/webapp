@@ -64,12 +64,30 @@
       "role": "Administrator"
     },
     "menu": {
-      "home": "Home",
-      "dashboard": "Dashboard",
-      "projects": "Projects",
-      "technicians": "Technicians",
-      "training": "Training",
-      "aiAgents": "AI Agents"
+      "home": {
+        "title": "Home",
+        "subtitle": "Welcome to the central dashboard of KEY Protocol"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "subtitle": "Comprehensive real-time vision of project progress and impact"
+      },
+      "projects": {
+        "title": "Projects",
+        "subtitle": "Breakdown of indicators by project"
+      },
+      "technicians": {
+        "title": "Technicians",
+        "subtitle": "List of people belonging to the organization authorized to operate the dApp"
+      },
+      "training": {
+        "title": "Training",
+        "subtitle": "Dashboard for uploading training content"
+      },
+      "aiAgents": {
+        "title": "AI Agents",
+        "subtitle": "Dashboard for prompt loading and training"
+      }
     },
     "footer": {
       "profile": "Profile",
