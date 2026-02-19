@@ -75,5 +75,9 @@
       "settings": "Configuración",
       "logout": "Cerrar sesión"
     }
+  },
+  "dashboard": {
+    "welcome": "Bienvenido",
+    "description": "Esta es la plataforma de KEY Protocol, aqui encontraras las informaciones relacionadas a tu equipo que forman parte del tablero de monitoreo para la organización"
   }
 }

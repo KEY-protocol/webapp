@@ -75,5 +75,9 @@
       "settings": "Configuração",
       "logout": "Encerrar sessão"
     }
+  },
+  "dashboard": {
+    "welcome": "Bem-vindo",
+    "description": "Esta é a plataforma do KEY Protocol, aqui você encontrará as informações relacionadas à sua equipe que fazem parte do painel de monitoramento da organização"
   }
 }

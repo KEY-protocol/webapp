@@ -75,5 +75,9 @@
       "settings": "Settings",
       "logout": "Log Out"
     }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "description": "This is the KEY Protocol platform, here you will find the information related to your team that are part of the monitoring dashboard for the organization"
   }
 }
