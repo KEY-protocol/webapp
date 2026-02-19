@@ -98,5 +98,50 @@
   "home": {
     "welcome": "Welcome",
     "description": "This is the KEY Protocol platform, here you will find the information related to your team that are part of the monitoring dashboard for the organization"
+  },
+  "dashboard_page": {
+    "stats": {
+      "projects": "Project",
+      "assignedFunds": "Assigned Funds",
+      "skillCertificates": "Skill Certificates",
+      "attendeesCount": "No. of Attendees",
+      "age": "Age",
+      "originaries": "% Originaries"
+    },
+    "charts": {
+      "axis": "Axis",
+      "men": "Men",
+      "women": "W.",
+      "total": "Total",
+      "regions": "Regions",
+      "gender": "Gender",
+      "categories": "Categories"
+    },
+    "categories": {
+      "sustainableProduction": "Sustainable Production",
+      "climateChange": "Climate Change",
+      "regenerative": "Regenerative",
+      "productiveImprovement": "Productive Improvement",
+      "commercialization": "Commercialization",
+      "beekeeping": "Beekeeping",
+      "crafts": "Crafts",
+      "digitalLiteracy": "Digital Literacy"
+    },
+    "regions": {
+      "formosa": "Formosa",
+      "chaco": "Chaco",
+      "salta": "Salta",
+      "santiago": "Santiago del Estero"
+    },
+    "gender_labels": {
+      "female": "Female",
+      "male": "Male"
+    },
+    "treemap": {
+      "crafts": "Crafts",
+      "livestock": "Livestock",
+      "carob": "Carob",
+      "others": "Others"
+    }
   }
 }

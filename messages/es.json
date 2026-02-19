@@ -98,5 +98,50 @@
   "home": {
     "welcome": "Bienvenido",
     "description": "Esta es la plataforma de KEY Protocol, aqui encontraras las informaciones relacionadas a tu equipo que forman parte del tablero de monitoreo para la organización"
+  },
+  "dashboard_page": {
+    "stats": {
+      "projects": "Proyecto",
+      "assignedFunds": "Fondos Asignados",
+      "skillCertificates": "Certificados de Habilidad",
+      "attendeesCount": "Nros Asistentes",
+      "age": "Edad",
+      "originaries": "% Originarios"
+    },
+    "charts": {
+      "axis": "Eje",
+      "men": "Varones",
+      "women": "M.",
+      "total": "Total",
+      "regions": "Regiones",
+      "gender": "Género",
+      "categories": "Categorías"
+    },
+    "categories": {
+      "sustainableProduction": "Produccion Sostenible",
+      "climateChange": "Cambio Climatico",
+      "regenerative": "Regenerativa",
+      "productiveImprovement": "Mejora Productiva",
+      "commercialization": "Comercializacion",
+      "beekeeping": "Apicultura",
+      "crafts": "Artesania",
+      "digitalLiteracy": "Alfabetizacion Digital"
+    },
+    "regions": {
+      "formosa": "Formosa",
+      "chaco": "Chaco",
+      "salta": "Salta",
+      "santiago": "Santiago del Estero"
+    },
+    "gender_labels": {
+      "female": "Femenino",
+      "male": "Masculino"
+    },
+    "treemap": {
+      "crafts": "Artesania",
+      "livestock": "Ganaderia",
+      "carob": "Algarroba",
+      "others": "Otros"
+    }
   }
 }
