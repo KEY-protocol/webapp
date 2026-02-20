@@ -142,6 +142,23 @@
       "livestock": "Ganaderia",
       "carob": "Algarroba",
       "others": "Otros"
+    },
+    "geo_visualization": {
+      "title": "Visualización Geográfica y Detalle",
+      "sidebar": {
+        "provinces": "Provincias",
+        "type": "Tipo",
+        "zone": "Zona",
+        "pilot_sup": "sup piloto",
+        "community_sup": "sup comunidades"
+      },
+      "table": {
+        "type": "Tipo",
+        "chaco": "Chaco",
+        "formosa": "Formosa",
+        "salta": "Salta",
+        "total": "Total"
+      }
     }
   }
 }

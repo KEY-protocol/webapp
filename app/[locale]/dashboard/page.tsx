@@ -7,6 +7,9 @@ import { AgeDistributionChart } from "./_components/AgeDistributionChart";
 import { MetricsTable } from "./_components/MetricsTable";
 import { ProjectRankChart } from "./_components/ProjectRankChart";
 import { TreemapComponent } from "./_components/TreemapComponent";
+import { DashboardMap } from "./_components/DashboardMap";
+import { SummarySidebar } from "./_components/SummarySidebar";
+import { DetailedStatsTable } from "./_components/DetailedStatsTable";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -76,6 +79,22 @@ const MOCK_DATA = {
     { name: "Comunidad Educativa", value: 10 },
     { name: "Chohot", value: 8 },
   ],
+  map_stats: {
+    categories: [
+      { name: "Modulo Chaguaral", value: 34.8, color: "#4B86D4" },
+      { name: "Modulo Apicultura", value: 17.4, color: "#ED8936" },
+      { name: "Modulo Algarroba", value: 17.4, color: "#9F7AEA" },
+      { name: "Modulo Ganaderia", value: 13, color: "#48BB78" },
+      { name: "Modulo Palma", value: 8.7, color: "#ECC94B" },
+      { name: "Modulo Agromonte", value: 4.3, color: "#F56565" },
+      { name: "Modulo Vivero", value: 4.4, color: "#A0AEC0" },
+    ],
+    provinces: [
+      { name: "Chaco", value: 54.7, color: "#4B86D4" },
+      { name: "Formosa", value: 25, color: "#ED8936" },
+      { name: "Salta", value: 20.3, color: "#9F7AEA" },
+    ],
+  },
 };
 
 export default async function DashboardPage({ params }: Props) {
@@ -157,6 +176,52 @@ export default async function DashboardPage({ params }: Props) {
           <div className="lg:col-span-4 space-y-6">
             <MetricsTable data={translatedTableData} />
             <ProjectRankChart data={MOCK_DATA.rankData} />
+          </div>
+        </div>
+
+        {/* --- SECOND PART OF DASHBOARD --- */}
+        <div className="border-t border-white/10 pt-12 mt-12 space-y-8">
+          <h2 className="text-2xl font-montserrat font-bold text-white mb-6">
+            {t("geo_visualization.title")}
+          </h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Map Area */}
+            <div className="lg:col-span-3">
+              <DashboardMap />
+            </div>
+
+            {/* Sidebar Stats */}
+            <div className="lg:col-span-1">
+              <SummarySidebar />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Bottom Left Charts */}
+            <div className="lg:col-span-2 flex flex-col md:flex-row items-center justify-center gap-4 bg-[#1a1a1a] p-6 rounded-sm shadow-xl border border-white/5">
+              <div className="w-full md:w-1/2">
+                <PieChartComponent
+                  data={MOCK_DATA.map_stats.categories}
+                  showLegend={true}
+                  showBackground={false}
+                  height={250}
+                />
+              </div>
+              <div className="w-full md:w-1/2">
+                <PieChartComponent
+                  data={MOCK_DATA.map_stats.provinces}
+                  showLegend={true}
+                  showBackground={false}
+                  height={250}
+                />
+              </div>
+            </div>
+
+            {/* Bottom Right Table */}
+            <div className="lg:col-span-2">
+              <DetailedStatsTable />
+            </div>
           </div>
         </div>
       </div>

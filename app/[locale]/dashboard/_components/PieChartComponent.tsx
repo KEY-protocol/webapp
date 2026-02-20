@@ -18,16 +18,24 @@ interface PieDataItem {
 interface PieChartComponentProps {
   data: PieDataItem[];
   innerRadius?: number;
+  height?: number;
+  showBackground?: boolean;
+  showLegend?: boolean;
 }
 
 export const PieChartComponent = ({
   data,
   innerRadius = 0,
+  height = 250,
+  showBackground = true,
+  showLegend = true,
 }: PieChartComponentProps) => {
   return (
-    <div className="bg-[#1a1a1a] p-5 rounded-sm shadow-lg min-h-75 flex flex-col">
+    <div
+      className={`${showBackground ? "bg-[#1a1a1a] p-5" : ""} rounded-sm flex flex-col`}
+    >
       <div className="flex-1 w-full min-w-0">
-        <ResponsiveContainer width="100%" height={250}>
+        <ResponsiveContainer width="100%" height={height}>
           <PieChart>
             <Pie
               data={data}
@@ -46,14 +54,16 @@ export const PieChartComponent = ({
               contentStyle={{ backgroundColor: "#333", border: "none" }}
               itemStyle={{ color: "#fff" }}
             />
-            <Legend
-              layout="horizontal"
-              align="center"
-              verticalAlign="bottom"
-              formatter={(value) => (
-                <span className="text-white text-[10px]">{value}</span>
-              )}
-            />
+            {showLegend && (
+              <Legend
+                layout="horizontal"
+                align="center"
+                verticalAlign="bottom"
+                formatter={(value) => (
+                  <span className="text-white text-[10px]">{value}</span>
+                )}
+              />
+            )}
           </PieChart>
         </ResponsiveContainer>
       </div>
