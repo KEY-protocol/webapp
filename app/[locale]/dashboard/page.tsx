@@ -16,6 +16,7 @@ type Props = {
 };
 
 // TODO: Estos datos deben ser traídos desde el servidor mediante un fetch a la API
+// TODO: Hacer que las keys sean dinamicas según lo que devuelva el servidor en relación a la información que obtenga del formulario
 const MOCK_DATA = {
   stats: [
     { key: "projects", value: "1.524" },
