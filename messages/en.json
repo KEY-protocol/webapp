@@ -160,5 +160,23 @@
         "total": "Total"
       }
     }
+  },
+  "technicians_page": {
+    "edit": "EDIT",
+    "role": "Role",
+    "id": "ID",
+    "birthdate": "Birthdate",
+    "project": "Project",
+    "expertise": "Expertise",
+    "zone": "Zone",
+    "wallet": "Wallet",
+    "did": "DID",
+    "document_front": "Front of document",
+    "edit_modal": {
+      "title": "Edit Technician",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "name_label": "Full Name"
+    }
   }
 }

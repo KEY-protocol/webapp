@@ -160,5 +160,23 @@
         "total": "Total"
       }
     }
+  },
+  "technicians_page": {
+    "edit": "EDITAR",
+    "role": "Cargo",
+    "id": "ID",
+    "birthdate": "Nascimento",
+    "project": "Projeto",
+    "expertise": "Expertise",
+    "zone": "Zona",
+    "wallet": "Carteira",
+    "did": "DID",
+    "document_front": "Parte frontal do documento",
+    "edit_modal": {
+      "title": "Editar Técnico",
+      "save": "Salvar Alterações",
+      "cancel": "Cancelar",
+      "name_label": "Nome Completo"
+    }
   }
 }
