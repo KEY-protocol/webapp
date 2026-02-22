@@ -192,6 +192,15 @@
       "alpha": "Projeto Alpha",
       "beta": "Projeto Beta",
       "livestock": "Projeto Pecuário"
+    },
+    "edit_modal": {
+      "title": "Editar Capacitação",
+      "save": "Salvar Alterações",
+      "cancel": "Cancelar",
+      "modules_label": "Módulos (upload de arquivo PDF/Word)",
+      "modules_hint": "Arraste un arquivo aqui ou clique para fazer o upload. Nossa IA analisará o conteúdo automaticamente.",
+      "objective_label": "Objetivo",
+      "zone_label": "Zona"
     }
   }
 }

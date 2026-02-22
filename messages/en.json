@@ -192,6 +192,15 @@
       "alpha": "Project Alpha",
       "beta": "Project Beta",
       "livestock": "Livestock Project"
+    },
+    "edit_modal": {
+      "title": "Edit Training",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "modules_label": "Modules (upload PDF/Word file)",
+      "modules_hint": "Drag a file here or click to upload. Our AI will automatically analyze the content.",
+      "objective_label": "Objective",
+      "zone_label": "Zone"
     }
   }
 }
