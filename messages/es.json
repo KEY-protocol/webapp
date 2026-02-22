@@ -178,5 +178,20 @@
       "cancel": "Cancelar",
       "name_label": "Nombre Completo"
     }
+  },
+  "training_page": {
+    "project_label": "Proyecto",
+    "project_placeholder": "Proyecto uno",
+    "edit_button": "EDITAR",
+    "modules": "Modulos",
+    "objective": "Objetivo",
+    "zone": "Zona",
+    "train_people": "Formar {count} personas",
+    "projects_list": {
+      "one": "Proyecto uno",
+      "alpha": "Proyecto Alpha",
+      "beta": "Proyecto Beta",
+      "livestock": "Proyecto Ganadero"
+    }
   }
 }
