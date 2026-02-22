@@ -1,7 +1,9 @@
-import type { IconProps } from '../types';
+"use no memo";
+import type { IconProps } from "../types";
+
 export const DocIcon = ({
-  className = '',
-  fill = 'currentColor',
+  className = "",
+  fill = "currentColor",
 }: IconProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
