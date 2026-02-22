@@ -202,5 +202,17 @@
       "objective_label": "Objetivo",
       "zone_label": "Zona"
     }
+  },
+  "ai_agents_page": {
+    "project_label": "Projeto",
+    "chain_label": "Cadeia",
+    "module_label": "Módulo",
+    "agent_response_label": "Resposta do Agente",
+    "agent_prompt_label": "Prompt do Agente",
+    "agent_repos_label": "Repositórios para o Agente",
+    "processed_docs_label": "Documentos processados",
+    "reports_label": "Relatórios",
+    "question_placeholder": "Pergunte o que quiser",
+    "send_button": "Enviar"
   }
 }

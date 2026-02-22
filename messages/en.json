@@ -202,5 +202,17 @@
       "objective_label": "Objective",
       "zone_label": "Zone"
     }
+  },
+  "ai_agents_page": {
+    "project_label": "Project",
+    "chain_label": "Chain",
+    "module_label": "Module",
+    "agent_response_label": "Agent Response",
+    "agent_prompt_label": "Agent Prompt",
+    "agent_repos_label": "Repositories for the Agent",
+    "processed_docs_label": "Processed documents",
+    "reports_label": "Reports",
+    "question_placeholder": "Ask whatever you want",
+    "send_button": "Send"
   }
 }
