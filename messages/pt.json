@@ -214,5 +214,40 @@
     "reports_label": "Relatórios",
     "question_placeholder": "Pergunte o que quiser",
     "send_button": "Enviar"
+  },
+  "notifications": {
+    "title": "Notificações",
+    "empty": "Você não tem notificações pendentes",
+    "markAsRead": "Marcar como lida",
+    "unread": "Pendentes",
+    "read": "Anteriores",
+    "time": "Há {time}",
+    "types": {
+      "project": "Novo Projeto",
+      "training": "Capacitação",
+      "system": "Sistema"
+    }
+  },
+  "settings": {
+    "title": "Configurações do Perfil",
+    "save": "Salvar Alterações",
+    "cancel": "Cancelar",
+    "sections": {
+      "personal": "Informações Pessoais",
+      "security": "Segurança",
+      "linked_accounts": "Contas Vinculadas"
+    },
+    "fields": {
+      "name": "Nome Completo",
+      "email": "E-mail",
+      "organization": "Organização",
+      "password": "Nova Senha",
+      "confirm_password": "Confirmar Senha"
+    },
+    "linked": {
+      "google": "Conectado com Google",
+      "manual": "Registro Manual",
+      "description": "Sua conta está vinculada via {method}"
+    }
   }
 }

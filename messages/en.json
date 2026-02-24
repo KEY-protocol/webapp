@@ -214,5 +214,40 @@
     "reports_label": "Reports",
     "question_placeholder": "Ask whatever you want",
     "send_button": "Send"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You have no pending notifications",
+    "markAsRead": "Mark as read",
+    "unread": "Pending",
+    "read": "Earlier",
+    "time": "{time} ago",
+    "types": {
+      "project": "New Project",
+      "training": "Training",
+      "system": "System"
+    }
+  },
+  "settings": {
+    "title": "Profile Settings",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "sections": {
+      "personal": "Personal Information",
+      "security": "Security",
+      "linked_accounts": "Linked Accounts"
+    },
+    "fields": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "organization": "Organization",
+      "password": "New Password",
+      "confirm_password": "Confirm Password"
+    },
+    "linked": {
+      "google": "Connected with Google",
+      "manual": "Manual Registration",
+      "description": "Your account is linked via {method}"
+    }
   }
 }
