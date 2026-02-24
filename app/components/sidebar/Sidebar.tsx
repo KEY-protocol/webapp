@@ -9,8 +9,6 @@ import {
   Users,
   Ticket,
   Search,
-  User,
-  Settings,
   LogOut,
 } from "lucide-react";
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
@@ -90,13 +88,6 @@ export const Sidebar = () => {
   ];
 
   const footerItems = [
-    { id: "profile", icon: User, label: t("footer.profile"), href: "/profile" },
-    {
-      id: "settings",
-      icon: Settings,
-      label: t("footer.settings"),
-      href: "/settings",
-    },
     { id: "logout", icon: LogOut, label: t("footer.logout"), href: "/" },
   ];
 
@@ -106,7 +97,7 @@ export const Sidebar = () => {
         onMouseEnter={() => setIsOpen(true)}
         onMouseLeave={() => setIsOpen(false)}
         className={`
-          fixed top-0 left-0 z-50 w-[340px] h-screen bg-primary 
+          fixed top-0 left-0 z-50 w-85 h-screen bg-primary 
           flex flex-col border-r border-white/20 shadow-[25px_0_60px_-15px_rgba(0,0,0,0.6)]
           transition-all duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
