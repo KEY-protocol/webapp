@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import "@/app/styles/globals.css";
 
 import { SidebarProvider } from "@/app/context/SidebarContext";
+import { DataProvider } from "@/app/context/DataContext";
 
 type Props = {
   children: React.ReactNode;
@@ -40,11 +41,13 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <body className="bg-primary min-h-screen flex flex-col">
-        <SidebarProvider>
-          <NextIntlClientProvider>
-            <main className="grow flex flex-col">{children}</main>
-          </NextIntlClientProvider>
-        </SidebarProvider>
+        <DataProvider>
+          <SidebarProvider>
+            <NextIntlClientProvider locale={locale}>
+              <main className="grow flex flex-col">{children}</main>
+            </NextIntlClientProvider>
+          </SidebarProvider>
+        </DataProvider>
       </body>
     </html>
   );
