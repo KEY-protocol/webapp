@@ -59,30 +59,6 @@ function RegisterContent() {
               />
             </div>
 
-            {/* Organization Field */}
-            <div className="space-y-2">
-              <label className="block text-sm font-poppins text-white ml-1">
-                {t("organizationLabel")}
-              </label>
-              <input
-                type="text"
-                placeholder={t("organizationPlaceholder")}
-                className="w-full bg-[#1a2b15] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745]/50 transition-all font-poppins shadow-inner"
-              />
-            </div>
-
-            {/* Role Field */}
-            <div className="space-y-2">
-              <label className="block text-sm font-poppins text-white ml-1">
-                {t("roleLabel")}
-              </label>
-              <input
-                type="text"
-                placeholder={t("rolePlaceholder")}
-                className="w-full bg-[#1a2b15] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745]/50 transition-all font-poppins shadow-inner"
-              />
-            </div>
-
             {/* Password Field */}
             <div className="space-y-2">
               <label className="block text-sm font-poppins text-white ml-1">
