@@ -58,10 +58,6 @@ export default function TrainingGrid({ initialData }: TrainingGridProps) {
 
             <div className="space-y-1 pt-2">
               <p className="font-poppins text-xl">
-                <span className="font-bold">{t("modules")}:</span>{" "}
-                {training.modules}
-              </p>
-              <p className="font-poppins text-xl">
                 <span className="font-bold">{t("objective")}:</span>{" "}
                 {t("train_people", { count: training.objectiveCount })}
               </p>
