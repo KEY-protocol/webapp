@@ -159,9 +159,6 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
           name: currentUser.name,
           email: currentUser.email,
           role: getRoleLabel(currentUser.role),
-          organization:
-            data.organizations.find((o) => o.id === currentUser.organizationId)
-              ?.name || "N/A",
           authProvider: "google",
         }}
       />

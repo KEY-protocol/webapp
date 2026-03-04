@@ -8,7 +8,6 @@ import {
   Shield,
   Link as LinkIcon,
   Mail,
-  Building,
   Key,
   MailCheck,
 } from "lucide-react";
@@ -19,7 +18,6 @@ interface SettingsModalProps {
   user: {
     name: string;
     email: string;
-    organization: string;
     role: string;
     authProvider: "google" | "manual";
   };
@@ -70,7 +68,7 @@ export const SettingsModal = ({
               <User className="w-3.5 h-3.5" />
               {t("sections.personal")}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-white/60 flex items-center gap-2">
                   <User size={14} /> {t("fields.name")}
@@ -78,16 +76,6 @@ export const SettingsModal = ({
                 <input
                   type="text"
                   defaultValue={user.name}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all font-poppins"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-white/60 flex items-center gap-2">
-                  <Building size={14} /> {t("fields.organization")}
-                </label>
-                <input
-                  type="text"
-                  defaultValue={user.organization}
                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all font-poppins"
                 />
               </div>
