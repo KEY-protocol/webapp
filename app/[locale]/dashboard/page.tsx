@@ -10,6 +10,7 @@ import { TreemapComponent } from "./_components/TreemapComponent";
 import { DashboardMap } from "./_components/DashboardMap";
 import { SummarySidebar } from "./_components/SummarySidebar";
 import { DetailedStatsTable } from "./_components/DetailedStatsTable";
+import ProjectSelector from "../training/_components/ProjectSelector";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -103,6 +104,7 @@ export default async function DashboardPage({ params }: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations("dashboard_page");
+  const trainingT = await getTranslations("training_page");
 
   // Traducir datos para los gráficos
   const translatedCategories = MOCK_DATA.categories.map((c) => ({
@@ -134,9 +136,26 @@ export default async function DashboardPage({ params }: Props) {
     size: item.size,
   }));
 
+  // Hardcoded projects for the dropdown (same as training page)
+  const projects = [
+    { id: "one", name: trainingT("projects_list.one") },
+    { id: "alpha", name: trainingT("projects_list.alpha") },
+    { id: "beta", name: trainingT("projects_list.beta") },
+    { id: "livestock", name: trainingT("projects_list.livestock") },
+  ];
+
   return (
     <div className="flex-1 bg-[#2d7d32] p-6 text-white min-h-screen">
-      <div className="max-w-400 mx-auto space-y-6">
+      <div className="max-w-400 mx-auto space-y-8">
+        {/* Project Selector Section */}
+        <div className="bg-white/5 p-6 rounded-xl border border-white/10 backdrop-blur-sm">
+          <ProjectSelector
+            label={trainingT("project_label")}
+            placeholder={trainingT("project_placeholder")}
+            projects={projects}
+          />
+        </div>
+
         {/* Top Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {MOCK_DATA.stats.map((stat) => (
@@ -180,8 +199,8 @@ export default async function DashboardPage({ params }: Props) {
           </div>
         </div>
 
-        {/* --- SECOND PART OF DASHBOARD --- */}
-        <div className="border-t border-white/10 pt-12 mt-12 space-y-8">
+        {/* --- GEO VISUALIZATION PART --- */}
+        <div className="border-t border-white/10 pt-12 space-y-8">
           <h2 className="text-2xl font-montserrat font-bold text-white mb-6">
             {t("geo_visualization.title")}
           </h2>

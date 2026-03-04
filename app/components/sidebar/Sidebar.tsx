@@ -78,15 +78,9 @@ export const Sidebar = () => {
       icon: AreaChart,
       label: t("menu.dashboard.title"),
       href: "/dashboard",
-      roles: ["superadmin", "encargado"],
+      roles: ["superadmin", "encargado", "admin"],
     },
-    {
-      id: "projects",
-      icon: FolderOpen,
-      label: t("menu.projects.title"),
-      href: "/projects",
-      roles: ["encargado", "admin"],
-    },
+
     {
       id: "technicians",
       icon: Users,
