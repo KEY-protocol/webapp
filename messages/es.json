@@ -187,6 +187,7 @@
     "project_label": "Proyecto",
     "project_placeholder": "Proyecto uno",
     "edit_button": "EDITAR",
+    "view_button": "VER MÓDULOS",
     "modules": "Modulos",
     "objective": "Objetivo",
     "zone": "Zona",
@@ -205,6 +206,11 @@
       "modules_hint": "Arrastra un archivo aquí o haz clic para subir. Nuestra IA analizará el contenido automáticamente.",
       "objective_label": "Objetivo",
       "zone_label": "Zona"
+    },
+    "view_modal": {
+      "title": "Ver Módulos",
+      "content_label": "Contenido de los Módulos (Simulación)",
+      "close": "Cerrar"
     }
   },
   "ai_agents_page": {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { PenTool } from "lucide-react";
 import { useTranslations } from "next-intl";
 import EditTrainingModal from "./EditTrainingModal";
+import ViewModulesModal from "./ViewModulesModal";
 
 interface TrainingItem {
   id: number;
@@ -23,11 +24,19 @@ export default function TrainingGrid({ initialData }: TrainingGridProps) {
   const [selectedTraining, setSelectedTraining] = useState<TrainingItem | null>(
     null,
   );
+  const [selectedTrainingForView, setSelectedTrainingForView] =
+    useState<TrainingItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const handleEdit = (training: TrainingItem) => {
     setSelectedTraining(training);
     setIsModalOpen(true);
+  };
+
+  const handleViewModules = (training: TrainingItem) => {
+    setSelectedTrainingForView(training);
+    setIsViewModalOpen(true);
   };
 
   return (
@@ -47,13 +56,22 @@ export default function TrainingGrid({ initialData }: TrainingGridProps) {
                   {training.title}
                 </h2>
               </div>
-              <button
-                type="button"
-                onClick={() => handleEdit(training)}
-                className="border border-white/40 rounded-full px-5 py-1 text-xs font-bold tracking-widest hover:bg-white hover:text-[#24421A] hover:border-white transition-all duration-300 active:scale-95"
-              >
-                {t("edit_button")}
-              </button>
+              <div className="flex items-center space-x-3">
+                <button
+                  type="button"
+                  onClick={() => handleViewModules(training)}
+                  className="bg-white/10 border border-white/20 rounded-full px-5 py-1 text-xs font-bold tracking-widest text-white hover:bg-white hover:text-[#24421A] hover:border-white transition-all duration-300 active:scale-95"
+                >
+                  {t("view_button")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleEdit(training)}
+                  className="border border-white/40 rounded-full px-5 py-1 text-xs font-bold tracking-widest hover:bg-white hover:text-[#24421A] hover:border-white transition-all duration-300 active:scale-95"
+                >
+                  {t("edit_button")}
+                </button>
+              </div>
             </div>
 
             <div className="space-y-1 pt-2">
@@ -73,6 +91,12 @@ export default function TrainingGrid({ initialData }: TrainingGridProps) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         training={selectedTraining}
+      />
+
+      <ViewModulesModal
+        isOpen={isViewModalOpen}
+        onClose={() => setIsViewModalOpen(false)}
+        training={selectedTrainingForView}
       />
     </>
   );
