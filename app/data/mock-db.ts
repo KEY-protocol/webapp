@@ -7,13 +7,54 @@ import { ServerData } from "../types/api";
  */
 export const MOCK_DB: ServerData = {
   currentUser: {
-    id: "usr_1",
-    name: "Admin Key Protocol",
-    email: "admin@keyprotocol.io",
-    role: "admin",
+    id: "usr_superadmin",
+    name: "Kevin Superadmin",
+    email: "superadmin@keyprotocol.io",
+    role: "superadmin",
     avatar:
-      "https://ui-avatars.com/api/?name=Admin+Key&background=0D8ABC&color=fff",
+      "https://ui-avatars.com/api/?name=Kevin+Super&background=6366f1&color=fff",
   },
+  users: [
+    {
+      id: "usr_superadmin",
+      name: "Kevin Superadmin",
+      email: "superadmin@keyprotocol.io",
+      role: "superadmin",
+      avatar:
+        "https://ui-avatars.com/api/?name=Kevin+Super&background=6366f1&color=fff",
+    },
+    {
+      id: "usr_encargado_1",
+      name: "Carlos Encargado",
+      email: "carlos@org1.com",
+      role: "encargado",
+      organizationId: "org_1",
+      avatar:
+        "https://ui-avatars.com/api/?name=Carlos+E&background=0ea5e9&color=fff",
+    },
+    {
+      id: "usr_admin_1",
+      name: "Ana Admin",
+      email: "ana@org1.com",
+      role: "admin",
+      organizationId: "org_1",
+      avatar:
+        "https://ui-avatars.com/api/?name=Ana+A&background=10b981&color=fff",
+    },
+  ],
+  organizations: [
+    {
+      id: "org_1",
+      name: "Global Tech Solutions",
+      encargadoId: "usr_encargado_1",
+      createdAt: "2024-01-10T10:00:00Z",
+    },
+    {
+      id: "org_2",
+      name: "Crypto Secure Corp",
+      createdAt: "2024-02-05T12:00:00Z",
+    },
+  ],
   identities: [
     {
       id: "id_001",

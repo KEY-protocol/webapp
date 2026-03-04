@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
 import { useSidebar } from "@/app/context/SidebarContext";
+import { useData } from "@/app/context/DataContext";
+import { AreaChart, Building2 } from "lucide-react";
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -52,40 +54,65 @@ const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
 
 export const Sidebar = () => {
   const { isOpen, setIsOpen } = useSidebar();
+  const { data, setCurrentUser } = useData();
   const t = useTranslations("sidebar");
+  const userRole = data.currentUser.role;
 
   const menuItems = [
     {
-      id: "dashboard",
+      id: "home",
       icon: LayoutDashboard,
+      label: t("menu.home.title"),
+      href: "/home",
+      roles: ["superadmin", "encargado", "admin"],
+    },
+    {
+      id: "organizations",
+      icon: Building2,
+      label: "Organizaciones", // TODO: Add translation
+      href: "/organizations",
+      roles: ["superadmin"],
+    },
+    {
+      id: "dashboard",
+      icon: AreaChart,
       label: t("menu.dashboard.title"),
       href: "/dashboard",
+      roles: ["superadmin", "encargado"],
     },
     {
       id: "projects",
       icon: FolderOpen,
       label: t("menu.projects.title"),
       href: "/projects",
+      roles: ["encargado", "admin"],
     },
     {
       id: "technicians",
       icon: Users,
       label: t("menu.technicians.title"),
       href: "/technicians",
+      roles: ["encargado"],
     },
     {
       id: "training",
       icon: Ticket,
       label: t("menu.training.title"),
       href: "/training",
+      roles: ["encargado", "admin"],
     },
     {
       id: "aiAgents",
       icon: Search,
       label: t("menu.aiAgents.title"),
       href: "/ai-agents",
+      roles: ["superadmin", "encargado"],
     },
   ];
+
+  const filteredMenuItems = menuItems.filter((item) =>
+    item.roles.includes(userRole),
+  );
 
   const footerItems = [
     { id: "logout", icon: LogOut, label: t("footer.logout"), href: "/" },
@@ -115,7 +142,7 @@ export const Sidebar = () => {
 
         {/* Main Navigation */}
         <nav className="flex-1 flex flex-col py-4 overflow-y-auto no-scrollbar">
-          {menuItems.map((item) => (
+          {filteredMenuItems.map((item) => (
             <SidebarItem
               key={item.id}
               icon={item.icon}
@@ -138,6 +165,28 @@ export const Sidebar = () => {
               href={item.href}
             />
           ))}
+
+          {/* Debug Role Switcher */}
+          <div className="mt-4 px-10 flex flex-col gap-2">
+            <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest">
+              Debug Roles
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {data.users.map((u) => (
+                <button
+                  key={u.id}
+                  onClick={() => setCurrentUser(u.id)}
+                  className={`px-2 py-1 text-[10px] rounded border transition-all ${
+                    data.currentUser.id === u.id
+                      ? "bg-white text-primary border-white"
+                      : "text-white/60 border-white/20 hover:border-white/50"
+                  }`}
+                >
+                  {u.role.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Extra space at bottom */}

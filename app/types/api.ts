@@ -4,8 +4,9 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "operator" | "user";
+  role: "superadmin" | "encargado" | "admin";
   avatar?: string;
+  organizationId?: string;
 }
 
 export interface IdentityRecord {
@@ -23,8 +24,18 @@ export interface IdentityRecord {
   };
 }
 
+export interface Organization {
+  id: string;
+  name: string;
+  logo?: string;
+  encargadoId?: string;
+  createdAt: string;
+}
+
 export interface ServerData {
   currentUser: UserProfile;
+  users: UserProfile[]; // To manage other users
+  organizations: Organization[];
   identities: IdentityRecord[];
   stats: {
     totalPending: number;

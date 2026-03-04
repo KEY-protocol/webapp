@@ -20,6 +20,7 @@ interface SettingsModalProps {
     name: string;
     email: string;
     organization: string;
+    role: string;
     authProvider: "google" | "manual";
   };
 }

@@ -72,6 +72,10 @@
         "title": "Dashboard",
         "subtitle": "Vision integral y en tiempo real del progreso y el impacto de los proyectos"
       },
+      "organizations": {
+        "title": "Organizaciones",
+        "subtitle": "Gestión de organizaciones y encargados"
+      },
       "projects": {
         "title": "Proyectos",
         "subtitle": "Desglose de los indicadores por proyecto"

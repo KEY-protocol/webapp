@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Menu, Bell, Settings } from "lucide-react";
 import { useSidebar } from "@/app/context/SidebarContext";
+import { useData } from "@/app/context/DataContext";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationsModal } from "./NotificationsModal";
 import { SettingsModal } from "./SettingsModal";
@@ -39,18 +40,11 @@ const MOCK_NOTIFICATIONS = [
   },
 ];
 
-const MOCK_USER = {
-  name: "Maria Gonzalez",
-  email: "maria.gonzalez@keyprotocol.org",
-  organization: "KEY Protocol",
-  role: "Administrador",
-  authProvider: "google" as const, // Cambiar a "manual" para probar el registro manual
-};
-
 export const PageHeader = ({ namespace }: PageHeaderProps) => {
   const t = useTranslations("sidebar");
-  const userData = useTranslations("sidebar.user");
   const { toggle } = useSidebar();
+  const { data } = useData();
+  const currentUser = data.currentUser;
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -62,6 +56,19 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
     );
+  };
+
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case "superadmin":
+        return "Superadmin";
+      case "encargado":
+        return "Encargado de Org";
+      case "admin":
+        return "Administrador";
+      default:
+        return role;
+    }
   };
 
   return (
@@ -78,10 +85,12 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         {/* Title and Subtitle */}
         <div className="flex flex-col">
           <h1 className="text-2xl font-montserrat font-bold text-white leading-tight">
-            {t(`menu.${namespace}.title`)}
+            {namespace.includes(".")
+              ? namespace.split(".").pop()?.toUpperCase()
+              : t(`menu.${namespace}.title`)}
           </h1>
           <p className="text-sm font-poppins text-white/60">
-            {t(`menu.${namespace}.subtitle`)}
+            {namespace.includes(".") ? "" : t(`menu.${namespace}.subtitle`)}
           </p>
         </div>
       </div>
@@ -114,16 +123,23 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
 
         {/* User Profile */}
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-[#E0E0E0] flex items-center justify-center text-[#1C1C1C] text-xl font-montserrat font-bold shrink-0">
-            {userData("name").charAt(0)}
+          <div className="w-12 h-12 rounded-full overflow-hidden bg-[#E0E0E0] flex items-center justify-center text-[#1C1C1C] text-xl font-montserrat font-bold shrink-0">
+            {currentUser.avatar ? (
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              currentUser.name.charAt(0)
+            )}
           </div>
           <div className="flex flex-col">
             <span className="text-white font-montserrat font-bold text-lg leading-tight">
-              {userData("name")}
+              {currentUser.name}
             </span>
-            {/* TODO: Preguntar sobre el rol si se usará o no */}
             <span className="text-white/60 text-xs font-poppins">
-              {userData("role")}
+              {getRoleLabel(currentUser.role)}
             </span>
           </div>
         </div>
@@ -139,7 +155,15 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
-        user={MOCK_USER}
+        user={{
+          name: currentUser.name,
+          email: currentUser.email,
+          role: getRoleLabel(currentUser.role),
+          organization:
+            data.organizations.find((o) => o.id === currentUser.organizationId)
+              ?.name || "N/A",
+          authProvider: "google",
+        }}
       />
     </header>
   );
