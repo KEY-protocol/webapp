@@ -11,4 +11,5 @@ export * from "./services/DocIcon";
 export * from "./services/KeyBoxIcon";
 export * from "./services/PackageLock";
 export * from "./services/StatsIcon";
+export * from "./GoogleIcon";
 export * from "./types";

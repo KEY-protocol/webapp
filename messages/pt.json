@@ -21,6 +21,8 @@
       "passwordLabel": "Palavra-passe",
       "passwordPlaceholder": "Preencha com a sua palavra-passe",
       "send": "Iniciar",
+      "orContinueWith": "ou continuar com",
+      "googleSignIn": "Entrar com Google",
       "noAccount": "Não tem uma conta?",
       "backHome": "Voltar ao Início"
     },

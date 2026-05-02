@@ -21,6 +21,8 @@
       "passwordLabel": "Password",
       "passwordPlaceholder": "Fill with your password",
       "send": "Login",
+      "orContinueWith": "or continue with",
+      "googleSignIn": "Sign in with Google",
       "noAccount": "Don't have an account?",
       "backHome": "Back to Home"
     },

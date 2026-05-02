@@ -21,6 +21,8 @@
       "passwordLabel": "Contraseña",
       "passwordPlaceholder": "Ingresa tu contraseña",
       "send": "Iniciar",
+      "orContinueWith": "o continuar con",
+      "googleSignIn": "Iniciar sesión con Google",
       "noAccount": "¿No tienes cuenta?",
       "backHome": "Volver al Inicio"
     },
