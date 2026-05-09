@@ -23,6 +23,8 @@
       "send": "Iniciar",
       "orContinueWith": "ou continuar com",
       "googleSignIn": "Entrar com Google",
+      "organizationLabel": "Organização (ONG)",
+      "organizationPlaceholder": "Selecione sua organização",
       "noAccount": "Não tem uma conta?",
       "backHome": "Voltar ao Início"
     },

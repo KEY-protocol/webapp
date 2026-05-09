@@ -3,7 +3,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { GoogleSignInButton } from "./GoogleSignInButton";
-import { TextDivider } from "../common/TextDivider";
 
 /**
  * Action buttons for the login form.
@@ -21,17 +20,8 @@ export function LoginFormActions() {
         {t("send")}
       </Link>
 
-      <TextDivider label={t("orContinueWith")} />
-
       {/* Google Sign In */}
       <GoogleSignInButton />
-
-      <Link
-        href="/register"
-        className="text-sm font-poppins text-white/80 hover:text-white hover:underline transition-all"
-      >
-        {t("noAccount")}
-      </Link>
     </div>
   );
 }

@@ -23,6 +23,8 @@
       "send": "Login",
       "orContinueWith": "or continue with",
       "googleSignIn": "Sign in with Google",
+      "organizationLabel": "Organization (NGO)",
+      "organizationPlaceholder": "Select your organization",
       "noAccount": "Don't have an account?",
       "backHome": "Back to Home"
     },
