@@ -5,9 +5,9 @@ import { routing } from "./i18n/routing";
 const intlMiddleware = createIntlMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
-  // Skip next-intl middleware for auth API routes
-  // NextAuth needs /api/auth/* to work without locale prefixing
-  if (request.nextUrl.pathname.startsWith("/api/auth")) {
+  // Skip next-intl middleware for all API routes
+  // NextAuth (/api/auth/*) and the login proxy (/api/login) need to work without locale prefixing
+  if (request.nextUrl.pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 

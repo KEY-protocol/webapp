@@ -26,7 +26,17 @@
       "organizationLabel": "Organização (ONG)",
       "organizationPlaceholder": "Selecione sua organização",
       "noAccount": "Não tem uma conta?",
-      "backHome": "Voltar ao Início"
+      "backHome": "Voltar ao Início",
+      "sending": "Iniciando sessão...",
+      "errorMissingFields": "Por favor, preencha todos os campos",
+      "errorInvalidCredentials": "Credenciais inválidas. Verifique seu e-mail e senha",
+      "errorOngNotFound": "A organização selecionada não foi encontrada",
+      "errorServerUnavailable": "O servidor não está disponível. Tente novamente mais tarde",
+      "errorTooManyAttempts": "Muitas tentativas. Aguarde alguns minutos antes de tentar novamente",
+      "errorGeneric": "Ocorreu um erro inesperado. Tente novamente",
+      "ongModalTitle": "Qual organização você vai administrar?",
+      "ongModalDescription": "Selecione a ONG em que deseja trabalhar nesta sessão",
+      "ongModalConfirm": "Continuar"
     },
     "register": {
       "title": "Registrar-se",

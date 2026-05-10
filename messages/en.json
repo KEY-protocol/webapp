@@ -26,7 +26,17 @@
       "organizationLabel": "Organization (NGO)",
       "organizationPlaceholder": "Select your organization",
       "noAccount": "Don't have an account?",
-      "backHome": "Back to Home"
+      "backHome": "Back to Home",
+      "sending": "Signing in...",
+      "errorMissingFields": "Please fill in all fields",
+      "errorInvalidCredentials": "Invalid credentials. Please check your email and password",
+      "errorOngNotFound": "The selected organization was not found",
+      "errorServerUnavailable": "The server is unavailable. Please try again later",
+      "errorTooManyAttempts": "Too many attempts. Please wait a few minutes before trying again",
+      "errorGeneric": "An unexpected error occurred. Please try again",
+      "ongModalTitle": "Which organization will you administer?",
+      "ongModalDescription": "Select the NGO you want to work in for this session",
+      "ongModalConfirm": "Continue"
     },
     "register": {
       "title": "Register",

@@ -1,3 +1,4 @@
 AUTH_GOOGLE_ID=tu-client-id.apps.googleusercontent.com
 AUTH_GOOGLE_SECRET=tu-client-secret
 AUTH_SECRET=un-string-random-para-encriptar-sesiones  # generá uno con: npx auth secret
+SERVIDOR_BASE_URL=http://localhost:3000  # URL del servidor principal (SERVIDOR)
