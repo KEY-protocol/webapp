@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import {
   LayoutDashboard,
-  FolderOpen,
   Users,
   Ticket,
   Search,
@@ -14,6 +13,8 @@ import {
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
 import { useSidebar } from "@/app/context/SidebarContext";
 import { useData } from "@/app/context/DataContext";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "@/i18n/navigation";
 import { AreaChart, Building2 } from "lucide-react";
 
 interface SidebarItemProps {
@@ -54,7 +55,9 @@ const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
 
 export const Sidebar = () => {
   const { isOpen, setIsOpen } = useSidebar();
-  const { data, setCurrentUser } = useData();
+  const { data } = useData();
+  const { clearAuth } = useAuth();
+  const router = useRouter();
   const t = useTranslations("sidebar");
   const userRole = data.currentUser.role;
 
@@ -108,9 +111,10 @@ export const Sidebar = () => {
     item.roles.includes(userRole),
   );
 
-  const footerItems = [
-    { id: "logout", icon: LogOut, label: t("footer.logout"), href: "/" },
-  ];
+  const handleLogout = () => {
+    clearAuth();
+    router.push("/");
+  };
 
   return (
     <>
@@ -151,36 +155,18 @@ export const Sidebar = () => {
 
         {/* Footer Navigation */}
         <div className="py-4 border-t border-white/20 flex flex-col">
-          {footerItems.map((item) => (
-            <SidebarItem
-              key={item.id}
-              icon={item.icon}
-              label={item.label}
-              href={item.href}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-6 px-10 py-3.5 transition-all duration-300 hover:bg-white/5 group relative cursor-pointer"
+          >
+            <LogOut
+              className="w-7 h-7 transition-all duration-300 text-white/80 group-hover:text-white"
+              strokeWidth={2}
             />
-          ))}
-
-          {/* Debug Role Switcher */}
-          <div className="mt-4 px-10 flex flex-col gap-2">
-            <p className="text-[10px] text-white/40 uppercase font-bold tracking-widest">
-              Debug Roles
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {data.users.map((u) => (
-                <button
-                  key={u.id}
-                  onClick={() => setCurrentUser(u.id)}
-                  className={`px-2 py-1 text-[10px] rounded border transition-all ${
-                    data.currentUser.id === u.id
-                      ? "bg-white text-primary border-white"
-                      : "text-white/60 border-white/20 hover:border-white/50"
-                  }`}
-                >
-                  {u.role.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
+            <span className="text-xl font-poppins transition-all duration-300 text-white/80 group-hover:text-white">
+              {t("footer.logout")}
+            </span>
+          </button>
         </div>
 
         {/* Extra space at bottom */}

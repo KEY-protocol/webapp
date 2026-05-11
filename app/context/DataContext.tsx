@@ -1,21 +1,20 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import {
   ServerData,
-  IdentityRecord,
   IdentityStatus,
   UserProfile,
   Organization,
 } from "../types/api";
 import { MOCK_DB } from "../data/mock-db";
+import { useAuth } from "./AuthContext";
 
 interface DataContextType {
   data: ServerData;
   isLoading: boolean;
   updateIdentityStatus: (id: string, status: IdentityStatus) => void;
   refreshData: () => Promise<void>;
-  setCurrentUser: (userId: string) => void;
   addOrganization: (name: string) => void;
   assignEncargado: (orgId: string, userId: string) => void;
 }
@@ -27,6 +26,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [data, setData] = useState<ServerData>(MOCK_DB);
   const [isLoading, setIsLoading] = useState(true);
+  const { user: authUser } = useAuth();
 
   // Simulating an initial fetch
   useEffect(() => {
@@ -36,6 +36,39 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }, 800);
     return () => clearTimeout(timer);
   }, []);
+
+  /**
+   * Derive currentUser from the authenticated session.
+   * When a user logs in, we match them by email against the mock users list,
+   * or build a UserProfile from the AuthContext data.
+   * This avoids calling setState inside useEffect (cascading renders).
+   * TODO: Replace with real API call once the backend is ready.
+   */
+  const resolvedCurrentUser: UserProfile = useMemo(() => {
+    if (!authUser) return data.currentUser;
+
+    // Try to find the user in the mock DB by email
+    const matchedUser = data.users.find(
+      (u) => u.email.toLowerCase() === authUser.email.toLowerCase(),
+    );
+
+    if (matchedUser) return matchedUser;
+
+    // Build a UserProfile from the authenticated session
+    return {
+      id: authUser.id,
+      name: authUser.email.split("@")[0],
+      email: authUser.email,
+      role: authUser.role.toLowerCase() as UserProfile["role"],
+      organizationId: authUser.ongId || undefined,
+    };
+  }, [authUser, data.currentUser, data.users]);
+
+  /** The data object exposed to consumers, with the resolved currentUser. */
+  const resolvedData: ServerData = useMemo(
+    () => ({ ...data, currentUser: resolvedCurrentUser }),
+    [data, resolvedCurrentUser],
+  );
 
   const updateIdentityStatus = (id: string, status: IdentityStatus) => {
     setData((prev) => {
@@ -58,13 +91,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 
       return { ...prev, identities: newIdentities, stats };
     });
-  };
-
-  const setCurrentUser = (userId: string) => {
-    const user = data.users.find((u) => u.id === userId);
-    if (user) {
-      setData((prev) => ({ ...prev, currentUser: user }));
-    }
   };
 
   const addOrganization = (name: string) => {
@@ -102,11 +128,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <DataContext.Provider
       value={{
-        data,
+        data: resolvedData,
         isLoading,
         updateIdentityStatus,
         refreshData,
-        setCurrentUser,
         addOrganization,
         assignEncargado,
       }}
