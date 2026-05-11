@@ -36,7 +36,8 @@ const ROLES_WITHOUT_ONG_SELECTION = ["SUPERADMIN", "ENCARGADO"];
  * 1. User enters email + password and submits.
  * 2. Credentials are sent to the federated login proxy (no ONG needed).
  * 3. ADMIN → ONG selection modal appears (they choose which ONG to work in).
- * 4. SUPERADMIN / ENCARGADO → redirect to /home directly.
+ * 4. SUPERADMIN → redirect to /organizations (their home view).
+ * 5. ENCARGADO → redirect to /home directly.
  */
 export function LoginForm() {
   const t = useTranslations("auth.login");
@@ -66,10 +67,13 @@ export function LoginForm() {
 
   /**
    * Completes the login by storing auth data and redirecting.
+   * Superadmin goes to /organizations (their only view).
+   * Everyone else goes to /home.
    */
   const completeLogin = (response: FederatedLoginResponse) => {
     setAuth(response);
-    router.push("/home");
+    const isSuperadmin = response.user.role.toUpperCase() === "SUPERADMIN";
+    router.push(isSuperadmin ? "/organizations" : "/home");
   };
 
   /**

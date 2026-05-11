@@ -269,5 +269,32 @@
       "manual": "Manual Registration",
       "description": "Your account is linked via {method}"
     }
+  },
+  "organizations_page": {
+    "title": "Organizations Management",
+    "subtitle": "Manage organizations and handle their primary roles.",
+    "newOrgButton": "New Organization",
+    "placeholder": "Organization name",
+    "create": "Create",
+    "cancel": "Cancel",
+    "currentEncargado": "Current Manager",
+    "unassigned": "Unassigned",
+    "reassignEncargado": "Reassign Manager",
+    "selectPlaceholder": "Select from list...",
+    "roleManagement": "Role Management",
+    "addAdmin": "Add New Admin",
+    "addEncargado": "Add New Manager",
+    "addTecnico": "Add New Technician",
+    "viewAdmins": "View Administrators",
+    "viewEncargados": "View Managers",
+    "viewTecnicos": "View Technicians",
+    "listModalTitle": "List of {role} - {org}",
+    "close": "Close",
+    "pendingFeature": "'{feature}' Feature (Backend Pending)"
+  },
+  "roles": {
+    "superadmin": "Superadmin",
+    "encargado": "Org Manager",
+    "admin": "Administrator"
   }
 }

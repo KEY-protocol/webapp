@@ -273,5 +273,32 @@
       "manual": "Registro Manual",
       "description": "Tu cuenta está vinculada a través de {method}"
     }
+  },
+  "organizations_page": {
+    "title": "Gestión de Organizaciones",
+    "subtitle": "Administra las organizaciones y gestiona sus roles principales.",
+    "newOrgButton": "Nueva Organización",
+    "placeholder": "Nombre de la organización",
+    "create": "Crear",
+    "cancel": "Cancelar",
+    "currentEncargado": "Encargado Actual",
+    "unassigned": "Sin asignar",
+    "reassignEncargado": "Reasignar Encargado",
+    "selectPlaceholder": "Seleccionar de la lista...",
+    "roleManagement": "Gestión de Roles",
+    "addAdmin": "Añadir Nuevo Admin",
+    "addEncargado": "Añadir Nuevo Encargado",
+    "addTecnico": "Añadir Nuevo Técnico",
+    "viewAdmins": "Ver Administradores",
+    "viewEncargados": "Ver Encargados",
+    "viewTecnicos": "Ver Técnicos",
+    "listModalTitle": "Lista de {role} - {org}",
+    "close": "Cerrar",
+    "pendingFeature": "Funcionalidad '{feature}' (Pendiente de Backend)"
+  },
+  "roles": {
+    "superadmin": "Superadmin",
+    "encargado": "Encargado de Org",
+    "admin": "Administrador"
   }
 }

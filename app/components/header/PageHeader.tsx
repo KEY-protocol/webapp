@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Menu, Bell, Settings } from "lucide-react";
+import { Menu, Bell, Settings, LogOut } from "lucide-react";
 import { useSidebar } from "@/app/context/SidebarContext";
 import { useData } from "@/app/context/DataContext";
+import { useAuth } from "@/app/context/AuthContext";
+import { useRouter } from "@/i18n/navigation";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationsModal } from "./NotificationsModal";
 import { SettingsModal } from "./SettingsModal";
@@ -42,9 +44,13 @@ const MOCK_NOTIFICATIONS = [
 
 export const PageHeader = ({ namespace }: PageHeaderProps) => {
   const t = useTranslations("sidebar");
+  const r = useTranslations("roles");
   const { toggle } = useSidebar();
   const { data } = useData();
+  const { clearAuth } = useAuth();
+  const router = useRouter();
   const currentUser = data.currentUser;
+  const isSuperadmin = currentUser.role === "superadmin";
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -58,14 +64,19 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
     );
   };
 
+  const handleLogout = () => {
+    clearAuth();
+    router.push("/");
+  };
+
   const getRoleLabel = (role: string) => {
     switch (role) {
       case "superadmin":
-        return "Superadmin";
+        return r("superadmin");
       case "encargado":
-        return "Encargado de Org";
+        return r("encargado");
       case "admin":
-        return "Administrador";
+        return r("admin");
       default:
         return role;
     }
@@ -74,13 +85,15 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
   return (
     <header className="w-full bg-primary border-b border-white/10 px-8 py-4 flex items-center justify-between relative z-40">
       <div className="flex items-center gap-6">
-        {/* Menu Icon */}
-        <button
-          onClick={toggle}
-          className="text-white/80 hover:text-white transition-colors"
-        >
-          <Menu size={28} />
-        </button>
+        {/* Menu Icon — hidden for superadmin (no sidebar) */}
+        {!isSuperadmin && (
+          <button
+            onClick={toggle}
+            className="text-white/80 hover:text-white transition-colors"
+          >
+            <Menu size={28} />
+          </button>
+        )}
 
         {/* Title and Subtitle */}
         <div className="flex flex-col">
@@ -99,23 +112,43 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         {/* Actions */}
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
-          <button
-            onClick={() => setIsNotificationsOpen(true)}
-            className="text-white/80 hover:text-white transition-colors p-2 relative group"
-          >
-            <Bell size={22} />
-            {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-tertiary text-primary text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-primary group-hover:scale-110 transition-transform">
-                {unreadCount}
+
+          {/* Notifications & Settings — only for encargado/admin */}
+          {!isSuperadmin && (
+            <>
+              <button
+                onClick={() => setIsNotificationsOpen(true)}
+                className="text-white/80 hover:text-white transition-colors p-2 relative group"
+              >
+                <Bell size={22} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-tertiary text-primary text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-primary group-hover:scale-110 transition-transform">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="text-white/80 hover:text-white transition-colors p-2"
+              >
+                <Settings size={22} />
+              </button>
+            </>
+          )}
+
+          {/* Logout button — only for superadmin (sidebar handles logout for others) */}
+          {isSuperadmin && (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5"
+              title={t("footer.logout")}
+            >
+              <LogOut size={20} />
+              <span className="text-sm font-poppins hidden sm:inline">
+                {t("footer.logout")}
               </span>
-            )}
-          </button>
-          <button
-            onClick={() => setIsSettingsOpen(true)}
-            className="text-white/80 hover:text-white transition-colors p-2"
-          >
-            <Settings size={22} />
-          </button>
+            </button>
+          )}
         </div>
 
         {/* Divider */}
@@ -125,6 +158,7 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full overflow-hidden bg-[#E0E0E0] flex items-center justify-center text-[#1C1C1C] text-xl font-montserrat font-bold shrink-0">
             {currentUser.avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
@@ -145,23 +179,28 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         </div>
       </div>
 
-      <NotificationsModal
-        isOpen={isNotificationsOpen}
-        onClose={() => setIsNotificationsOpen(false)}
-        notifications={notifications}
-        onMarkAsRead={handleMarkAsRead}
-      />
+      {/* Modals — only rendered for non-superadmin roles */}
+      {!isSuperadmin && (
+        <>
+          <NotificationsModal
+            isOpen={isNotificationsOpen}
+            onClose={() => setIsNotificationsOpen(false)}
+            notifications={notifications}
+            onMarkAsRead={handleMarkAsRead}
+          />
 
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        user={{
-          name: currentUser.name,
-          email: currentUser.email,
-          role: getRoleLabel(currentUser.role),
-          authProvider: "google",
-        }}
-      />
+          <SettingsModal
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+            user={{
+              name: currentUser.name,
+              email: currentUser.email,
+              role: getRoleLabel(currentUser.role),
+              authProvider: "google",
+            }}
+          />
+        </>
+      )}
     </header>
   );
 };

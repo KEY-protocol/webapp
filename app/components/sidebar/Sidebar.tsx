@@ -61,13 +61,16 @@ export const Sidebar = () => {
   const t = useTranslations("sidebar");
   const userRole = data.currentUser.role;
 
+  // Superadmin has no sidebar — uses a simplified header-only layout
+  if (userRole === "superadmin") return null;
+
   const menuItems = [
     {
       id: "home",
       icon: LayoutDashboard,
       label: t("menu.home.title"),
       href: "/home",
-      roles: ["superadmin", "encargado", "admin"],
+      roles: ["encargado", "admin"],
     },
     {
       id: "organizations",
@@ -81,7 +84,7 @@ export const Sidebar = () => {
       icon: AreaChart,
       label: t("menu.dashboard.title"),
       href: "/dashboard",
-      roles: ["superadmin", "encargado", "admin"],
+      roles: ["encargado", "admin"],
     },
 
     {
@@ -103,7 +106,7 @@ export const Sidebar = () => {
       icon: Search,
       label: t("menu.aiAgents.title"),
       href: "/ai-agents",
-      roles: ["superadmin", "encargado"],
+      roles: ["encargado"],
     },
   ];
 

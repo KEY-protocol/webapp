@@ -263,5 +263,32 @@
       "manual": "Registro Manual",
       "description": "Sua conta está vinculada via {method}"
     }
+  },
+  "organizations_page": {
+    "title": "Gestão de Organizações",
+    "subtitle": "Gerencie as organizações e seus principais cargos.",
+    "newOrgButton": "Nova Organização",
+    "placeholder": "Nome da organização",
+    "create": "Criar",
+    "cancel": "Cancelar",
+    "currentEncargado": "Gerente Atual",
+    "unassigned": "Não atribuído",
+    "reassignEncargado": "Reatribuir Gerente",
+    "selectPlaceholder": "Selecionar da lista...",
+    "roleManagement": "Gestão de Cargos",
+    "addAdmin": "Adicionar Novo Admin",
+    "addEncargado": "Adicionar Novo Gerente",
+    "addTecnico": "Adicionar Novo Técnico",
+    "viewAdmins": "Ver Administradores",
+    "viewEncargados": "Ver Gerentes",
+    "viewTecnicos": "Ver Técnicos",
+    "listModalTitle": "Lista de {role} - {org}",
+    "close": "Fechar",
+    "pendingFeature": "Funcionalidade '{feature}' (Pendente no Backend)"
+  },
+  "roles": {
+    "superadmin": "Superadmin",
+    "encargado": "Gerente da Org",
+    "admin": "Administrador"
   }
 }
