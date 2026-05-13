@@ -86,6 +86,10 @@
         "title": "Dashboard",
         "subtitle": "Comprehensive real-time vision of project progress and impact"
       },
+      "organizations": {
+        "title": "Organizations",
+        "subtitle": "Management of organizations and managers"
+      },
       "projects": {
         "title": "Projects",
         "subtitle": "Breakdown of indicators by project"

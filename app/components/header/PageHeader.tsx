@@ -98,12 +98,10 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         {/* Title and Subtitle */}
         <div className="flex flex-col">
           <h1 className="text-2xl font-montserrat font-bold text-white leading-tight">
-            {namespace.includes(".")
-              ? namespace.split(".").pop()?.toUpperCase()
-              : t(`menu.${namespace}.title`)}
+            {t(`menu.${namespace.includes(".") ? namespace.split(".").pop() : namespace}.title`)}
           </h1>
           <p className="text-sm font-poppins text-white/60">
-            {namespace.includes(".") ? "" : t(`menu.${namespace}.subtitle`)}
+            {t(`menu.${namespace.includes(".") ? namespace.split(".").pop() : namespace}.subtitle`)}
           </p>
         </div>
       </div>

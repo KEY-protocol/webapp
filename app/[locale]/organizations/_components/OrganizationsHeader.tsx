@@ -18,9 +18,7 @@ export const OrganizationsHeader = ({
         <h1 className="text-3xl font-montserrat font-bold text-white">
           {t("title")}
         </h1>
-        <p className="text-white/60 font-poppins">
-          {t("subtitle")}
-        </p>
+        <p className="text-white/60 font-poppins">{t("subtitle")}</p>
       </div>
 
       <button
