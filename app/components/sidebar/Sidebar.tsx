@@ -15,7 +15,7 @@ import { useSidebar } from "@/app/context/SidebarContext";
 import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "@/i18n/navigation";
-import { AreaChart, Building2 } from "lucide-react";
+import { AreaChart, Building2, FileBarChart } from "lucide-react";
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -84,6 +84,13 @@ export const Sidebar = () => {
       icon: AreaChart,
       label: t("menu.dashboard.title"),
       href: "/dashboard",
+      roles: ["encargado", "admin"],
+    },
+    {
+      id: "reports",
+      icon: FileBarChart,
+      label: t("menu.reports.title"),
+      href: "/reports",
       roles: ["encargado", "admin"],
     },
 

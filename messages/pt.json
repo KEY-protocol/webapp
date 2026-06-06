@@ -98,6 +98,10 @@
         "title": "Técnicos",
         "subtitle": "Lista de pessoas pertencentes à organização autorizadas a operar o dApp"
       },
+      "reports": {
+        "title": "Relatórios",
+        "subtitle": "Centro de relatórios de atividades, cursos e técnicos"
+      },
       "training": {
         "title": "Capacitação",
         "subtitle": "Painel para carregamento de conteúdo de capacitação"
@@ -180,21 +184,151 @@
     }
   },
   "technicians_page": {
-    "edit": "EDITAR",
-    "role": "Cargo",
-    "id": "ID",
-    "birthdate": "Nascimento",
-    "project": "Projeto",
-    "expertise": "Expertise",
-    "zone": "Zona",
-    "wallet": "Carteira",
-    "did": "DID",
-    "document_front": "Parte frontal do documento",
+    "title": "Gestão de Técnicos",
+    "subtitle": "Gerencie os técnicos registrados na sua organização.",
+    "search_placeholder": "Buscar por nome ou documento...",
+    "no_technicians": "Nenhum técnico registrado ainda.",
+    "no_results": "Nenhum técnico corresponde à sua busca.",
+    "loading": "Carregando técnicos...",
+    "error_loading": "Erro ao carregar técnicos. Tente novamente.",
+    "retry": "Tentar novamente",
+    "refresh": "Atualizar",
+    "total_count": "{count} técnico(s)",
+    "columns": {
+      "name": "Nome Completo",
+      "document": "Documento",
+      "status": "Status",
+      "registered": "Registrado",
+      "actions": "Ações"
+    },
+    "status": {
+      "pending": "Pendente",
+      "approved": "Aprovado",
+      "verified": "Verificado"
+    },
+    "actions": {
+      "view": "Ver Detalhes",
+      "edit": "Editar",
+      "approve": "Aprovar",
+      "delete": "Excluir",
+      "approve_confirm": "Tem certeza que deseja aprovar este técnico? Isso criará seu DID na rede federada.",
+      "delete_confirm": "Tem certeza que deseja excluir este técnico? Esta ação não pode ser desfeita.",
+      "approve_success": "Técnico aprovado com sucesso.",
+      "delete_success": "Técnico excluído com sucesso.",
+      "update_success": "Técnico actualizado com sucesso.",
+      "approve_error_central_lookup": "O servidor central não está disponível. O técnico permanece em estado pendente. Tente novamente em alguns minutos.",
+      "approve_error_identity_create": "Falha ao criar identidade no servidor central. O técnico permanece em estado pendente. Tente novamente."
+    },
+    "detail_modal": {
+      "title": "Detalhes do Técnico",
+      "name": "Nome",
+      "surname": "Sobrenome",
+      "document_number": "Número do Documento",
+      "document_type": "Tipo de Documento",
+      "phone": "Telefone",
+      "skills": "Habilidades",
+      "did": "DID",
+      "issuer": "ONG Emisora",
+      "source_of_truth": "Fonte da Verdade",
+      "created_at": "Criado em",
+      "updated_at": "Atualizado em",
+      "images": "Imagens de Identidade",
+      "selfie": "Selfie",
+      "dni": "Documento de Identidade",
+      "no_images": "Nenhuma imagem disponível",
+      "close": "Fechar",
+      "share_permissions_btn": "Gerenciar Permissões",
+      "memberships_title": "Associações do Técnico",
+      "loading_memberships": "Carregando associações...",
+      "no_memberships": "Nenhuma associação associada.",
+      "membership_table": {
+        "org": "Organização (ONG)",
+        "role": "Cargo",
+        "status": "Estado",
+        "start_date": "Data de Início"
+      }
+    },
     "edit_modal": {
       "title": "Editar Técnico",
       "save": "Salvar Alterações",
       "cancel": "Cancelar",
-      "name_label": "Nome Completo"
+      "saving": "Salvando...",
+      "name_label": "Nome",
+      "surname_label": "Sobrenome",
+      "document_number_label": "Número do Documento",
+      "document_type_label": "Tipo de Documento",
+      "phone_label": "Telefone",
+      "skills_label": "Habilidades (separadas por vírgula)"
+    },
+    "share_permissions_modal": {
+      "title": "Gerenciar Permissões de Compartilhamento",
+      "subtitle": "Controle quais ONGs na rede federada podem acessar os dados deste técnico.",
+      "add_ong_label": "Conceder acesso a uma nova organização",
+      "add_ong_placeholder": "ID da ONG de destino (ex. ONG_REGIONAL)",
+      "grant": "Conceder Acesso",
+      "ong_column": "Organização (ONG)",
+      "access_column": "Acesso",
+      "actions_column": "Ações",
+      "loading": "Carregando permissões...",
+      "no_permissions": "Nenhuma permissão configurada para este técnico. Por padrão, apenas sua organização tem acesso.",
+      "revoke": "Revogar",
+      "grant_back": "Habilitar",
+      "close": "Fechar",
+      "grant_success": "Acesso concedido com sucesso.",
+      "revoke_success": "Acesso revogado com sucesso.",
+      "empty_ong_error": "O ID da ONG não pode estar vazio."
+    },
+    "filter": {
+      "all": "Todos",
+      "pending": "Pendentes",
+      "approved": "Aprovados",
+      "verified": "Verificados"
+    }
+  },
+  "reports_page": {
+    "title": "Centro de Relatórios",
+    "subtitle": "Gere e exporte relatórios de atividades, cursos e técnicos.",
+    "tabs": {
+      "monthly": "Atividade Mensual",
+      "course": "Por Curso",
+      "technician": "Por Técnico"
+    },
+    "monthly": {
+      "title": "Atividade Mensual",
+      "subtitle": "Relatório geral de progresso de atividades, evidências e certificados para um mês específico.",
+      "period_label": "Período (Ano-Mês)",
+      "period_placeholder": "ex. 2026-03",
+      "generate": "Gerar Relatório"
+    },
+    "course": {
+      "title": "Por Curso",
+      "subtitle": "Relatório de progresso e conclusão para um curso específico.",
+      "course_label": "Curso",
+      "course_placeholder": "Selecione um curso",
+      "generate": "Gerar Relatório"
+    },
+    "technician": {
+      "title": "Por Técnico",
+      "subtitle": "Relatório detalhado de aulas, cursos e certificações vinculadas a um técnico.",
+      "tech_label": "Técnico",
+      "tech_placeholder": "Selecione um técnico",
+      "generate": "Gerar Relatório"
+    },
+    "export": {
+      "pdf": "Exportar para PDF",
+      "excel": "Exportar para Excel",
+      "json": "Visualizar na Tela"
+    },
+    "loading": "Gerando relatório...",
+    "no_data": "Preencha os filtros acima e clique em Gerar para ver as informações.",
+    "error_loading": "Ocorreu um erro ao gerar o relatório. Por favor, tente novamente.",
+    "table": {
+      "activity": "Atividade",
+      "date": "Data",
+      "status": "Status",
+      "count": "Quantidade",
+      "description": "Descrição",
+      "details": "Detalhes"
     }
   },
   "training_page": {

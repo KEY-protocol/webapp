@@ -1,7 +1,13 @@
 "use client";
 
 import React from "react";
-import { Building2, ShieldCheck, UserPlus, HardHat, Users, UserCheck } from "lucide-react";
+import {
+  Building2,
+  UserPlus,
+  HardHat,
+  Users,
+  UserCheck,
+} from "lucide-react";
 import { Organization } from "@/app/types/api";
 
 interface OrganizationCardProps {
@@ -15,7 +21,6 @@ interface OrganizationCardProps {
 
 export const OrganizationCard = ({
   org,
-  onAddAdmin,
   onAddEncargado,
   onAddTecnico,
   onViewRole,
@@ -42,17 +47,18 @@ export const OrganizationCard = ({
           <p className="text-[10px] text-white/40 uppercase font-bold mb-1">
             {t("roleManagement")}
           </p>
-          
+
           {/* Admins */}
           <div className="grid grid-cols-2 gap-2">
-            <button
+            {/* TODO: Desimplementar add admin - se implementará por consola */}
+            {/* <button
               onClick={() => onAddAdmin(org.id)}
               className="flex items-center justify-center gap-2 p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 hover:bg-blue-500/20 transition-all text-xs font-poppins font-medium group/btn"
               title={t("addAdmin")}
             >
               <ShieldCheck size={16} className="group-hover/btn:scale-110 transition-transform" />
               {t("addAdmin").split(" ").pop()}
-            </button>
+            </button> */}
             <button
               onClick={() => onViewRole(org, "admin")}
               className="flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-xs font-poppins font-medium"
@@ -69,7 +75,10 @@ export const OrganizationCard = ({
               className="flex items-center justify-center gap-2 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-all text-xs font-poppins font-medium group/btn"
               title={t("addEncargado")}
             >
-              <UserPlus size={16} className="group-hover/btn:scale-110 transition-transform" />
+              <UserPlus
+                size={16}
+                className="group-hover/btn:scale-110 transition-transform"
+              />
               {t("addEncargado").split(" ").pop()}
             </button>
             <button
@@ -88,7 +97,10 @@ export const OrganizationCard = ({
               className="flex items-center justify-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 transition-all text-xs font-poppins font-medium group/btn"
               title={t("addTecnico")}
             >
-              <HardHat size={16} className="group-hover/btn:scale-110 transition-transform" />
+              <HardHat
+                size={16}
+                className="group-hover/btn:scale-110 transition-transform"
+              />
               {t("addTecnico").split(" ").pop()}
             </button>
             <button

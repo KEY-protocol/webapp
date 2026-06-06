@@ -98,6 +98,10 @@
         "title": "Tecnicos",
         "subtitle": "Lista de personas pertenecientes a la organizacion autorizadas a operar la dApp"
       },
+      "reports": {
+        "title": "Reportes",
+        "subtitle": "Centro de reportes de actividad, cursos y técnicos"
+      },
       "training": {
         "title": "Capacitaciones",
         "subtitle": "Tablero para la carga de los contenidos para las capacitaciones"
@@ -180,21 +184,151 @@
     }
   },
   "technicians_page": {
-    "edit": "EDITAR",
-    "role": "Rol",
-    "id": "ID",
-    "birthdate": "Nacimiento",
-    "project": "Proyecto",
-    "expertise": "Expertise",
-    "zone": "Zona",
-    "wallet": "Billetera",
-    "did": "DID",
-    "document_front": "Parte frontal del documento",
+    "title": "Gestión de Técnicos",
+    "subtitle": "Administra los técnicos registrados en tu organización.",
+    "search_placeholder": "Buscar por nombre o documento...",
+    "no_technicians": "No hay técnicos registrados aún.",
+    "no_results": "No se encontraron técnicos con tu búsqueda.",
+    "loading": "Cargando técnicos...",
+    "error_loading": "Error al cargar técnicos. Intenta de nuevo.",
+    "retry": "Reintentar",
+    "refresh": "Actualizar",
+    "total_count": "{count} técnico(s)",
+    "columns": {
+      "name": "Nombre Completo",
+      "document": "Documento",
+      "status": "Estado",
+      "registered": "Registrado",
+      "actions": "Acciones"
+    },
+    "status": {
+      "pending": "Pendiente",
+      "approved": "Aprobado",
+      "verified": "Verificado"
+    },
+    "actions": {
+      "view": "Ver Detalles",
+      "edit": "Editar",
+      "approve": "Aprobar",
+      "delete": "Eliminar",
+      "approve_confirm": "¿Estás seguro de aprobar este técnico? Esto creará su DID en la red federada.",
+      "delete_confirm": "¿Estás seguro de eliminar este técnico? Esta acción no se puede deshacer.",
+      "approve_success": "Técnico aprobado exitosamente.",
+      "delete_success": "Técnico eliminado exitosamente.",
+      "update_success": "Técnico actualizado exitosamente.",
+      "approve_error_central_lookup": "El servidor central no está disponible. El técnico permanece en estado pendiente. Intente nuevamente en unos minutos.",
+      "approve_error_identity_create": "Falló la creación de identidad en el servidor central. El técnico permanece en estado pendiente. Intente nuevamente."
+    },
+    "detail_modal": {
+      "title": "Detalles del Técnico",
+      "name": "Nombre",
+      "surname": "Apellido",
+      "document_number": "Número de Documento",
+      "document_type": "Tipo de Documento",
+      "phone": "Teléfono",
+      "skills": "Habilidades",
+      "did": "DID",
+      "issuer": "ONG Emisora",
+      "source_of_truth": "Fuente de Verdad",
+      "created_at": "Creado",
+      "updated_at": "Actualizado",
+      "images": "Imágenes de Identidad",
+      "selfie": "Selfie",
+      "dni": "Documento de Identidad",
+      "no_images": "Sin imágenes disponibles",
+      "close": "Cerrar",
+      "share_permissions_btn": "Gestionar Permisos",
+      "memberships_title": "Membresías del Técnico",
+      "loading_memberships": "Cargando membresías...",
+      "no_memberships": "No tiene membresías asociadas.",
+      "membership_table": {
+        "org": "Organización (ONG)",
+        "role": "Rol",
+        "status": "Estado",
+        "start_date": "Fecha de Inicio"
+      }
+    },
     "edit_modal": {
       "title": "Editar Técnico",
       "save": "Guardar Cambios",
       "cancel": "Cancelar",
-      "name_label": "Nombre Completo"
+      "saving": "Guardando...",
+      "name_label": "Nombre",
+      "surname_label": "Apellido",
+      "document_number_label": "Número de Documento",
+      "document_type_label": "Tipo de Documento",
+      "phone_label": "Teléfono",
+      "skills_label": "Habilidades (separadas por coma)"
+    },
+    "share_permissions_modal": {
+      "title": "Gestionar Permisos de Compartir",
+      "subtitle": "Controla qué ONGs de la red federada pueden acceder a los datos de este técnico.",
+      "add_ong_label": "Otorgar acceso a una nueva organización",
+      "add_ong_placeholder": "ID de la ONG de destino (ej. ONG_REGIONAL)",
+      "grant": "Otorgar Acceso",
+      "ong_column": "Organización (ONG)",
+      "access_column": "Acceso",
+      "actions_column": "Acciones",
+      "loading": "Cargando permisos...",
+      "no_permissions": "No se han configurado permisos especiales para este técnico. Por defecto, solo tu organización tiene acceso.",
+      "revoke": "Revocar",
+      "grant_back": "Habilitar",
+      "close": "Cerrar",
+      "grant_success": "Acceso otorgado exitosamente.",
+      "revoke_success": "Acceso revocado exitosamente.",
+      "empty_ong_error": "El ID de la ONG no puede estar vacío."
+    },
+    "filter": {
+      "all": "Todos",
+      "pending": "Pendientes",
+      "approved": "Aprobados",
+      "verified": "Verificados"
+    }
+  },
+  "reports_page": {
+    "title": "Centro de Reportes",
+    "subtitle": "Genera y exporta reportes de actividad, cursos y técnicos.",
+    "tabs": {
+      "monthly": "Actividad Mensual",
+      "course": "Por Curso",
+      "technician": "Por Técnico"
+    },
+    "monthly": {
+      "title": "Actividad Mensual",
+      "subtitle": "Reporte general de avance de actividades, evidencias y certificados para un mes específico.",
+      "period_label": "Período (Año-Mes)",
+      "period_placeholder": "ej. 2026-03",
+      "generate": "Generar Reporte"
+    },
+    "course": {
+      "title": "Por Curso",
+      "subtitle": "Reporte de avance y finalización para un curso específico.",
+      "course_label": "Curso",
+      "course_placeholder": "Seleccione un curso",
+      "generate": "Generar Reporte"
+    },
+    "technician": {
+      "title": "Por Técnico",
+      "subtitle": "Reporte detallado de clases, cursos y certificaciones vinculadas a un técnico.",
+      "tech_label": "Técnico",
+      "tech_placeholder": "Seleccione un técnico",
+      "generate": "Generar Reporte"
+    },
+    "export": {
+      "pdf": "Exportar a PDF",
+      "excel": "Exportar a Excel",
+      "json": "Ver en Pantalla"
+    },
+    "loading": "Generando reporte...",
+    "no_data": "Complete los filtros de arriba y presione Generar para ver la información.",
+    "error_loading": "Ocurrió un error al generar el reporte. Por favor intente nuevamente.",
+    "table": {
+      "activity": "Actividad",
+      "date": "Fecha",
+      "status": "Estado",
+      "count": "Cantidad",
+      "description": "Descripción",
+      "details": "Detalles"
     }
   },
   "training_page": {

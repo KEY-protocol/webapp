@@ -98,6 +98,10 @@
         "title": "Technicians",
         "subtitle": "List of people belonging to the organization authorized to operate the dApp"
       },
+      "reports": {
+        "title": "Reports",
+        "subtitle": "Activity, course, and technician reports center"
+      },
       "training": {
         "title": "Training",
         "subtitle": "Dashboard for uploading training content"
@@ -180,21 +184,151 @@
     }
   },
   "technicians_page": {
-    "edit": "EDIT",
-    "role": "Role",
-    "id": "ID",
-    "birthdate": "Birthdate",
-    "project": "Project",
-    "expertise": "Expertise",
-    "zone": "Zone",
-    "wallet": "Wallet",
-    "did": "DID",
-    "document_front": "Front of document",
+    "title": "Technicians Management",
+    "subtitle": "Manage the technicians registered in your organization.",
+    "search_placeholder": "Search by name or document...",
+    "no_technicians": "No technicians registered yet.",
+    "no_results": "No technicians match your search.",
+    "loading": "Loading technicians...",
+    "error_loading": "Error loading technicians. Please try again.",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "total_count": "{count} technician(s)",
+    "columns": {
+      "name": "Full Name",
+      "document": "Document",
+      "status": "Status",
+      "registered": "Registered",
+      "actions": "Actions"
+    },
+    "status": {
+      "pending": "Pending",
+      "approved": "Approved",
+      "verified": "Verified"
+    },
+    "actions": {
+      "view": "View Details",
+      "edit": "Edit",
+      "approve": "Approve",
+      "delete": "Delete",
+      "approve_confirm": "Are you sure you want to approve this technician? This will create their DID in the federated network.",
+      "delete_confirm": "Are you sure you want to delete this technician? This action cannot be undone.",
+      "approve_success": "Technician approved successfully.",
+      "delete_success": "Technician deleted successfully.",
+      "update_success": "Technician updated successfully.",
+      "approve_error_central_lookup": "The central server is unavailable. The technician remains in pending status. Please try again in a few minutes.",
+      "approve_error_identity_create": "Failed to create identity on the central server. The technician remains in pending status. Please try again."
+    },
+    "detail_modal": {
+      "title": "Technician Details",
+      "name": "Name",
+      "surname": "Surname",
+      "document_number": "Document Number",
+      "document_type": "Document Type",
+      "phone": "Phone",
+      "skills": "Skills",
+      "did": "DID",
+      "issuer": "Issuer ONG",
+      "source_of_truth": "Source of Truth",
+      "created_at": "Created At",
+      "updated_at": "Updated At",
+      "images": "Identity Images",
+      "selfie": "Selfie",
+      "dni": "ID Document",
+      "no_images": "No images available",
+      "close": "Close",
+      "share_permissions_btn": "Manage Sharing",
+      "memberships_title": "Technician Memberships",
+      "loading_memberships": "Loading memberships...",
+      "no_memberships": "No memberships associated.",
+      "membership_table": {
+        "org": "Organization (NGO)",
+        "role": "Role",
+        "status": "Status",
+        "start_date": "Start Date"
+      }
+    },
     "edit_modal": {
       "title": "Edit Technician",
       "save": "Save Changes",
       "cancel": "Cancel",
-      "name_label": "Full Name"
+      "saving": "Saving...",
+      "name_label": "Name",
+      "surname_label": "Surname",
+      "document_number_label": "Document Number",
+      "document_type_label": "Document Type",
+      "phone_label": "Phone",
+      "skills_label": "Skills (comma separated)"
+    },
+    "share_permissions_modal": {
+      "title": "Manage Sharing Permissions",
+      "subtitle": "Control which NGOs in the federated network can access this technician's data.",
+      "add_ong_label": "Grant access to a new organization",
+      "add_ong_placeholder": "Target NGO ID (e.g. REGIONAL_NGO)",
+      "grant": "Grant Access",
+      "ong_column": "Organization (NGO)",
+      "access_column": "Access",
+      "actions_column": "Actions",
+      "loading": "Loading permissions...",
+      "no_permissions": "No sharing permissions configured for this technician. By default, only your organization has access.",
+      "revoke": "Revoke",
+      "grant_back": "Enable",
+      "close": "Close",
+      "grant_success": "Access granted successfully.",
+      "revoke_success": "Access revoked successfully.",
+      "empty_ong_error": "NGO ID cannot be empty."
+    },
+    "filter": {
+      "all": "All",
+      "pending": "Pending",
+      "approved": "Approved",
+      "verified": "Verified"
+    }
+  },
+  "reports_page": {
+    "title": "Reports Center",
+    "subtitle": "Generate and export activity, course, and technician reports.",
+    "tabs": {
+      "monthly": "Monthly Activity",
+      "course": "By Course",
+      "technician": "By Technician"
+    },
+    "monthly": {
+      "title": "Monthly Activity",
+      "subtitle": "General activity progress, evidence, and certificates report for a specific month.",
+      "period_label": "Period (Year-Month)",
+      "period_placeholder": "e.g. 2026-03",
+      "generate": "Generate Report"
+    },
+    "course": {
+      "title": "By Course",
+      "subtitle": "Progress and completion report for a specific course.",
+      "course_label": "Course",
+      "course_placeholder": "Select a course",
+      "generate": "Generate Report"
+    },
+    "technician": {
+      "title": "By Technician",
+      "subtitle": "Detailed report of classes, courses, and certifications linked to a technician.",
+      "tech_label": "Technician",
+      "tech_placeholder": "Select a technician",
+      "generate": "Generate Report"
+    },
+    "export": {
+      "pdf": "Export to PDF",
+      "excel": "Export to Excel",
+      "json": "View on Screen"
+    },
+    "loading": "Generating report...",
+    "no_data": "Complete the filters above and press Generate to view the information.",
+    "error_loading": "An error occurred while generating the report. Please try again.",
+    "table": {
+      "activity": "Activity",
+      "date": "Date",
+      "status": "Status",
+      "count": "Count",
+      "description": "Description",
+      "details": "Details"
     }
   },
   "training_page": {

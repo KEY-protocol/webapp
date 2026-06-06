@@ -1,105 +1,124 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { User, FileText } from "lucide-react";
-import EditTechnicianModal from "./EditTechnicianModal";
+import { Eye, Pencil, CheckCircle, Trash2, User } from "lucide-react";
+import type { TechnicianSummary } from "@/app/types/technician";
 
-interface TechnicianCardProps {
-  name: string;
-  role: string;
-  id: string;
-  birthDate: string;
-  project: string;
-  expertise: string;
-  zone: string;
-  wallet: string;
-  did: string;
+interface TechnicianRowProps {
+  technician: TechnicianSummary;
+  onView: (id: string) => void;
+  onEdit: (id: string) => void;
+  onApprove: (id: string) => void;
+  onDelete: (id: string) => void;
 }
 
-export default function TechnicianCard(props: TechnicianCardProps) {
-  const { name, role, id, birthDate, project, expertise, zone, wallet, did } =
-    props;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const statusStyles: Record<string, string> = {
+  pending:
+    "bg-amber-500/15 text-amber-400 border border-amber-500/25",
+  approved:
+    "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25",
+  verified:
+    "bg-cyan-500/15 text-cyan-400 border border-cyan-500/25",
+};
+
+export default function TechnicianRow({
+  technician,
+  onView,
+  onEdit,
+  onApprove,
+  onDelete,
+}: TechnicianRowProps) {
   const t = useTranslations("technicians_page");
 
-  const detailLines = [
-    { label: t("role"), value: role },
-    { label: t("id"), value: id },
-    { label: t("birthdate"), value: birthDate },
-    { label: t("project"), value: project },
-    { label: t("expertise"), value: expertise },
-    { label: t("zone"), value: zone },
-    { label: t("wallet"), value: wallet },
-    { label: t("did"), value: did },
-  ];
-
   return (
-    <>
-      <div className="bg-[#2d4a1e] rounded-4xl p-7 mb-6 border border-white/5 transition-all duration-300 group shadow-2xl flex flex-col lg:flex-row gap-8 lg:items-center">
-        {/* Left side: Profile and Details */}
-        <div className="flex-1">
-          <div className="flex justify-between items-start mb-4 lg:mb-6">
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center border border-white/20 shadow-inner">
-                <User className="text-white w-8 h-8" />
-              </div>
-              <h2 className="font-montserrat text-3xl md:text-[2.5rem] font-bold text-white leading-tight tracking-tight">
-                {name}
-              </h2>
-            </div>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-5 py-1.5 rounded-full border border-white/40 text-white text-[10px] font-bold hover:bg-white/10 transition-colors uppercase tracking-widest font-poppins cursor-pointer"
-            >
-              {t("edit")}
-            </button>
+    <div className="group bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 hover:border-white/10 rounded-2xl p-5 transition-all duration-200">
+      <div className="flex flex-col md:flex-row md:items-center gap-4">
+        {/* Avatar + Name */}
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center border border-white/15 shrink-0">
+            <User className="text-white/70 w-5 h-5" />
           </div>
-
-          <div className="space-y-1.5 mt-8 ml-1">
-            {detailLines.map((line, idx) => (
-              <div
-                key={idx}
-                className="flex gap-2 text-base md:text-[1.1rem] font-poppins leading-relaxed"
-              >
-                <span className="font-bold text-white min-w-25 md:min-w-30">
-                  {line.label}:
-                </span>
-                <span className="text-white font-normal opacity-90">
-                  {line.value}
-                </span>
-              </div>
-            ))}
+          <div className="min-w-0">
+            <p className="text-white font-semibold text-sm truncate">
+              {technician.fullName}
+            </p>
+            <p className="text-white/40 text-xs font-mono truncate">
+              {technician.documentType}: {technician.documentNumber}
+            </p>
           </div>
         </div>
 
-        {/* Right side: Document Placeholder */}
-        <div className="shrink-0 flex items-center justify-center lg:pt-0">
-          <div className="w-full sm:w-95 h-55 bg-[#d1e7dd] rounded-3xl flex flex-col items-center justify-center gap-4 shadow-xl border border-white/10 relative group-hover:scale-[1.02] transition-transform duration-300 overflow-hidden">
-            {/* Document Content Icon */}
-            <div className="w-20 h-20 rounded-2xl bg-[#d1e7dd] border-2 border-[#a8c9b9] flex items-center justify-center shadow-md z-10 transition-all duration-300 group-hover:bg-white/40">
-              <div className="w-14 h-14 rounded-xl bg-transparent flex items-center justify-center border-2 border-[#2d4a1e]/20">
-                <FileText className="text-[#2d4a1e] w-8 h-8" />
-              </div>
-            </div>
-            <p className="text-[#2d4a1e] font-poppins font-medium text-base z-10">
-              {t("document_front")}
-            </p>
+        {/* Status */}
+        <div className="shrink-0">
+          <span
+            className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${statusStyles[technician.status] || statusStyles.pending}`}
+          >
+            {t(`status.${technician.status}`)}
+          </span>
+        </div>
 
-            {/* Stylized border overlay matching image's subtle inner frame */}
-            <div className="absolute inset-4 rounded-2xl border-2 border-[#2d4a1e]/10 pointer-events-none"></div>
+        {/* Date */}
+        <div className="shrink-0 text-white/40 text-xs font-mono hidden lg:block">
+          {new Date(technician.createdAt).toLocaleDateString()}
+        </div>
 
-            {/* Subtle light overlay */}
-            <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-white/10 opacity-50"></div>
-          </div>
+        {/* Actions */}
+        <div className="flex items-center gap-1 shrink-0">
+          <ActionButton
+            icon={<Eye className="w-4 h-4" />}
+            label={t("actions.view")}
+            onClick={() => onView(technician.id)}
+          />
+          <ActionButton
+            icon={<Pencil className="w-4 h-4" />}
+            label={t("actions.edit")}
+            onClick={() => onEdit(technician.id)}
+          />
+          {technician.status === "pending" && (
+            <ActionButton
+              icon={<CheckCircle className="w-4 h-4" />}
+              label={t("actions.approve")}
+              onClick={() => onApprove(technician.id)}
+              variant="success"
+            />
+          )}
+          <ActionButton
+            icon={<Trash2 className="w-4 h-4" />}
+            label={t("actions.delete")}
+            onClick={() => onDelete(technician.id)}
+            variant="danger"
+          />
         </div>
       </div>
+    </div>
+  );
+}
 
-      <EditTechnicianModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        technician={props}
-      />
-    </>
+function ActionButton({
+  icon,
+  label,
+  onClick,
+  variant = "default",
+}: {
+  icon: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  variant?: "default" | "success" | "danger";
+}) {
+  const colorClass =
+    variant === "success"
+      ? "hover:bg-emerald-500/20 hover:text-emerald-400"
+      : variant === "danger"
+        ? "hover:bg-red-500/20 hover:text-red-400"
+        : "hover:bg-white/10 hover:text-white";
+
+  return (
+    <button
+      title={label}
+      onClick={onClick}
+      className={`p-2 rounded-xl text-white/40 transition-colors cursor-pointer ${colorClass}`}
+    >
+      {icon}
+    </button>
   );
 }
