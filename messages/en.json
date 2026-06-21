@@ -237,16 +237,7 @@
       "dni": "ID Document",
       "no_images": "No images available",
       "close": "Close",
-      "share_permissions_btn": "Manage Sharing",
-      "memberships_title": "Technician Memberships",
-      "loading_memberships": "Loading memberships...",
-      "no_memberships": "No memberships associated.",
-      "membership_table": {
-        "org": "Organization (NGO)",
-        "role": "Role",
-        "status": "Status",
-        "start_date": "Start Date"
-      }
+      "share_permissions_btn": "Manage Sharing"
     },
     "edit_modal": {
       "title": "Edit Technician",

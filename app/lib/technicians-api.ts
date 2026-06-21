@@ -1,9 +1,3 @@
-/**
- * Technicians API client.
- * All calls go through the webapp's own /api/technicians proxy routes
- * to avoid CORS issues and keep the ORGServer URL server-side only.
- */
-
 import apiClient from "@/app/lib/api-client";
 import { AxiosError } from "axios";
 import type {
@@ -11,7 +5,6 @@ import type {
   TechnicianDetail,
   UpdateTechnicianPayload,
   TechnicianImageUrls,
-  TechnicianMembership,
   TechnicianSharePermission,
 } from "@/app/types/technician";
 
@@ -114,20 +107,6 @@ export async function fetchTechnicianImageUrls(
   try {
     const { data } = await apiClient.get<TechnicianImageUrls>(
       `/technicians/${id}/images`,
-    );
-    return data;
-  } catch (error) {
-    handleAxiosError(error);
-  }
-}
-
-/** Fetch memberships for a technician. */
-export async function fetchTechnicianMemberships(
-  id: string,
-): Promise<TechnicianMembership[]> {
-  try {
-    const { data } = await apiClient.get<TechnicianMembership[]>(
-      `/technicians/${id}/memberships`,
     );
     return data;
   } catch (error) {

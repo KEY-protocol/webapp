@@ -78,16 +78,7 @@ export interface TechnicianImageUrls {
   selfieUrl: string | null;
 }
 
-/** Membership details for a technician */
-export interface TechnicianMembership {
-  id: string;
-  technicianId: string;
-  ongId: string;
-  role: string;
-  startDate: string;
-  status: string;
-  createdAt: string;
-}
+
 
 /** Share permission details for a technician */
 export interface TechnicianSharePermission {

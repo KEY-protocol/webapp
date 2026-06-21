@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { X, User, Shield, Phone, Tag, Calendar, Globe } from "lucide-react";
-import type { TechnicianDetail, TechnicianMembership } from "@/app/types/technician";
+import type { TechnicianDetail } from "@/app/types/technician";
 import { normalizeStatus } from "@/app/types/technician";
-import { fetchTechnicianMemberships } from "@/app/lib/technicians-api";
 import SharePermissionsModal from "./SharePermissionsModal";
 
 interface TechnicianDetailModalProps {
@@ -23,36 +22,12 @@ export default function TechnicianDetailModal({
 }: TechnicianDetailModalProps) {
   const t = useTranslations("technicians_page.detail_modal");
 
-  const [memberships, setMemberships] = useState<TechnicianMembership[]>([]);
-  const [loadingMemberships, setLoadingMemberships] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const handleClose = () => {
     setIsShareModalOpen(false);
     onClose();
   };
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout | undefined;
-    if (isOpen && technician?.id) {
-      timer = setTimeout(() => setLoadingMemberships(true), 0);
-      fetchTechnicianMemberships(technician.id)
-        .then((data) => {
-          setMemberships(data || []);
-        })
-        .catch((err) => {
-          console.error("Error fetching memberships:", err);
-        })
-        .finally(() => {
-          setLoadingMemberships(false);
-        });
-    } else {
-      timer = setTimeout(() => setMemberships([]), 0);
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [isOpen, technician?.id]);
 
   if (!isOpen) return null;
 
@@ -177,60 +152,7 @@ export default function TechnicianDetailModal({
                 </div>
               )}
 
-              {/* Memberships */}
-              <div>
-                <p className="text-sm font-bold text-white/60 mb-3">
-                  {t("memberships_title")}
-                </p>
-                {loadingMemberships ? (
-                  <div className="flex justify-center py-6">
-                    <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                  </div>
-                ) : memberships.length > 0 ? (
-                  <div className="overflow-hidden border border-white/10 rounded-2xl bg-white/5">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="border-b border-white/10 bg-white/5 text-xs font-bold text-white/40 uppercase tracking-wider">
-                          <th className="px-4 py-3">{t("membership_table.org")}</th>
-                          <th className="px-4 py-3">{t("membership_table.role")}</th>
-                          <th className="px-4 py-3">{t("membership_table.status")}</th>
-                          <th className="px-4 py-3">{t("membership_table.start_date")}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5 text-sm text-white/80">
-                        {memberships.map((membership) => (
-                          <tr key={membership.id} className="hover:bg-white/[0.02] transition-colors">
-                            <td className="px-4 py-3 font-semibold">{membership.ongId}</td>
-                            <td className="px-4 py-3">
-                              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded bg-white/10 text-white/70 border border-white/10">
-                                {membership.role}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3">
-                              <span
-                                className={`inline-block px-2.5 py-0.5 text-xs font-bold rounded-full ${
-                                  membership.status === "ACTIVE"
-                                    ? "bg-emerald-500/20 text-emerald-400"
-                                    : "bg-red-500/20 text-red-400"
-                                }`}
-                              >
-                                {membership.status}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3 text-xs text-white/50">
-                              {new Date(membership.startDate).toLocaleDateString()}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className="bg-white/5 border border-dashed border-white/10 rounded-2xl p-6 text-center">
-                    <p className="text-white/40 text-sm">{t("no_memberships")}</p>
-                  </div>
-                )}
-              </div>
+
 
               {/* Images */}
               <div>

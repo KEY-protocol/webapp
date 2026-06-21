@@ -237,16 +237,7 @@
       "dni": "Documento de Identidad",
       "no_images": "Sin imágenes disponibles",
       "close": "Cerrar",
-      "share_permissions_btn": "Gestionar Permisos",
-      "memberships_title": "Membresías del Técnico",
-      "loading_memberships": "Cargando membresías...",
-      "no_memberships": "No tiene membresías asociadas.",
-      "membership_table": {
-        "org": "Organización (ONG)",
-        "role": "Rol",
-        "status": "Estado",
-        "start_date": "Fecha de Inicio"
-      }
+      "share_permissions_btn": "Gestionar Permisos"
     },
     "edit_modal": {
       "title": "Editar Técnico",
