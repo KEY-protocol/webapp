@@ -2,17 +2,19 @@
 
 import React, { useState, useMemo, useCallback } from "react";
 import { useTranslations } from "next-intl";
-import { RefreshCw, Search, AlertCircle } from "lucide-react";
+import { RefreshCw, Search, AlertCircle, UserPlus } from "lucide-react";
 import { useTechnicians } from "@/app/hooks/useTechnicians";
 import TechnicianRow from "@/app/components/technicians/TechnicianCard";
 import TechnicianDetailModal from "@/app/components/technicians/TechnicianDetailModal";
 import EditTechnicianModal from "@/app/components/technicians/EditTechnicianModal";
+import { useRouter } from "@/i18n/navigation";
 import type { TechnicianStatus } from "@/app/types/technician";
 
 type FilterStatus = "all" | TechnicianStatus;
 
 export default function TechniciansPage() {
   const t = useTranslations("technicians_page");
+  const router = useRouter();
 
   const {
     technicians,
@@ -120,16 +122,26 @@ export default function TechniciansPage() {
             </p>
           </div>
 
-          <button
-            onClick={refresh}
-            disabled={isLoading}
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer disabled:opacity-50"
-          >
-            <RefreshCw
-              className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
-            />
-            {t("refresh")}
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => router.push("/technicians/pre-register")}
+              className="flex items-center gap-2 bg-[#28a745] hover:bg-[#218838] text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer"
+            >
+              <UserPlus className="w-4 h-4" />
+              Pre-registrar Técnico
+            </button>
+
+            <button
+              onClick={refresh}
+              disabled={isLoading}
+              className="flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`}
+              />
+              {t("refresh")}
+            </button>
+          </div>
         </div>
 
         {/* Search + Filter */}

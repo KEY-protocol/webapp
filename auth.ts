@@ -36,10 +36,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.image = token.picture as string;
-        // TODO: When backend is ready, attach role and other
-        // user-specific data from the database to the session
       }
       return session;
+    },
+
+    /**
+     * Redirect callback — handle safe post-login redirection.
+     */
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url;
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      return `${baseUrl}/home`;
     },
   },
 

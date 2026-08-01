@@ -6,16 +6,14 @@ import { Link, usePathname } from "@/i18n/navigation";
 import {
   LayoutDashboard,
   Users,
-  Ticket,
-  Search,
   LogOut,
+  FileBarChart,
 } from "lucide-react";
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
 import { useSidebar } from "@/app/context/SidebarContext";
 import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "@/i18n/navigation";
-import { AreaChart, Building2, FileBarChart } from "lucide-react";
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -72,10 +70,16 @@ export const Sidebar = () => {
       href: "/home",
       roles: ["encargado", "admin"],
     },
+    // TODO: [NEXT-RELEASE] Reactivar las siguientes secciones cuando los endpoints de backend estén listos:
+    // - Dashboard: GET /api/dashboard/stats
+    // - Organizations: GET/POST/PUT/DELETE /api/organizations
+    // - Training: GET /api/training/courses
+    // - AI Agents: GET /api/ai-agents/status
+    /*
     {
       id: "organizations",
       icon: Building2,
-      label: "Organizaciones", // TODO: Add translation
+      label: "Organizaciones",
       href: "/organizations",
       roles: ["superadmin"],
     },
@@ -86,6 +90,7 @@ export const Sidebar = () => {
       href: "/dashboard",
       roles: ["encargado", "admin"],
     },
+    */
     {
       id: "reports",
       icon: FileBarChart,
@@ -93,7 +98,6 @@ export const Sidebar = () => {
       href: "/reports",
       roles: ["encargado", "admin"],
     },
-
     {
       id: "technicians",
       icon: Users,
@@ -101,6 +105,7 @@ export const Sidebar = () => {
       href: "/technicians",
       roles: ["encargado"],
     },
+    /*
     {
       id: "training",
       icon: Ticket,
@@ -115,6 +120,7 @@ export const Sidebar = () => {
       href: "/ai-agents",
       roles: ["encargado"],
     },
+    */
   ];
 
   const filteredMenuItems = menuItems.filter((item) =>
