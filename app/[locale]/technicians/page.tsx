@@ -243,6 +243,23 @@ export default function TechniciansPage() {
         onSave={update}
         isSaving={isActing}
       />
+
+      {/* Full-screen Loading Overlay for Actions (Approve / Save / Delete) */}
+      {isActing && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm p-4 text-center select-none">
+          <div className="bg-primary/90 border border-white/10 p-8 rounded-2xl flex flex-col items-center max-w-sm w-full shadow-2xl space-y-4">
+            <RefreshCw className="w-10 h-10 text-[#28a745] animate-spin" />
+            <div className="space-y-1">
+              <h3 className="text-white font-montserrat font-bold text-lg">
+                Procesando Aprobación
+              </h3>
+              <p className="text-white/60 font-poppins text-xs leading-relaxed">
+                Validando identidad en el servidor central TEE y registrando en la red. Por favor, espere un momento...
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
