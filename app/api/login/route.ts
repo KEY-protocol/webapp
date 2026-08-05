@@ -20,7 +20,7 @@ const SERVIDOR_BASE_URL =
   process.env.SERVIDOR_BASE_URL || "http://localhost:3000";
 
 const DEFAULT_ONG_ID =
-  process.env.DEFAULT_ONG_ID || "fundacion-gran-chaco";
+  process.env.DEFAULT_ONG_ID || "fundacion_gran_chaco";
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,12 +34,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use the provided ONG or fall back to the default one
-    const resolvedOng = ong || DEFAULT_ONG_ID;
+    const requestBody: { email: string; password: string; ong?: string } = { email, password };
+    if (ong) {
+      requestBody.ong = ong;
+    }
 
     const { data: servidorData } = await axios.post(
       `${SERVIDOR_BASE_URL}/api/ong/login`,
-      { email, password, ong: resolvedOng },
+      requestBody,
     );
 
     // SERVIDOR wraps success responses in { ok: true, data: { ... } }

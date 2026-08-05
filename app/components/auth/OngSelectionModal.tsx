@@ -10,7 +10,7 @@ import { Spinner } from "@/app/components/common/Spinner";
  * An ADMIN can be assigned to multiple ONGs by the SUPERADMIN.
  */
 const AVAILABLE_ORGANIZATIONS = [
-  { id: "fundacion-gran-chaco", name: "Fundación Gran Chaco" },
+  { id: "fundacion_gran_chaco", name: "Fundación Gran Chaco" },
 ];
 
 interface OngSelectionModalProps {
