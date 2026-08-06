@@ -3,10 +3,13 @@ import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    // TODO: [GOOGLE-AUTH] Reactivar el proveedor de Google cuando las credenciales de OAuth (AUTH_GOOGLE_ID y AUTH_GOOGLE_SECRET) estén listas.
+    /*
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
+    */
   ],
 
   // Using JWT strategy — no database needed for now

@@ -18,18 +18,21 @@ export function GoogleSignInButton() {
   const t = useTranslations("auth.login");
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/home" });
+    // TODO: [GOOGLE-AUTH] Descomentar la redirección cuando el proveedor OAuth de Google esté configurado en auth.ts.
+    // signIn("google", { callbackUrl: "/home" });
+    console.log("TODO: Google Sign-In is disabled for now.");
   };
 
   return (
     <button
       id="google-sign-in-button"
       type="button"
+      disabled
       onClick={handleGoogleSignIn}
-      className="w-full bg-white hover:bg-gray-100 text-gray-800 font-poppins font-semibold py-4 rounded-xl flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-lg cursor-pointer"
+      className="w-full bg-white/50 text-gray-500 font-poppins font-semibold py-4 rounded-xl flex items-center justify-center gap-3 transition-all cursor-not-allowed opacity-60"
     >
       <GoogleIcon size={20} />
-      {t("googleSignIn")}
+      {t("googleSignIn")} (Próximamente)
     </button>
   );
 }

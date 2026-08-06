@@ -33,8 +33,8 @@ export function LoginFormActions({ isLoading = false }: LoginFormActionsProps) {
         )}
       </button>
 
-      {/* Google Sign In */}
-      <GoogleSignInButton />
+      {/* Google Sign In — Deshabilitado temporalmente. TODO: Reactivar cuando el OAuth de Google esté configurado con el backend */}
+      {/* <GoogleSignInButton /> */}
     </div>
   );
 }
