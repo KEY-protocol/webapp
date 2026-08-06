@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { UserPlus, ArrowLeft, CheckCircle2, AlertCircle } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
+import { toast } from "react-toastify";
 import apiClient from "@/app/lib/api-client";
 
 import type { TechnicianSummary } from "@/app/types/technician";
@@ -45,7 +46,9 @@ export default function PreRegisterTechnicianPage() {
       );
 
       if (duplicate) {
-        setError(`Ya existe un técnico pre-registrado o registrado con el DNI/Documento "${formData.documentNumber}".`);
+        const errorMsg = `Ya existe un técnico pre-registrado o registrado con el DNI/Documento "${formData.documentNumber}".`;
+        setError(errorMsg);
+        toast.warning(errorMsg);
         setIsLoading(false);
         return;
       }
@@ -60,6 +63,7 @@ export default function PreRegisterTechnicianPage() {
       });
 
       setSuccess(true);
+      toast.success("Técnico pre-registrado con éxito");
       setFormData({
         name: "",
         surname: "",
@@ -70,9 +74,9 @@ export default function PreRegisterTechnicianPage() {
       });
     } catch (err: unknown) {
       const axiosErr = err as { response?: { data?: { error?: string } }; message?: string };
-      setError(
-        axiosErr.response?.data?.error || axiosErr.message || "Error al pre-registrar técnico",
-      );
+      const errorMsg = axiosErr.response?.data?.error || axiosErr.message || "Error al pre-registrar técnico";
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setIsLoading(false);
     }

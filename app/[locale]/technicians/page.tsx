@@ -8,6 +8,7 @@ import TechnicianRow from "@/app/components/technicians/TechnicianCard";
 import TechnicianDetailModal from "@/app/components/technicians/TechnicianDetailModal";
 import EditTechnicianModal from "@/app/components/technicians/EditTechnicianModal";
 import { useRouter } from "@/i18n/navigation";
+import { toast } from "react-toastify";
 import type { TechnicianStatus } from "@/app/types/technician";
 
 type FilterStatus = "all" | TechnicianStatus;
@@ -36,9 +37,7 @@ export default function TechniciansPage() {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
-import { toast } from "react-toastify";
-
-// Filtered technicians
+  // Filtered technicians
   const filtered = useMemo(() => {
     let list = technicians;
 
@@ -59,6 +58,11 @@ import { toast } from "react-toastify";
   }, [technicians, filterStatus, search]);
 
   // Handlers
+  const handleRefresh = useCallback(async () => {
+    toast.info("Actualizando lista de técnicos...", { autoClose: 2000 });
+    await refresh();
+  }, [refresh]);
+
   const handleView = useCallback(
     async (id: string) => {
       await loadDetail(id);
@@ -79,7 +83,13 @@ import { toast } from "react-toastify";
     async (id: string) => {
       const confirmMsg = t("actions.approve_confirm");
       if (!window.confirm(confirmMsg)) return;
-      await approve(id);
+      
+      const success = await approve(id);
+      if (success) {
+        toast.success("Técnico aprobado y registrado en blockchain exitosamente");
+      } else {
+        toast.error("Ocurrió un error al aprobar al técnico");
+      }
     },
     [approve, t],
   );
@@ -88,7 +98,13 @@ import { toast } from "react-toastify";
     async (id: string) => {
       const confirmMsg = t("actions.delete_confirm");
       if (!window.confirm(confirmMsg)) return;
-      await remove(id);
+
+      const success = await remove(id);
+      if (success) {
+        toast.success("Técnico eliminado correctamente");
+      } else {
+        toast.error("Ocurrió un error al eliminar al técnico");
+      }
     },
     [remove, t],
   );
@@ -134,7 +150,7 @@ import { toast } from "react-toastify";
             </button>
 
             <button
-              onClick={refresh}
+              onClick={handleRefresh}
               disabled={isLoading}
               className="flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer disabled:opacity-50"
             >

@@ -72,9 +72,6 @@ importers:
       eslint-config-next:
         specifier: 16.1.6
         version: 16.1.6(@typescript-eslint/parser@8.55.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
-      husky:
-        specifier: ^9
-        version: 9.1.7
       lint-staged:
         specifier: ^16
         version: 16.2.7
@@ -84,6 +81,16 @@ importers:
       typescript:
         specifier: ^5
         version: 5.9.3
+
+  ../../services/ORGServer: {}
+
+  ../../services/docker-phala-servidor/PHALA: {}
+
+  ../../services/docker-phala-servidor/SERVIDOR: {}
+
+  ../FieldApp-Mobile: {}
+
+  ../landing: {}
 
 packages:
 
@@ -1770,11 +1777,6 @@ packages:
 
   hermes-parser@0.25.1:
     resolution: {integrity: sha512-6pEjquH3rqaI6cYAXYPcz9MS4rY6R4ngRgrgfDshRptUZIc3lw0MCIJIGDj9++mfySOuPTHB4nrSW99BCvOPIA==}
-
-  husky@9.1.7:
-    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
-    engines: {node: '>=18'}
-    hasBin: true
 
   icu-minify@4.8.2:
     resolution: {integrity: sha512-LHBQV+skKkjZSPd590pZ7ZAHftUgda3eFjeuNwA8/15L8T8loCNBktKQyTlkodAU86KovFXeg/9WntlAo5wA5A==}
@@ -4659,8 +4661,6 @@ snapshots:
   hermes-parser@0.25.1:
     dependencies:
       hermes-estree: 0.25.1
-
-  husky@9.1.7: {}
 
   icu-minify@4.8.2:
     dependencies:

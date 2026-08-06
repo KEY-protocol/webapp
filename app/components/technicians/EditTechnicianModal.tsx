@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { X } from "lucide-react";
+import { toast } from "react-toastify";
 import type {
   TechnicianDetail,
   UpdateTechnicianPayload,
@@ -74,7 +75,12 @@ export default function EditTechnicianModal({
       }
 
       const success = await onSave(technician.id, payload);
-      if (success) onClose();
+      if (success) {
+        toast.success("Información del técnico actualizada correctamente");
+        onClose();
+      } else {
+        toast.error("Error al actualizar la información del técnico");
+      }
     },
     [technician, name, surname, documentNumber, documentType, phone, skills, onSave, onClose],
   );
