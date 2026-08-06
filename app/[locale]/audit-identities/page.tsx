@@ -25,75 +25,108 @@ export interface MobileIdentityRecord {
   fullName: string;
   documentNumber: string;
   documentType: string;
+  registeredByTechnicianName: string;
+  registeredByTechnicianDoc: string;
   ongId: string;
   ongName: string;
-  status: "pending" | "approved" | "rejected";
+  status: "approved" | "pending" | "rejected";
+  blockchainTxHash?: string;
+  blockchainBlock?: number;
   submittedAt: string;
   validatedAt?: string;
   did?: string;
   faceScore?: number;
   documentScore?: number;
   notes?: string;
-  selfieUrl?: string;
-  dniUrl?: string;
 }
 
 const MOCK_MOBILE_IDENTITIES: MobileIdentityRecord[] = [
   {
     id: "mob_id_001",
-    fullName: "Mateo Queti",
-    documentNumber: "11222333",
+    fullName: "Juan Manuel Ortiz",
+    documentNumber: "38999111",
     documentType: "DNI",
+    registeredByTechnicianName: "Mateo Queti (Técnico)",
+    registeredByTechnicianDoc: "11222333",
     ongId: "fundacion_gran_chaco",
     ongName: "Fundación Gran Chaco",
-    status: "pending",
+    status: "approved",
+    blockchainTxHash: "0x8f7a...3e92",
+    blockchainBlock: 4892102,
     submittedAt: "2026-08-06T14:20:00Z",
-    faceScore: 0.96,
-    documentScore: 0.94,
-    notes: "Identidad enviada desde la app móvil. Pendiente de aprobación TEE.",
+    validatedAt: "2026-08-06T14:22:15Z",
+    did: "did:key:z6MkpTHR8VNsBxY8VNsBxY8VNsBxY8VNsBxY",
+    faceScore: 0.98,
+    documentScore: 0.96,
+    notes: "Identidad registrada en territorio por el técnico. Auditada y acuñada en blockchain exitosamente.",
   },
   {
     id: "mob_id_002",
-    fullName: "María Florencia Gomez",
-    documentNumber: "35444555",
+    fullName: "María Belén Maidana",
+    documentNumber: "42111222",
     documentType: "DNI",
+    registeredByTechnicianName: "Mateo Queti (Técnico)",
+    registeredByTechnicianDoc: "11222333",
     ongId: "fundacion_gran_chaco",
     ongName: "Fundación Gran Chaco",
     status: "approved",
-    submittedAt: "2026-08-05T10:15:00Z",
-    validatedAt: "2026-08-05T10:18:00Z",
-    did: "did:key:z6MkpTHR8VNsBxY8VNsBxY8VNsBxY8VNsBxY",
-    faceScore: 0.99,
-    documentScore: 0.98,
-    notes: "Identidad verificada exitosamente en Phala TEE y registrada en blockchain.",
+    blockchainTxHash: "0x3c11...91ab",
+    blockchainBlock: 4892115,
+    submittedAt: "2026-08-06T12:10:00Z",
+    validatedAt: "2026-08-06T12:12:40Z",
+    did: "did:key:z6MkJvY28K7xQ9zL8xQ9zL8xQ9zL8xQ9zL",
+    faceScore: 0.97,
+    documentScore: 0.95,
+    notes: "Verificación facial aprobada en Phala TEE.",
   },
   {
     id: "mob_id_003",
-    fullName: "Roberto Carlos Acosta",
-    documentNumber: "28999888",
+    fullName: "Esteban Gutierrez",
+    documentNumber: "34555666",
     documentType: "DNI",
-    ongId: "crypto_secure_corp",
-    ongName: "Crypto Secure Corp",
+    registeredByTechnicianName: "Carlos Encargado (Técnico)",
+    registeredByTechnicianDoc: "27888999",
+    ongId: "fundacion_gran_chaco",
+    ongName: "Fundación Gran Chaco",
     status: "pending",
-    submittedAt: "2026-08-06T11:00:00Z",
-    faceScore: 0.89,
-    documentScore: 0.91,
-    notes: "Selfie cargada mediante App Móvil. Pendiente de verificación por la ONG.",
+    submittedAt: "2026-08-06T15:05:00Z",
+    faceScore: 0.91,
+    documentScore: 0.92,
+    notes: "Formulario de captación registrado en App Móvil. Pendiente de firma TEE.",
   },
   {
     id: "mob_id_004",
-    fullName: "Lucía Ramírez",
-    documentNumber: "40123987",
+    fullName: "Ramona Fernández",
+    documentNumber: "29444333",
+    documentType: "DNI",
+    registeredByTechnicianName: "Ana Admin (Técnica)",
+    registeredByTechnicianDoc: "18222333",
+    ongId: "crypto_secure_corp",
+    ongName: "Crypto Secure Corp",
+    status: "approved",
+    blockchainTxHash: "0x77ab...4412",
+    blockchainBlock: 4891950,
+    submittedAt: "2026-08-05T16:30:00Z",
+    validatedAt: "2026-08-05T16:33:00Z",
+    did: "did:key:z6Mkh82NmA9xP1sL9xP1sL9xP1sL9xP1sL",
+    faceScore: 0.99,
+    documentScore: 0.97,
+    notes: "Identidad registrada y acuñada en blockchain.",
+  },
+  {
+    id: "mob_id_005",
+    fullName: "Hugo Daniel Peralta",
+    documentNumber: "31888777",
     documentType: "PASSPORT",
+    registeredByTechnicianName: "Carlos Encargado (Técnico)",
+    registeredByTechnicianDoc: "27888999",
     ongId: "global_tech_solutions",
     ongName: "Global Tech Solutions",
-    status: "approved",
-    submittedAt: "2026-08-04T16:45:00Z",
-    validatedAt: "2026-08-04T16:50:00Z",
-    did: "did:key:z6MkJvY28K7xQ9zL8xQ9zL8xQ9zL8xQ9zL",
-    faceScore: 0.97,
-    documentScore: 0.96,
-    notes: "Aprobada automáticamente por coincidencia de datos biométricos.",
+    status: "rejected",
+    submittedAt: "2026-08-05T09:15:00Z",
+    faceScore: 0.42,
+    documentScore: 0.85,
+    notes: "Fallo de coincidencia biométrica en TEE. Fotografía de selfie borrosa.",
   },
 ];
 
@@ -219,13 +252,13 @@ export default function AuditIdentitiesPage() {
             <div className="flex items-center gap-3">
               <ShieldCheck className="w-8 h-8 text-[#28a745]" />
               <h1 className="text-3xl font-montserrat font-bold text-white">
-                Auditoría de Identidades Móviles
+                Auditoría de Identidades en Territorio
               </h1>
             </div>
             <p className="text-white/50 font-poppins text-sm mt-1">
               {isSuperadmin
-                ? "Vista global masiva: audita las identidades registradas por los técnicos desde la App Móvil en todas las organizaciones."
-                : "Audita y valida las solicitudes de identidad recibidas desde la App Móvil para tu organización."}
+                ? "Vista global masiva: audita la totalidad de identidades captadas por los técnicos desde la App Móvil en todas las organizaciones y su acuñación en blockchain."
+                : "Audita las identidades registradas por los técnicos de tu organización a través del formulario de captación móvil."}
             </p>
           </div>
 
@@ -237,6 +270,57 @@ export default function AuditIdentitiesPage() {
               <RefreshCw className="w-4 h-4" />
               Actualizar
             </button>
+          </div>
+        </div>
+
+        {/* Statistical Summary Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white/[0.04] border border-white/10 rounded-2xl p-5 space-y-2">
+            <p className="text-white/40 text-xs font-poppins font-bold uppercase tracking-wider">
+              Total Captadas por Técnicos
+            </p>
+            <p className="text-3xl font-montserrat font-bold text-white">
+              {identities.length}
+            </p>
+            <p className="text-white/50 text-xs font-poppins">
+              Identidades registradas en App Móvil
+            </p>
+          </div>
+
+          <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-5 space-y-2">
+            <p className="text-emerald-400/80 text-xs font-poppins font-bold uppercase tracking-wider">
+              Acuñadas en Blockchain
+            </p>
+            <p className="text-3xl font-montserrat font-bold text-emerald-400">
+              {identities.filter((i) => i.status === "approved").length}
+            </p>
+            <p className="text-emerald-300/60 text-xs font-poppins">
+              Registradas satisfactoriamente en red
+            </p>
+          </div>
+
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 space-y-2">
+            <p className="text-amber-400/80 text-xs font-poppins font-bold uppercase tracking-wider">
+              Pendientes de Validación TEE
+            </p>
+            <p className="text-3xl font-montserrat font-bold text-amber-400">
+              {identities.filter((i) => i.status === "pending").length}
+            </p>
+            <p className="text-amber-300/60 text-xs font-poppins">
+              A la espera de verificación
+            </p>
+          </div>
+
+          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-2xl p-5 space-y-2">
+            <p className="text-cyan-400/80 text-xs font-poppins font-bold uppercase tracking-wider">
+              Técnicos Operativos
+            </p>
+            <p className="text-3xl font-montserrat font-bold text-cyan-400">
+              {new Set(identities.map((i) => i.registeredByTechnicianDoc)).size}
+            </p>
+            <p className="text-cyan-300/60 text-xs font-poppins">
+              Registrando en territorio
+            </p>
           </div>
         </div>
 
@@ -328,9 +412,13 @@ export default function AuditIdentitiesPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-3 text-xs text-white/50 font-poppins flex-wrap">
-                        <span className="flex items-center gap-1 text-[#28a745]">
+                        <span className="flex items-center gap-1 text-[#28a745] font-semibold">
                           <Building2 className="w-3.5 h-3.5" />
                           {item.ongName}
+                        </span>
+                        <span>•</span>
+                        <span className="text-cyan-300">
+                          Registrado por: {item.registeredByTechnicianName}
                         </span>
                         <span>•</span>
                         <span>
@@ -422,13 +510,19 @@ export default function AuditIdentitiesPage() {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
                 <div>
-                  <p className="text-xs text-white/40 font-bold">Nombre Completo</p>
+                  <p className="text-xs text-white/40 font-bold">Nombre Completo Persona</p>
                   <p className="text-white font-semibold text-sm">{selectedRecord.fullName}</p>
                 </div>
                 <div>
                   <p className="text-xs text-white/40 font-bold">Documento</p>
                   <p className="text-white font-semibold text-sm">
                     {selectedRecord.documentType}: {selectedRecord.documentNumber}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/40 font-bold">Técnico Registrador (App Móvil)</p>
+                  <p className="text-cyan-300 font-semibold text-sm">
+                    {selectedRecord.registeredByTechnicianName} ({selectedRecord.registeredByTechnicianDoc})
                   </p>
                 </div>
                 <div>
@@ -441,7 +535,31 @@ export default function AuditIdentitiesPage() {
                     {new Date(selectedRecord.submittedAt).toLocaleString()}
                   </p>
                 </div>
+                {selectedRecord.validatedAt && (
+                  <div>
+                    <p className="text-xs text-white/40 font-bold">Fecha de Validación TEE</p>
+                    <p className="text-emerald-400 font-semibold text-sm">
+                      {new Date(selectedRecord.validatedAt).toLocaleString()}
+                    </p>
+                  </div>
+                )}
               </div>
+
+              {selectedRecord.blockchainTxHash && (
+                <div className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-2xl space-y-2">
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-emerald-400 font-bold uppercase tracking-wider">
+                      Acuñación en Blockchain (IdentityRegistry Contract)
+                    </p>
+                    <span className="text-[10px] font-mono text-emerald-300/80 bg-emerald-500/20 px-2 py-0.5 rounded">
+                      Bloque #{selectedRecord.blockchainBlock}
+                    </span>
+                  </div>
+                  <p className="text-xs font-mono text-emerald-300 break-all">
+                    Tx Hash: {selectedRecord.blockchainTxHash}
+                  </p>
+                </div>
+              )}
 
               {selectedRecord.did && (
                 <div className="bg-white/5 p-4 rounded-2xl border border-white/5 space-y-1">

@@ -102,6 +102,10 @@
         "title": "Auditoría de Identidades",
         "subtitle": "Panel de auditoría de identidades enviadas desde la app móvil"
       },
+      "managers": {
+        "title": "Encargados",
+        "subtitle": "Gestión de encargados de la organización"
+      },
       "reports": {
         "title": "Reportes",
         "subtitle": "Centro de reportes de actividad, cursos y técnicos"

@@ -9,6 +9,7 @@ import {
   LogOut,
   FileBarChart,
   ShieldCheck,
+  UserCog,
 } from "lucide-react";
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
 import { useSidebar } from "@/app/context/SidebarContext";
@@ -112,6 +113,13 @@ export const Sidebar = () => {
       label: t("menu.auditIdentities.title"),
       href: "/audit-identities",
       roles: ["encargado", "admin"],
+    },
+    {
+      id: "managers",
+      icon: UserCog,
+      label: t("menu.managers.title"),
+      href: "/managers",
+      roles: ["admin"],
     },
     /*
     {

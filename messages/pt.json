@@ -102,6 +102,10 @@
         "title": "Auditoria de Identidades",
         "subtitle": "Painel de auditoria de identidades enviadas do aplicativo móvel"
       },
+      "managers": {
+        "title": "Gerentes",
+        "subtitle": "Gestão de gerentes da organização"
+      },
       "reports": {
         "title": "Relatórios",
         "subtitle": "Centro de relatórios de atividades, cursos e técnicos"

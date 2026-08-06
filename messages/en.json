@@ -102,6 +102,10 @@
         "title": "Identity Audit",
         "subtitle": "Audit panel for identities submitted from the mobile app"
       },
+      "managers": {
+        "title": "Managers",
+        "subtitle": "Management of organization managers"
+      },
       "reports": {
         "title": "Reports",
         "subtitle": "Activity, course, and technician reports center"
