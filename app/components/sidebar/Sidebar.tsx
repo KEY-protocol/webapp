@@ -93,6 +93,8 @@ export const Sidebar = () => {
       roles: ["encargado", "admin"],
     },
     */
+    // TODO: [REPORTS-PANEL] Reactivar el panel de reportes cuando se integren las APIs finales de exportación y generación
+    /*
     {
       id: "reports",
       icon: FileBarChart,
@@ -100,6 +102,7 @@ export const Sidebar = () => {
       href: "/reports",
       roles: ["encargado", "admin"],
     },
+    */
     {
       id: "technicians",
       icon: Users,
