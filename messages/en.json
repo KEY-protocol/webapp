@@ -98,6 +98,10 @@
         "title": "Technicians",
         "subtitle": "List of people belonging to the organization authorized to operate the dApp"
       },
+      "auditIdentities": {
+        "title": "Identity Audit",
+        "subtitle": "Audit panel for identities submitted from the mobile app"
+      },
       "reports": {
         "title": "Reports",
         "subtitle": "Activity, course, and technician reports center"

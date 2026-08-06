@@ -103,7 +103,7 @@ export const Sidebar = () => {
       icon: Users,
       label: t("menu.technicians.title"),
       href: "/technicians",
-      roles: ["encargado"],
+      roles: ["encargado", "admin"],
     },
     /*
     {

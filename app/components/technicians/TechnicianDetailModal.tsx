@@ -7,6 +7,8 @@ import type { TechnicianDetail } from "@/app/types/technician";
 import { normalizeStatus } from "@/app/types/technician";
 import SharePermissionsModal from "./SharePermissionsModal";
 
+import { useData } from "@/app/context/DataContext";
+
 interface TechnicianDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -23,6 +25,9 @@ export default function TechnicianDetailModal({
   const t = useTranslations("technicians_page.detail_modal");
 
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  const { data } = useData();
+  const isAdmin = data.currentUser.role === "admin";
 
   const handleClose = () => {
     setIsShareModalOpen(false);
@@ -202,7 +207,7 @@ export default function TechnicianDetailModal({
               {/* Footer Buttons */}
               <div className="flex justify-between items-center pt-2">
                 <div>
-                  {technician.sourceOfTruth && technician.status !== "PENDING_APPROVAL" && (
+                  {isAdmin && technician.sourceOfTruth && technician.status !== "PENDING_APPROVAL" && (
                     <button
                       onClick={() => setIsShareModalOpen(true)}
                       className="px-6 py-3 rounded-2xl bg-white/10 border border-white/10 text-white font-bold hover:bg-white/15 transition-all font-poppins cursor-pointer flex items-center gap-2"

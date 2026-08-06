@@ -9,6 +9,9 @@ import TechnicianDetailModal from "@/app/components/technicians/TechnicianDetail
 import EditTechnicianModal from "@/app/components/technicians/EditTechnicianModal";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "react-toastify";
+import ConfirmModal, {
+  ConfirmVariant,
+} from "@/app/components/ui/ConfirmModal";
 import type { TechnicianStatus } from "@/app/types/technician";
 
 type FilterStatus = "all" | TechnicianStatus;
@@ -36,6 +39,21 @@ export default function TechniciansPage() {
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+
+  // Confirm Modal state
+  const [confirmConfig, setConfirmConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    description?: string;
+    confirmText?: string;
+    variant: ConfirmVariant;
+    onConfirm: () => Promise<void>;
+  }>({
+    isOpen: false,
+    title: "",
+    variant: "danger",
+    onConfirm: async () => {},
+  });
 
   // Filtered technicians
   const filtered = useMemo(() => {
@@ -80,33 +98,53 @@ export default function TechniciansPage() {
   );
 
   const handleApprove = useCallback(
-    async (id: string) => {
-      const confirmMsg = t("actions.approve_confirm");
-      if (!window.confirm(confirmMsg)) return;
-      
-      const success = await approve(id);
-      if (success) {
-        toast.success("Técnico aprobado y registrado en blockchain exitosamente");
-      } else {
-        toast.error("Ocurrió un error al aprobar al técnico");
-      }
+    (id: string) => {
+      const tech = technicians.find((t) => t.id === id);
+      const nameStr = tech ? ` "${tech.fullName}"` : "";
+
+      setConfirmConfig({
+        isOpen: true,
+        title: "Aprobar Técnico",
+        description: `¿Estás seguro de que deseas aprobar al técnico${nameStr}? La identidad será validada en la enclave TEE de Phala y registrada en blockchain.`,
+        confirmText: "Sí, Aprobar",
+        variant: "success",
+        onConfirm: async () => {
+          setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
+          const success = await approve(id);
+          if (success) {
+            toast.success("Técnico aprobado y registrado en blockchain exitosamente");
+          } else {
+            toast.error("Ocurrió un error al aprobar al técnico");
+          }
+        },
+      });
     },
-    [approve, t],
+    [approve, technicians],
   );
 
   const handleDelete = useCallback(
-    async (id: string) => {
-      const confirmMsg = t("actions.delete_confirm");
-      if (!window.confirm(confirmMsg)) return;
+    (id: string) => {
+      const tech = technicians.find((t) => t.id === id);
+      const nameStr = tech ? ` "${tech.fullName}"` : "";
 
-      const success = await remove(id);
-      if (success) {
-        toast.success("Técnico eliminado correctamente");
-      } else {
-        toast.error("Ocurrió un error al eliminar al técnico");
-      }
+      setConfirmConfig({
+        isOpen: true,
+        title: "Eliminar Técnico",
+        description: `¿Estás seguro de que deseas eliminar permanentemente al técnico${nameStr}? Esta acción no se puede deshacer.`,
+        confirmText: "Sí, Eliminar",
+        variant: "danger",
+        onConfirm: async () => {
+          setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
+          const success = await remove(id);
+          if (success) {
+            toast.success("Técnico eliminado correctamente");
+          } else {
+            toast.error("Ocurrió un error al eliminar al técnico");
+          }
+        },
+      });
     },
-    [remove, t],
+    [remove, technicians],
   );
 
   const handleCloseDetail = useCallback(() => {
@@ -260,6 +298,18 @@ export default function TechniciansPage() {
         technician={selectedTechnician}
         onSave={update}
         isSaving={isActing}
+      />
+
+      {/* Custom Confirmation Modal */}
+      <ConfirmModal
+        isOpen={confirmConfig.isOpen}
+        onClose={() => setConfirmConfig((prev) => ({ ...prev, isOpen: false }))}
+        onConfirm={confirmConfig.onConfirm}
+        title={confirmConfig.title}
+        description={confirmConfig.description}
+        confirmText={confirmConfig.confirmText}
+        variant={confirmConfig.variant}
+        isLoading={isActing}
       />
 
       {/* Full-screen Loading Overlay for Actions (Approve / Save / Delete) */}

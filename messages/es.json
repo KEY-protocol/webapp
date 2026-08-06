@@ -98,6 +98,10 @@
         "title": "Tecnicos",
         "subtitle": "Lista de personas pertenecientes a la organizacion autorizadas a operar la dApp"
       },
+      "auditIdentities": {
+        "title": "Auditoría de Identidades",
+        "subtitle": "Panel de auditoría de identidades enviadas desde la app móvil"
+      },
       "reports": {
         "title": "Reportes",
         "subtitle": "Centro de reportes de actividad, cursos y técnicos"
