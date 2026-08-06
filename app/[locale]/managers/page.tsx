@@ -31,6 +31,9 @@ export interface ManagerUser {
   createdAt: string;
 }
 
+// TODO: [BACKEND-MANAGERS] Reemplazar datos mock con GET /api/managers para listar encargados de la organización activa
+// TODO: [BACKEND-MANAGERS] Implementar POST /api/managers (alta de encargado con hash de contraseña bcrypt)
+// TODO: [BACKEND-MANAGERS] Implementar PUT /api/managers/[id] (modificación) y DELETE /api/managers/[id] (desvinculación)
 const INITIAL_MANAGERS: ManagerUser[] = [
   {
     id: "mgr_001",

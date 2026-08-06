@@ -40,6 +40,8 @@ export interface MobileIdentityRecord {
   notes?: string;
 }
 
+// TODO: [BACKEND-AUDIT-IDENTITIES] Reemplazar los datos mock por la llamada real al endpoint GET /api/audit-identities
+// TODO: [BACKEND-AUDIT-IDENTITIES] Conectar la acción de aprobación TEE con POST /api/audit-identities/[id]/approve para firmar con Phala Enclave y emitir el DID en blockchain
 const MOCK_MOBILE_IDENTITIES: MobileIdentityRecord[] = [
   {
     id: "mob_id_001",
