@@ -9,6 +9,9 @@ import { AuthProvider } from "@/app/context/AuthContext";
 import { SidebarProvider } from "@/app/context/SidebarContext";
 import { DataProvider } from "@/app/context/DataContext";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -47,6 +50,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <SidebarProvider>
               <NextIntlClientProvider locale={locale}>
                 <main className="grow flex flex-col">{children}</main>
+                <ToastContainer position="bottom-right" theme="dark" />
               </NextIntlClientProvider>
             </SidebarProvider>
           </DataProvider>

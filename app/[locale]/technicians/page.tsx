@@ -36,7 +36,9 @@ export default function TechniciansPage() {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  // Filtered technicians
+import { toast } from "react-toastify";
+
+// Filtered technicians
   const filtered = useMemo(() => {
     let list = technicians;
 
