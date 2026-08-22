@@ -133,7 +133,8 @@ export const SettingsModal = ({
             </div>
           </section>
 
-          {/* Linked Accounts */}
+          {/* TODO: Implementar sección de Cuentas Linkeadas cuando se añada inicio de sesión con Google */}
+          {/*
           <section className="space-y-4">
             <div className="flex items-center gap-2 text-white/40 uppercase text-xs font-bold tracking-widest mb-2">
               <LinkIcon className="w-3.5 h-3.5" />
@@ -196,6 +197,7 @@ export const SettingsModal = ({
               </div>
             </div>
           </section>
+          */}
         </div>
 
         {/* Footer */}
