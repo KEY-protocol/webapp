@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   UserCog,
   UserPlus,
@@ -14,10 +14,49 @@ import {
   X,
   Building2,
   CheckCircle2,
+  Eye,
+  EyeOff,
+  Phone,
 } from "lucide-react";
 import { useData } from "@/app/context/DataContext";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
 import { toast } from "react-toastify";
+
+import { fetchAllCountryCodes, CountryCode } from "@/app/utils/countryCodes";
+
+const DEFAULT_COUNTRY_CODES: CountryCode[] = [
+  { code: "+54", flag: "🇦🇷", name: "Argentina" },
+  { code: "+55", flag: "🇧🇷", name: "Brasil" },
+  { code: "+56", flag: "🇨🇱", name: "Chile" },
+  { code: "+598", flag: "🇺🇾", name: "Uruguay" },
+  { code: "+595", flag: "🇵🇾", name: "Paraguay" },
+  { code: "+591", flag: "🇧🇴", name: "Bolivia" },
+  { code: "+57", flag: "🇨🇴", name: "Colombia" },
+  { code: "+52", flag: "🇲🇽", name: "México" },
+  { code: "+1", flag: "🇺🇸", name: "EE.UU." },
+  { code: "+34", flag: "🇪🇸", name: "España" },
+];
+
+function formatPhoneNumber(value: string, countryCode: string): string {
+  const digits = value.replace(/\D/g, "");
+  if (countryCode === "+54") {
+    if (digits.length <= 2) return digits;
+    if (digits.startsWith("11")) {
+      if (digits.length <= 6) return `${digits.slice(0, 2)} ${digits.slice(2)}`;
+      return `${digits.slice(0, 2)} ${digits.slice(2, 6)} ${digits.slice(6, 10)}`;
+    }
+    if (digits.startsWith("351") || digits.startsWith("341") || digits.startsWith("261")) {
+      if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
+    }
+    if (digits.length <= 4) return digits;
+    if (digits.length <= 7) return `${digits.slice(0, 4)} ${digits.slice(4)}`;
+    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7, 11)}`;
+  }
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
+}
 
 export interface ManagerUser {
   id: string;
@@ -83,6 +122,18 @@ export default function ManagersPage() {
   const [editingManager, setEditingManager] = useState<ManagerUser | null>(
     null,
   );
+
+  const [countryList, setCountryList] = useState<CountryCode[]>(DEFAULT_COUNTRY_CODES);
+  const [showPassword, setShowPassword] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("+54");
+
+  useEffect(() => {
+    fetchAllCountryCodes().then((list) => {
+      if (list && list.length > 0) {
+        setCountryList(list);
+      }
+    });
+  }, []);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -420,31 +471,61 @@ export default function ManagersPage() {
                 <label className="block text-xs font-bold text-white/60 mb-1.5">
                   {editingManager ? "Nueva Contraseña (Opcional)" : "Contraseña de Acceso *"}
                 </label>
-                <input
-                  type="password"
-                  required={!editingManager}
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, password: e.target.value }))
-                  }
-                  placeholder={editingManager ? "•••••••• (Dejar en blanco para no cambiar)" : "Mínimo 6 caracteres"}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 transition-all font-poppins"
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required={!editingManager}
+                    value={formData.password}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, password: e.target.value }))
+                    }
+                    placeholder={editingManager ? "•••••••• (Dejar en blanco para no cambiar)" : "Mínimo 6 caracteres"}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 pr-11 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 transition-all font-poppins"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-white/40 hover:text-white transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-white/60 mb-1.5">
-                  Teléfono (Opcional)
+                  Teléfono de Contacto (Opcional)
                 </label>
-                <input
-                  type="text"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, phone: e.target.value }))
-                  }
-                  placeholder="Ej. +54 9 387 1234567"
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 transition-all font-poppins"
-                />
+                <div className="flex gap-2">
+                  <select
+                    value={selectedCountry}
+                    onChange={(e) => {
+                      const newCode = e.target.value;
+                      setSelectedCountry(newCode);
+                      setFormData((prev) => ({
+                        ...prev,
+                        phone: formatPhoneNumber(prev.phone, newCode),
+                      }));
+                    }}
+                    className="bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 font-poppins cursor-pointer"
+                  >
+                    {countryList.map((c) => (
+                      <option key={`${c.code}-${c.name}`} value={c.code} className="bg-primary text-white">
+                        {c.flag} {c.code} ({c.name})
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={formData.phone}
+                    onChange={(e) => {
+                      const formatted = formatPhoneNumber(e.target.value, selectedCountry);
+                      setFormData((prev) => ({ ...prev, phone: formatted }));
+                    }}
+                    placeholder="11 5596 3637"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 transition-all font-poppins"
+                  />
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
