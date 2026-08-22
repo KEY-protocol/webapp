@@ -19,6 +19,12 @@ import {
   Phone,
 } from "lucide-react";
 import { useData } from "@/app/context/DataContext";
+import { useAuth } from "@/app/context/AuthContext";
+import {
+  fetchEncargados,
+  createEncargado,
+  deleteEncargado,
+} from "@/app/services/encargadosService";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
 import { toast } from "react-toastify";
 
@@ -70,51 +76,13 @@ export interface ManagerUser {
   createdAt: string;
 }
 
-// TODO: [BACKEND-MANAGERS] Reemplazar datos mock con GET /api/managers para listar encargados de la organización activa
-// TODO: [BACKEND-MANAGERS] Implementar POST /api/managers (alta de encargado con hash de contraseña bcrypt)
-// TODO: [BACKEND-MANAGERS] Implementar PUT /api/managers/[id] (modificación) y DELETE /api/managers/[id] (desvinculación)
-const INITIAL_MANAGERS: ManagerUser[] = [
-  {
-    id: "mgr_001",
-    name: "Carlos",
-    surname: "Encargado",
-    email: "carlos@org1.com",
-    phone: "+54 9 387 4556677",
-    organizationId: "org_1",
-    organizationName: "Fundación Gran Chaco",
-    status: "active",
-    createdAt: "2024-01-15T10:00:00Z",
-  },
-  {
-    id: "mgr_002",
-    name: "Roberto",
-    surname: "Gómez",
-    email: "roberto@granchaco.org",
-    phone: "+54 9 379 1122334",
-    organizationId: "org_1",
-    organizationName: "Fundación Gran Chaco",
-    status: "active",
-    createdAt: "2024-03-02T11:30:00Z",
-  },
-  {
-    id: "mgr_003",
-    name: "Lucía",
-    surname: "Martínez",
-    email: "lucia@granchaco.org",
-    phone: "+54 9 387 8899000",
-    organizationId: "org_1",
-    organizationName: "Fundación Gran Chaco",
-    status: "pending_setup",
-    createdAt: "2026-08-01T09:00:00Z",
-  },
-];
-
 export default function ManagersPage() {
   const { data } = useData();
+  const { token, ongUrl } = useAuth();
   const currentUserRole = data.currentUser.role;
   const isAdmin = currentUserRole === "admin";
 
-  const [managers, setManagers] = useState<ManagerUser[]>(INITIAL_MANAGERS);
+  const [managers, setManagers] = useState<ManagerUser[]>([]);
   const [search, setSearch] = useState("");
 
   // Modal states
@@ -127,13 +95,35 @@ export default function ManagersPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("+54");
 
+  const loadBackendManagers = useCallback(async () => {
+    if (!token) return;
+    try {
+      const data = await fetchEncargados(ongUrl || "http://localhost:3001", token);
+      const mapped: ManagerUser[] = data.map((item) => ({
+        id: item.id,
+        name: item.email.split("@")[0],
+        surname: "",
+        email: item.email,
+        phone: item.phone,
+        organizationId: item.ongId || "org_1",
+        organizationName: "Fundación Gran Chaco",
+        status: "active",
+        createdAt: item.createdAt,
+      }));
+      setManagers(mapped);
+    } catch (err) {
+      console.error("Error al obtener encargados:", err);
+    }
+  }, [token, ongUrl]);
+
   useEffect(() => {
+    loadBackendManagers();
     fetchAllCountryCodes().then((list) => {
       if (list && list.length > 0) {
         setCountryList(list);
       }
     });
-  }, []);
+  }, [loadBackendManagers]);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -206,7 +196,7 @@ export default function ManagersPage() {
     setIsAddModalOpen(true);
   };
 
-  const handleSaveManager = (e: React.FormEvent) => {
+  const handleSaveManager = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.surname || !formData.email) {
       toast.error("Por favor completa los campos requeridos (Nombre, Apellido, Email)");
@@ -218,42 +208,55 @@ export default function ManagersPage() {
       return;
     }
 
-    if (editingManager) {
-      setManagers((prev) =>
-        prev.map((m) =>
-          m.id === editingManager.id
-            ? {
-                ...m,
-                name: formData.name,
-                surname: formData.surname,
-                email: formData.email,
-                phone: formData.phone,
-              }
-            : m,
-        ),
-      );
-      toast.success(
-        formData.password
-          ? "Encargado y contraseña actualizados correctamente"
-          : "Datos del Encargado actualizados correctamente",
-      );
-    } else {
-      const newManager: ManagerUser = {
-        id: `mgr_${Date.now()}`,
-        name: formData.name,
-        surname: formData.surname,
-        email: formData.email,
-        phone: formData.phone,
-        organizationId: "org_1",
-        organizationName: "Fundación Gran Chaco",
-        status: "active",
-        createdAt: new Date().toISOString(),
-      };
-      setManagers((prev) => [newManager, ...prev]);
-      toast.success("Encargado creado con éxito. Ya puede iniciar sesión con sus credenciales.");
-    }
+    try {
+      if (editingManager) {
+        setManagers((prev) =>
+          prev.map((m) =>
+            m.id === editingManager.id
+              ? {
+                  ...m,
+                  name: formData.name,
+                  surname: formData.surname,
+                  email: formData.email,
+                  phone: formData.phone,
+                }
+              : m,
+          ),
+        );
+        toast.success(
+          formData.password
+            ? "Encargado y contraseña actualizados correctamente"
+            : "Datos del Encargado actualizados correctamente",
+        );
+      } else {
+        const fullPhone = formData.phone ? `${selectedCountry} ${formData.phone}` : undefined;
+        const created = await createEncargado(ongUrl || "http://localhost:3001", token || "", {
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+          surname: formData.surname,
+          phone: fullPhone,
+        });
 
-    setIsAddModalOpen(false);
+        const newManager: ManagerUser = {
+          id: created?.id || `mgr_${Date.now()}`,
+          name: formData.name,
+          surname: formData.surname,
+          email: formData.email,
+          phone: fullPhone,
+          organizationId: "org_1",
+          organizationName: "Fundación Gran Chaco",
+          status: "active",
+          createdAt: new Date().toISOString(),
+        };
+        setManagers((prev) => [newManager, ...prev]);
+        toast.success("Encargado creado con éxito en la base de datos. Ya puede iniciar sesión.");
+      }
+
+      setIsAddModalOpen(false);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "No se pudo registrar el encargado en el servidor");
+    }
   };
 
   const handleDeleteManager = useCallback((manager: ManagerUser) => {
@@ -265,11 +268,14 @@ export default function ManagersPage() {
       variant: "danger",
       onConfirm: async () => {
         setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
+        if (token) {
+          await deleteEncargado(ongUrl || "http://localhost:3001", token, manager.id);
+        }
         setManagers((prev) => prev.filter((m) => m.id !== manager.id));
         toast.success("Encargado desvinculado de la organización");
       },
     });
-  }, []);
+  }, [token, ongUrl]);
 
   return (
     <div className="flex-1 p-6 md:p-10 bg-primary min-h-screen">
