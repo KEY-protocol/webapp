@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Users, UserPlus, Shield, Trash2, Mail, RefreshCw } from "lucide-react";
+import { Users, UserPlus, Shield, Trash2, Mail, Eye, EyeOff, Phone } from "lucide-react";
 import { useAuth } from "@/app/context/AuthContext";
 import {
   fetchEncargados,
@@ -10,6 +10,60 @@ import {
   EncargadoDto,
 } from "@/app/services/encargadosService";
 
+const COUNTRY_CODES = [
+  { code: "+54", flag: "🇦🇷", name: "Argentina" },
+  { code: "+55", flag: "🇧🇷", name: "Brasil" },
+  { code: "+56", flag: "🇨🇱", name: "Chile" },
+  { code: "+598", flag: "🇺🇾", name: "Uruguay" },
+  { code: "+595", flag: "🇵🇾", name: "Paraguay" },
+  { code: "+591", flag: "🇧🇴", name: "Bolivia" },
+  { code: "+57", flag: "🇨🇴", name: "Colombia" },
+  { code: "+52", flag: "🇲🇽", name: "México" },
+  { code: "+1", flag: "🇺🇸", name: "EE.UU." },
+  { code: "+34", flag: "🇪🇸", name: "España" },
+];
+
+function formatPhoneNumber(value: string, countryCode: string): string {
+  // Limpiar caracteres no numéricos
+  const digits = value.replace(/\D/g, "");
+
+  if (countryCode === "+54") {
+    // Formateo dinámico para Argentina
+    if (digits.length <= 2) return digits;
+    // AMBA (ej: 11 5596 3637)
+    if (digits.startsWith("11")) {
+      if (digits.length <= 6) {
+        return `${digits.slice(0, 2)} ${digits.slice(2)}`;
+      }
+      return `${digits.slice(0, 2)} ${digits.slice(2, 6)} ${digits.slice(6, 10)}`;
+    }
+    // Córdoba / Rosario / Mendoza (ej: 351 559 3637)
+    if (
+      digits.startsWith("351") ||
+      digits.startsWith("341") ||
+      digits.startsWith("261")
+    ) {
+      if (digits.length <= 6) {
+        return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+      }
+      return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
+    }
+    // General 4 dígitos de código de área (ej: 221 559 3637 o 3874 55 3637)
+    if (digits.length <= 4) return digits;
+    if (digits.length <= 7) {
+      return `${digits.slice(0, 4)} ${digits.slice(4)}`;
+    }
+    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7, 11)}`;
+  }
+
+  // Formateo genérico para otros países (ej: 333 444 5555)
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) {
+    return `${digits.slice(0, 3)} ${digits.slice(3)}`;
+  }
+  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
+}
+
 export default function EncargadosPage() {
   const { token, ongUrl } = useAuth();
   const [encargados, setEncargados] = useState<EncargadoDto[]>([]);
@@ -17,6 +71,9 @@ export default function EncargadosPage() {
   const [showModal, setShowModal] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState("+54");
+  const [phoneInput, setPhoneInput] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const loadEncargados = useCallback(async () => {
@@ -31,6 +88,18 @@ export default function EncargadosPage() {
     loadEncargados();
   }, [loadEncargados]);
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value;
+    const formatted = formatPhoneNumber(raw, selectedCountry);
+    setPhoneInput(formatted);
+  };
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCode = e.target.value;
+    setSelectedCountry(newCode);
+    setPhoneInput(formatPhoneNumber(phoneInput, newCode));
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newEmail || !newPassword || !token || !ongUrl) return;
@@ -43,6 +112,8 @@ export default function EncargadosPage() {
       });
       setNewEmail("");
       setNewPassword("");
+      setShowPassword(false);
+      setPhoneInput("");
       setShowModal(false);
       loadEncargados();
     } catch (err: any) {
@@ -146,21 +217,60 @@ export default function EncargadosPage() {
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)}
                     placeholder="encargado@organizacion.org"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent/50"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent/50 font-poppins"
                   />
                 </div>
               </div>
+
+              {/* Teléfono con Dropdown de País y Formato Dinámico */}
               <div className="space-y-1">
-                <label className="text-xs font-bold text-white/60">Contraseña Contraseña</label>
-                <input
-                  type="password"
-                  required
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent/50"
-                />
+                <label className="text-xs font-bold text-white/60 flex items-center gap-1.5">
+                  <Phone size={12} /> Teléfono de Contacto
+                </label>
+                <div className="flex gap-2">
+                  <select
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                    className="bg-white/5 border border-white/10 rounded-2xl px-3 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent/50 font-poppins cursor-pointer"
+                  >
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.code} className="bg-primary text-white">
+                        {c.flag} {c.code}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={phoneInput}
+                    onChange={handlePhoneChange}
+                    placeholder="11 5596 3637"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent/50 font-poppins"
+                  />
+                </div>
               </div>
+
+              {/* Contraseña con Toggle Ojo */}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-white/60">Contraseña</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 pr-11 text-sm text-white focus:outline-none focus:ring-2 focus:ring-accent/50 font-poppins"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-white/40 hover:text-white transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
@@ -183,3 +293,4 @@ export default function EncargadosPage() {
     </div>
   );
 }
+
