@@ -1,53 +1,64 @@
 "use client";
 
-import React, { useState } from "react";
-import { Users, UserPlus, Shield, Trash2, Edit2, Mail, Key } from "lucide-react";
-
-interface Encargado {
-  id: string;
-  email: string;
-  role: "ENCARGADO" | "ADMIN";
-  createdAt: string;
-}
+import React, { useState, useEffect, useCallback } from "react";
+import { Users, UserPlus, Shield, Trash2, Mail, RefreshCw } from "lucide-react";
+import { useAuth } from "@/app/context/AuthContext";
+import {
+  fetchEncargados,
+  createEncargado,
+  deleteEncargado,
+  EncargadoDto,
+} from "@/app/services/encargadosService";
 
 export default function EncargadosPage() {
-  const [encargados, setEncargados] = useState<Encargado[]>([
-    {
-      id: "1",
-      email: "encargado1@ong.org",
-      role: "ENCARGADO",
-      createdAt: "2026-08-01T10:00:00Z",
-    },
-    {
-      id: "2",
-      email: "encargado2@ong.org",
-      role: "ENCARGADO",
-      createdAt: "2026-08-15T14:30:00Z",
-    },
-  ]);
+  const { token, ongUrl } = useAuth();
+  const [encargados, setEncargados] = useState<EncargadoDto[]>([]);
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleCreate = (e: React.FormEvent) => {
+  const loadEncargados = useCallback(async () => {
+    if (!token || !ongUrl) return;
+    setLoading(true);
+    const data = await fetchEncargados(ongUrl, token);
+    setEncargados(data);
+    setLoading(false);
+  }, [token, ongUrl]);
+
+  useEffect(() => {
+    loadEncargados();
+  }, [loadEncargados]);
+
+  const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newEmail || !newPassword) return;
+    if (!newEmail || !newPassword || !token || !ongUrl) return;
+    setErrorMsg("");
 
-    const newEncargado: Encargado = {
-      id: Date.now().toString(),
-      email: newEmail,
-      role: "ENCARGADO",
-      createdAt: new Date().toISOString(),
-    };
-
-    setEncargados([...encargados, newEncargado]);
-    setNewEmail("");
-    setNewPassword("");
-    setShowModal(false);
+    try {
+      await createEncargado(ongUrl, token, {
+        email: newEmail,
+        password: newPassword,
+      });
+      setNewEmail("");
+      setNewPassword("");
+      setShowModal(false);
+      loadEncargados();
+    } catch (err: any) {
+      setErrorMsg(
+        err.response?.data?.message || "No se pudo crear el encargado",
+      );
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setEncargados(encargados.filter((e) => e.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!token || !ongUrl) return;
+    if (!confirm("¿Está seguro de eliminar este encargado?")) return;
+    const ok = await deleteEncargado(ongUrl, token, id);
+    if (ok) {
+      setEncargados((prev) => prev.filter((e) => e.id !== id));
+    }
   };
 
   return (
@@ -120,6 +131,11 @@ export default function EncargadosPage() {
             <h3 className="text-xl font-bold flex items-center gap-2">
               <UserPlus className="text-accent" /> Registrar Encargado
             </h3>
+            {errorMsg && (
+              <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-xl font-medium">
+                {errorMsg}
+              </div>
+            )}
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="space-y-1">
                 <label className="text-xs font-bold text-white/60">Email Institucional</label>
