@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+const CENTRAL_SERVER_URL = process.env.NEXT_PUBLIC_CENTRAL_SERVER_URL || "http://localhost:3000/api";
+const API_BASE_URL = `${CENTRAL_SERVER_URL.replace(/\/$/, "")}/superadmin`;
 
 export interface AuditLogRecord {
   id: string;
