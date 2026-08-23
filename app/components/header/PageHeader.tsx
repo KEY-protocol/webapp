@@ -6,7 +6,7 @@ import { Menu, Bell, Settings, LogOut } from "lucide-react";
 import { useSidebar } from "@/app/context/SidebarContext";
 import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationsModal } from "./NotificationsModal";
 import { SettingsModal } from "./SettingsModal";
@@ -104,6 +104,24 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
             {t(`menu.${namespace.includes(".") ? namespace.split(".").pop() : namespace}.subtitle`)}
           </p>
         </div>
+
+        {/* Superadmin Top Nav Links */}
+        {isSuperadmin && (
+          <div className="hidden md:flex items-center gap-2 ml-6">
+            <Link
+              href="/organizations"
+              className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-poppins font-semibold text-xs transition-all border border-white/10"
+            >
+              Organizaciones
+            </Link>
+            <Link
+              href="/superadmin-audit"
+              className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-poppins font-semibold text-xs transition-all border border-white/10"
+            >
+              Auditoría Global
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="flex items-center gap-6">
