@@ -20,7 +20,7 @@ const SERVIDOR_BASE_URL =
   process.env.SERVIDOR_BASE_URL || "http://localhost:3000";
 
 const DEFAULT_ONG_ID =
-  process.env.DEFAULT_ONG_ID || "fundacion_gran_chaco";
+  process.env.DEFAULT_ONG_ID || "key-protocol";
 
 export async function POST(request: NextRequest) {
   try {
