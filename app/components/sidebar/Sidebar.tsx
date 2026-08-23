@@ -10,6 +10,7 @@ import {
   FileBarChart,
   ShieldCheck,
   UserCog,
+  Smartphone,
 } from "lucide-react";
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
 import { useSidebar } from "@/app/context/SidebarContext";
@@ -115,6 +116,13 @@ export const Sidebar = () => {
       icon: ShieldCheck,
       label: t("menu.auditIdentities.title"),
       href: "/audit-identities",
+      roles: ["encargado", "admin"],
+    },
+    {
+      id: "mobile-form-preview",
+      icon: Smartphone,
+      label: "Formulario Mobile",
+      href: "/mobile-form-preview",
       roles: ["encargado", "admin"],
     },
     {

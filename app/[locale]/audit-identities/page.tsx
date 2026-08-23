@@ -13,7 +13,9 @@ import {
   FileText,
   UserCheck,
   Filter,
+  Smartphone,
 } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { useData } from "@/app/context/DataContext";
 import { useTechnicians } from "@/app/hooks/useTechnicians";
 import TechnicianDetailModal from "@/app/components/technicians/TechnicianDetailModal";
@@ -265,6 +267,14 @@ export default function AuditIdentitiesPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/mobile-form-preview"
+              className="flex items-center gap-2 bg-[#28a745]/20 hover:bg-[#28a745]/30 text-[#28a745] border border-[#28a745]/40 px-4 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer"
+            >
+              <Smartphone className="w-4 h-4" />
+              Ver Formulario Móvil
+            </Link>
+
             <button
               onClick={() => toast.info("Lista de auditoría actualizada")}
               className="flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer"
