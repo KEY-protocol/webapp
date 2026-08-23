@@ -15,32 +15,7 @@ interface PageHeaderProps {
   namespace: string;
 }
 
-const MOCK_NOTIFICATIONS = [
-  {
-    id: "1",
-    type: "project",
-    title: "Nuevo proyecto asignado",
-    message: "Se te ha asignado al proyecto 'Regeneración Chaco'.",
-    time: "2h",
-    isRead: false,
-  },
-  {
-    id: "2",
-    type: "training",
-    title: "Capacitación completada",
-    message: "Has finalizado el módulo de 'Producción Sostenible'.",
-    time: "5h",
-    isRead: false,
-  },
-  {
-    id: "3",
-    type: "system",
-    title: "Actualización de sistema",
-    message: "Se han implementado nuevas mejoras en el dashboard.",
-    time: "1d",
-    isRead: true,
-  },
-];
+const MOCK_NOTIFICATIONS: any[] = [];
 
 export const PageHeader = ({ namespace }: PageHeaderProps) => {
   const t = useTranslations("sidebar");

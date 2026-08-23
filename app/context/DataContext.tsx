@@ -7,7 +7,6 @@ import {
   UserProfile,
   Organization,
 } from "../types/api";
-import { MOCK_DB } from "../data/mock-db";
 import { useAuth } from "./AuthContext";
 
 interface DataContextType {
@@ -21,45 +20,46 @@ interface DataContextType {
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
 
+const EMPTY_SERVER_DATA: ServerData = {
+  currentUser: {
+    id: "",
+    name: "Usuario",
+    email: "",
+    role: "admin",
+  },
+  users: [],
+  organizations: [],
+  identities: [],
+  stats: {
+    totalPending: 0,
+    totalApproved: 0,
+    totalRejected: 0,
+  },
+  notifications: [],
+};
+
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [data, setData] = useState<ServerData>(MOCK_DB);
-  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState<ServerData>(EMPTY_SERVER_DATA);
+  const [isLoading, setIsLoading] = useState(false);
   const { user: authUser } = useAuth();
 
-  // Simulating an initial fetch
-  useEffect(() => {
-    // Simulate API delay
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  /**
-   * Derive currentUser from the authenticated session.
-   * When a user logs in, we match them by email against the mock users list,
-   * or build a UserProfile from the AuthContext data.
-   * This avoids calling setState inside useEffect (cascading renders).
-   * TODO: Replace with real API call once the backend is ready.
-   */
   const resolvedCurrentUser: UserProfile = useMemo(() => {
     if (!authUser) return data.currentUser;
 
-    // Try to find the user in the mock DB by email
     const matchedUser = data.users.find(
       (u) => u.email.toLowerCase() === authUser.email.toLowerCase(),
     );
 
     if (matchedUser) return matchedUser;
 
-    // Build a UserProfile from the authenticated session
     return {
       id: authUser.id,
-      name: authUser.email.split("@")[0],
+      name: authUser.email ? authUser.email.split("@")[0] : "Usuario",
       email: authUser.email,
       role: authUser.role.toLowerCase() as UserProfile["role"],
+      ongId: authUser.ongId || undefined,
       organizationId: authUser.ongId || undefined,
     };
   }, [authUser, data.currentUser, data.users]);
@@ -119,9 +119,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const refreshData = async () => {
     setIsLoading(true);
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setData({ ...MOCK_DB }); // Resets to mock data or would fetch from API
+    await new Promise((resolve) => setTimeout(resolve, 300));
     setIsLoading(false);
   };
 
