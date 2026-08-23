@@ -104,9 +104,11 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
 
-          {/* Notifications & Settings — only for encargado/admin */}
+          {/* Settings — only for encargado/admin */}
           {!isSuperadmin && (
             <>
+              {/* TODO: [FUTURE-FEATURE] Descomentar la campanita de notificaciones cuando se conecte con el servicio en tiempo real / websockets */}
+              {/*
               <button
                 onClick={() => setIsNotificationsOpen(true)}
                 className="text-white/80 hover:text-white transition-colors p-2 relative group"
@@ -118,6 +120,7 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
                   </span>
                 )}
               </button>
+              */}
               <button
                 onClick={() => setIsSettingsOpen(true)}
                 className="text-white/80 hover:text-white transition-colors p-2"
@@ -173,12 +176,15 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
       {/* Modals — only rendered for non-superadmin roles */}
       {!isSuperadmin && (
         <>
+          {/* TODO: [FUTURE-FEATURE] Habilitar NotificationsModal una vez implementado el backend de notificaciones en tiempo real */}
+          {/*
           <NotificationsModal
             isOpen={isNotificationsOpen}
             onClose={() => setIsNotificationsOpen(false)}
             notifications={notifications}
             onMarkAsRead={handleMarkAsRead}
           />
+          */}
 
           <SettingsModal
             isOpen={isSettingsOpen}
