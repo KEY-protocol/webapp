@@ -167,25 +167,7 @@ export const MOCK_FORM_FIELDS: FormFieldDef[] = [
 
 export default function IdentityFormSimulator() {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<Record<string, any>>({
-    nombre: "Juan Manuel",
-    apellido: "Ortiz",
-    fechaNacimiento: "1994-05-12",
-    documentoIdentidad: "38999111",
-    sexo: "masculino",
-    genero: "cisgenero",
-    etnia: "wichi",
-    cantidadIntegrantesFamilia: 5,
-    correoElectronico: "j.ortiz@granchaco.org",
-    pais: "argentina",
-    provincia: "chaco",
-    localidad: "general_guemes",
-    zona: "el_sauzal",
-    actividadesPrincipales: ["apicultura", "artesania"],
-    nivelConocimiento: "conocedor",
-    superficiePredio: 12,
-    superficieProductiva: 8,
-  });
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
   const [activeTabDocument, setActiveTabDocument] = useState<"front" | "back">("front");
   const [frontCaptured, setFrontCaptured] = useState<boolean>(true);
@@ -272,21 +254,19 @@ export default function IdentityFormSimulator() {
           <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
             <button
               onClick={() => setActiveViewMode("simulator")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                activeViewMode === "simulator"
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeViewMode === "simulator"
                   ? "bg-[#28a745] text-white shadow-md"
                   : "text-white/60 hover:text-white"
-              }`}
+                }`}
             >
               Vista Dispositivo
             </button>
             <button
               onClick={() => setActiveViewMode("json")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                activeViewMode === "json"
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeViewMode === "json"
                   ? "bg-[#28a745] text-white shadow-md"
                   : "text-white/60 hover:text-white"
-              }`}
+                }`}
             >
               Esquema JSON
             </button>
@@ -332,13 +312,12 @@ export default function IdentityFormSimulator() {
                   <button
                     key={s}
                     onClick={() => setCurrentStep(s)}
-                    className={`flex-1 h-1.5 mx-0.5 rounded-full transition-all ${
-                      s === currentStep
+                    className={`flex-1 h-1.5 mx-0.5 rounded-full transition-all ${s === currentStep
                         ? "bg-[#28a745]"
                         : s < currentStep
-                        ? "bg-emerald-500/40"
-                        : "bg-white/10"
-                    }`}
+                          ? "bg-emerald-500/40"
+                          : "bg-white/10"
+                      }`}
                   />
                 ))}
               </div>
@@ -437,11 +416,10 @@ export default function IdentityFormSimulator() {
                                   type="button"
                                   key={opt.value}
                                   onClick={() => handleMultiSelectToggle(field.name, opt.value)}
-                                  className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-left border transition-all cursor-pointer ${
-                                    isChecked
+                                  className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-left border transition-all cursor-pointer ${isChecked
                                       ? "bg-[#28a745]/20 border-[#28a745] text-emerald-300 font-bold"
                                       : "bg-[#1b3218] border-white/10 text-white/60 hover:text-white"
-                                  }`}
+                                    }`}
                                 >
                                   {opt.label}
                                 </button>
@@ -514,17 +492,15 @@ export default function IdentityFormSimulator() {
                       <div className="flex bg-black/40 p-1 rounded-xl">
                         <button
                           onClick={() => setActiveTabDocument("front")}
-                          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                            activeTabDocument === "front" ? "bg-[#28a745] text-white" : "text-white/60"
-                          }`}
+                          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${activeTabDocument === "front" ? "bg-[#28a745] text-white" : "text-white/60"
+                            }`}
                         >
                           Frente {frontCaptured && "✓"}
                         </button>
                         <button
                           onClick={() => setActiveTabDocument("back")}
-                          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                            activeTabDocument === "back" ? "bg-[#28a745] text-white" : "text-white/60"
-                          }`}
+                          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${activeTabDocument === "back" ? "bg-[#28a745] text-white" : "text-white/60"
+                            }`}
                         >
                           Dorso {backCaptured && "✓"}
                         </button>
@@ -642,10 +618,10 @@ export default function IdentityFormSimulator() {
                   {currentStep === 1
                     ? `${step1Fields.length} campos personales`
                     : currentStep === 2
-                    ? `${step2Fields.length} campos territoriales`
-                    : currentStep === 3
-                    ? "Módulo de captura de fotos"
-                    : "Payload de envío TEE"}
+                      ? `${step2Fields.length} campos territoriales`
+                      : currentStep === 3
+                        ? "Módulo de captura de fotos"
+                        : "Payload de envío TEE"}
                 </span>
               </div>
 
