@@ -1,7 +1,13 @@
 import axios from "axios";
 
-const CENTRAL_SERVER_URL = process.env.NEXT_PUBLIC_CENTRAL_SERVER_URL || "http://localhost:3000/api";
-const API_BASE_URL = `${CENTRAL_SERVER_URL.replace(/\/$/, "")}/superadmin`;
+const rawUrl =
+  process.env.NEXT_PUBLIC_CENTRAL_SERVER_URL ||
+  process.env.NEXT_PUBLIC_SERVIDOR_BASE_URL ||
+  process.env.SERVIDOR_BASE_URL ||
+  "http://localhost:3000";
+
+const cleanBaseUrl = rawUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
+const API_BASE_URL = `${cleanBaseUrl}/api/superadmin`;
 
 export interface OrganizationConfig {
   id: string;
@@ -77,31 +83,61 @@ export const organizationsService = {
   },
 
   async createOrganization(data: CreateOrgPayload): Promise<OrganizationRecord> {
-    const response = await axios.post(`${API_BASE_URL}/organizations`, data);
-    return response.data;
+    try {
+      const response = await axios.post(`${API_BASE_URL}/organizations`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error(
+          "No se pudo conectar con el Servidor Central (puerto 3000). Asegúrate de ejecutar 'npm run dev:full' o 'npm run dev:backend'."
+        );
+      }
+      throw error;
+    }
   },
 
   async updateOrganization(
     id: string,
     data: { name?: string; description?: string; contactEmail?: string; status?: string }
   ): Promise<OrganizationRecord> {
-    const response = await axios.put(`${API_BASE_URL}/organizations/${id}`, data);
-    return response.data;
+    try {
+      const response = await axios.put(`${API_BASE_URL}/organizations/${id}`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error("No se pudo conectar con el Servidor Central (puerto 3000).");
+      }
+      throw error;
+    }
   },
 
   async updateCredentials(
     id: string,
     data: UpdateOrgCredentialsPayload
   ): Promise<OrganizationConfig> {
-    const response = await axios.put(`${API_BASE_URL}/organizations/${id}/credentials`, data);
-    return response.data;
+    try {
+      const response = await axios.put(`${API_BASE_URL}/organizations/${id}/credentials`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error("No se pudo conectar con el Servidor Central (puerto 3000).");
+      }
+      throw error;
+    }
   },
 
   async createOrgAdmin(
     id: string,
     data: { email: string; passwordRaw: string }
   ): Promise<OrganizationAdmin> {
-    const response = await axios.post(`${API_BASE_URL}/organizations/${id}/admins`, data);
-    return response.data;
+    try {
+      const response = await axios.post(`${API_BASE_URL}/organizations/${id}/admins`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error("No se pudo conectar con el Servidor Central (puerto 3000).");
+      }
+      throw error;
+    }
   },
 };

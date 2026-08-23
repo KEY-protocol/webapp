@@ -122,7 +122,12 @@ export default function OrganizationsPage() {
 
       fetchOrganizations();
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Error al crear la organización");
+      toast.error(
+        err.response?.data?.error ||
+          err.response?.data?.message ||
+          err.message ||
+          "Error al crear la organización"
+      );
     } finally {
       setIsSubmittingNew(false);
     }
