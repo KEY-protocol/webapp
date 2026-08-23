@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { LoginFormActions } from "./LoginFormActions";
-// TODO: Remove DevCredentialsPanel import before production deployment.
-import { DevCredentialsPanel } from "./DevCredentialsPanel";
 import { OngSelectionModal } from "./OngSelectionModal";
 import {
   loginWithCredentials,
@@ -55,15 +53,6 @@ export function LoginForm() {
     null,
   );
   const [isModalLoading, setIsModalLoading] = useState(false);
-
-  /**
-   * TODO: Remove this handler before production deployment.
-   * It enables auto-filling credentials from the DevCredentialsPanel.
-   */
-  const handleDevCredentialSelect = (devEmail: string, devPassword: string) => {
-    setEmail(devEmail);
-    setPassword(devPassword);
-  };
 
   /**
    * Completes the login by storing auth data and redirecting.
@@ -210,11 +199,6 @@ export function LoginForm() {
         </div>
 
         <LoginFormActions isLoading={isLoading} />
-
-        {/* TODO: Remove DevCredentialsPanel before production deployment. */}
-        {process.env.NODE_ENV !== "production" && (
-          <DevCredentialsPanel onSelectCredential={handleDevCredentialSelect} />
-        )}
       </form>
 
       {/* ONG Selection Modal — only shown for ADMIN role after login */}
