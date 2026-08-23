@@ -104,7 +104,7 @@ export default function ManagersPage() {
         name: item.email.split("@")[0],
         surname: "",
         email: item.email,
-        phone: item.phone,
+        phone: (item as any).phone,
         organizationId: item.ongId || "org_1",
         organizationName: "Fundación Gran Chaco",
         status: "active",
@@ -233,9 +233,6 @@ export default function ManagersPage() {
         const created = await createEncargado(ongUrl || "http://localhost:3001", token || "", {
           email: formData.email,
           password: formData.password,
-          name: formData.name,
-          surname: formData.surname,
-          phone: fullPhone,
         });
 
         const newManager: ManagerUser = {
