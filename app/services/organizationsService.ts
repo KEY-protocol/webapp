@@ -128,10 +128,41 @@ export const organizationsService = {
 
   async createOrgAdmin(
     id: string,
-    data: { email: string; passwordRaw: string }
+    data: { email: string; passwordRaw: string; role?: string }
   ): Promise<OrganizationAdmin> {
     try {
       const response = await axios.post(`${API_BASE_URL}/organizations/${id}/admins`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error("No se pudo conectar con el Servidor Central (puerto 3000).");
+      }
+      throw error;
+    }
+  },
+
+  async updateOrgUser(
+    orgId: string,
+    userId: string,
+    data: { role?: string; passwordRaw?: string }
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await axios.patch(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`, data);
+      return response.data;
+    } catch (error: any) {
+      if (error.code === "ERR_NETWORK" || !error.response) {
+        throw new Error("No se pudo conectar con el Servidor Central (puerto 3000).");
+      }
+      throw error;
+    }
+  },
+
+  async deleteOrgUser(
+    orgId: string,
+    userId: string
+  ): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`);
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
