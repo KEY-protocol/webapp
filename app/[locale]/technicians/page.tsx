@@ -7,6 +7,7 @@ import { useTechnicians } from "@/app/hooks/useTechnicians";
 import TechnicianRow from "@/app/components/technicians/TechnicianCard";
 import TechnicianDetailModal from "@/app/components/technicians/TechnicianDetailModal";
 import EditTechnicianModal from "@/app/components/technicians/EditTechnicianModal";
+import { PreRegisterTechnicianModal } from "@/app/components/technicians/PreRegisterTechnicianModal";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "react-toastify";
 import ConfirmModal, {
@@ -39,6 +40,7 @@ export default function TechniciansPage() {
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showPreRegisterModal, setShowPreRegisterModal] = useState(false);
 
   // Confirm Modal state
   const [confirmConfig, setConfirmConfig] = useState<{
@@ -180,8 +182,8 @@ export default function TechniciansPage() {
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => router.push("/technicians/pre-register")}
-              className="flex items-center gap-2 bg-[#28a745] hover:bg-[#218838] text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer"
+              onClick={() => setShowPreRegisterModal(true)}
+              className="flex items-center gap-2 bg-[#28a745] hover:bg-[#218838] text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer shadow-lg shadow-green-950/20"
             >
               <UserPlus className="w-4 h-4" />
               Pre-registrar Técnico
@@ -289,6 +291,13 @@ export default function TechniciansPage() {
         onClose={handleCloseDetail}
         technician={selectedTechnician}
         isLoading={isActing}
+      />
+
+      {/* Pre-Register Modal */}
+      <PreRegisterTechnicianModal
+        isOpen={showPreRegisterModal}
+        onClose={() => setShowPreRegisterModal(false)}
+        onSuccess={refresh}
       />
 
       {/* Edit Modal */}

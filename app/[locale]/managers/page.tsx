@@ -28,7 +28,7 @@ import {
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
 import { toast } from "react-toastify";
 
-import { fetchAllCountryCodes, CountryCode } from "@/app/utils/countryCodes";
+import { PhoneInput } from "@/app/components/ui/PhoneInput";
 
 const DEFAULT_COUNTRY_CODES: CountryCode[] = [
   { code: "+54", flag: "🇦🇷", name: "Argentina" },
@@ -499,36 +499,12 @@ export default function ManagersPage() {
                 <label className="block text-xs font-bold text-white/60 mb-1.5">
                   Teléfono de Contacto (Opcional)
                 </label>
-                <div className="flex gap-2">
-                  <select
-                    value={selectedCountry}
-                    onChange={(e) => {
-                      const newCode = e.target.value;
-                      setSelectedCountry(newCode);
-                      setFormData((prev) => ({
-                        ...prev,
-                        phone: formatPhoneNumber(prev.phone, newCode),
-                      }));
-                    }}
-                    className="bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 font-poppins cursor-pointer"
-                  >
-                    {countryList.map((c) => (
-                      <option key={`${c.code}-${c.name}`} value={c.code} className="bg-primary text-white">
-                        {c.flag} {c.code} ({c.name})
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    value={formData.phone}
-                    onChange={(e) => {
-                      const formatted = formatPhoneNumber(e.target.value, selectedCountry);
-                      setFormData((prev) => ({ ...prev, phone: formatted }));
-                    }}
-                    placeholder="11 5596 3637"
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 transition-all font-poppins"
-                  />
-                </div>
+                <PhoneInput
+                  value={formData.phone}
+                  onChange={(fullPhone) =>
+                    setFormData((prev) => ({ ...prev, phone: fullPhone }))
+                  }
+                />
               </div>
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
