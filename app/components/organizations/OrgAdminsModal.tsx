@@ -19,6 +19,7 @@ import {
   OrganizationRecord,
   organizationsService,
 } from "@/app/services/organizationsService";
+import { PasswordInput } from "@/app/components/ui/PasswordInput";
 import { toast } from "react-toastify";
 
 interface OrgAdminsModalProps {
@@ -180,16 +181,13 @@ export default function OrgAdminsModal({
 
           <div className="space-y-1">
             <label className="text-xs font-medium text-white/70">Contraseña de Acceso</label>
-            <div className="relative">
-              <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
-              <input
-                type="password"
-                value={passwordRaw}
-                onChange={(e) => setPasswordRaw(e.target.value)}
-                placeholder="Mínimo 8 caracteres"
-                className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-              />
-            </div>
+            <PasswordInput
+              icon={<Key className="w-4 h-4" />}
+              value={passwordRaw}
+              onChange={(e) => setPasswordRaw(e.target.value)}
+              placeholder="Mínimo 8 caracteres"
+              className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+            />
           </div>
 
           <button
@@ -256,12 +254,11 @@ export default function OrgAdminsModal({
                           <option value="ADMIN">ADMIN</option>
                           <option value="ENCARGADO">ENCARGADO</option>
                         </select>
-                        <input
-                          type="password"
+                        <PasswordInput
                           placeholder="Nueva clave (opcional)"
                           value={editPassword}
                           onChange={(e) => setEditPassword(e.target.value)}
-                          className="bg-white/10 border border-white/20 rounded-lg px-2.5 py-1 text-xs text-white w-full sm:w-36 placeholder:text-white/40"
+                          className="bg-white/10 border border-white/20 rounded-lg py-1 text-xs text-white w-full sm:w-36 placeholder:text-white/40"
                         />
                         <div className="flex items-center gap-1">
                           <button

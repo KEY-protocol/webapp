@@ -11,6 +11,7 @@ import {
   Key,
   MailCheck,
 } from "lucide-react";
+import { PasswordInput } from "@/app/components/ui/PasswordInput";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -112,20 +113,18 @@ export const SettingsModal = ({
                     <label className="text-sm font-bold text-white/60 flex items-center gap-2">
                       <Key size={14} /> {t("fields.password")}
                     </label>
-                    <input
-                      type="password"
+                    <PasswordInput
                       placeholder="••••••••"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all font-poppins"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all font-poppins"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-white/60 flex items-center gap-2">
                       <Key size={14} /> {t("fields.confirm_password")}
                     </label>
-                    <input
-                      type="password"
+                    <PasswordInput
                       placeholder="••••••••"
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all font-poppins"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 text-white focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all font-poppins"
                     />
                   </div>
                 </div>

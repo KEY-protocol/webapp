@@ -11,6 +11,7 @@ import {
   type FederatedLoginResponse,
 } from "@/app/lib/auth-api";
 import { useAuth } from "@/app/context/AuthContext";
+import { PasswordInput } from "@/app/components/ui/PasswordInput";
 
 /**
  * Roles that bypass the ONG selection modal.
@@ -176,14 +177,13 @@ export function LoginForm() {
             >
               {t("passwordLabel")}
             </label>
-            <input
+            <PasswordInput
               id="login-password"
-              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("passwordPlaceholder")}
               disabled={isLoading}
-              className="w-full bg-[#1a2b15] border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745]/50 transition-all font-poppins shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#1a2b15] border border-white/10 rounded-xl py-4 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745]/50 transition-all font-poppins shadow-inner disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
