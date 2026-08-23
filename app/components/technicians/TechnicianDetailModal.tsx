@@ -138,24 +138,7 @@ export default function TechnicianDetailModal({
                 </div>
               )}
 
-              {/* Skills */}
-              {technician.skills && technician.skills.length > 0 && (
-                <div>
-                  <p className="text-sm font-bold text-white/60 mb-2">
-                    {t("skills")}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {technician.skills.map((skill, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 text-xs font-medium bg-white/10 text-white/80 rounded-full border border-white/10"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+
 
 
 

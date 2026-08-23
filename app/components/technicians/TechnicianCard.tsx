@@ -74,14 +74,6 @@ export default function TechnicianRow({
             label={t("actions.edit")}
             onClick={() => onEdit(technician.id)}
           />
-          {technician.status === "pending" && (
-            <ActionButton
-              icon={<CheckCircle className="w-4 h-4" />}
-              label={t("actions.approve")}
-              onClick={() => onApprove(technician.id)}
-              variant="success"
-            />
-          )}
           <ActionButton
             icon={<Trash2 className="w-4 h-4" />}
             label={t("actions.delete")}

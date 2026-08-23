@@ -8,6 +8,7 @@ import type {
   TechnicianDetail,
   UpdateTechnicianPayload,
 } from "@/app/types/technician";
+import { PhoneInput } from "@/app/components/ui/PhoneInput";
 
 interface EditTechnicianModalProps {
   isOpen: boolean;
@@ -31,7 +32,6 @@ export default function EditTechnicianModal({
   const [documentNumber, setDocumentNumber] = useState("");
   const [documentType, setDocumentType] = useState("");
   const [phone, setPhone] = useState("");
-  const [skills, setSkills] = useState("");
 
   // Sync form state when technician changes
   const prevId = useState<string | null>(null);
@@ -42,7 +42,6 @@ export default function EditTechnicianModal({
     setDocumentNumber(technician.documentNumber || "");
     setDocumentType(technician.documentType || "");
     setPhone(technician.phone || "");
-    setSkills(technician.skills?.join(", ") || "");
   }
 
   const handleSubmit = useCallback(
@@ -59,15 +58,6 @@ export default function EditTechnicianModal({
         payload.documentType = documentType;
       if (phone !== (technician.phone || "")) payload.phone = phone;
 
-      const parsedSkills = skills
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
-      const currentSkills = technician.skills || [];
-      if (JSON.stringify(parsedSkills) !== JSON.stringify(currentSkills)) {
-        payload.skills = parsedSkills;
-      }
-
       // Only send if there are changes
       if (Object.keys(payload).length === 0) {
         onClose();
@@ -82,7 +72,7 @@ export default function EditTechnicianModal({
         toast.error("Error al actualizar la información del técnico");
       }
     },
-    [technician, name, surname, documentNumber, documentType, phone, skills, onSave, onClose],
+    [technician, name, surname, documentNumber, documentType, phone, onSave, onClose],
   );
 
   if (!isOpen || !technician) return null;
@@ -159,37 +149,31 @@ export default function EditTechnicianModal({
                 <label className="text-sm font-bold text-white/60 ml-1">
                   {t("document_type_label")}
                 </label>
-                <input
-                  type="text"
+                <select
                   value={documentType}
                   onChange={(e) => setDocumentType(e.target.value)}
-                  className={inputClass}
-                />
+                  className={`${inputClass} cursor-pointer`}
+                >
+                  <option value="DNI" className="bg-[#142612] text-white">
+                    DNI
+                  </option>
+                  <option value="PASSPORT" className="bg-[#142612] text-white">
+                    Pasaporte
+                  </option>
+                  <option value="CI" className="bg-[#142612] text-white">
+                    Cédula de Identidad
+                  </option>
+                </select>
               </div>
 
               {/* Phone */}
-              <div className="space-y-2">
+              <div className="md:col-span-2 space-y-2">
                 <label className="text-sm font-bold text-white/60 ml-1">
                   {t("phone_label")}
                 </label>
-                <input
-                  type="text"
+                <PhoneInput
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className={inputClass}
-                />
-              </div>
-
-              {/* Skills (Full Width) */}
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-sm font-bold text-white/60 ml-1">
-                  {t("skills_label")}
-                </label>
-                <input
-                  type="text"
-                  value={skills}
-                  onChange={(e) => setSkills(e.target.value)}
-                  className={inputClass}
+                  onChange={(val) => setPhone(val)}
                 />
               </div>
             </div>
