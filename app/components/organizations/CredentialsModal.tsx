@@ -55,7 +55,6 @@ export default function CredentialsModal({
       const payload: UpdateOrgCredentialsPayload = {
         dbConnectionString,
         apiBaseUrl,
-        phalaTeeUrl,
         blockchainRpcUrl,
         maxTechniciansLimit: Number(maxTechniciansLimit),
       };
@@ -125,34 +124,18 @@ export default function CredentialsModal({
           </div>
 
           {/* API Base URL */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-                <Server className="w-3.5 h-3.5 text-cyan-400" />
-                URL del Servidor Dedicado
-              </label>
-              <input
-                type="text"
-                value={apiBaseUrl}
-                onChange={(e) => setApiBaseUrl(e.target.value)}
-                placeholder="https://api.ong.org/api"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-                <Cpu className="w-3.5 h-3.5 text-amber-400" />
-                URL Enclave Phala TEE
-              </label>
-              <input
-                type="text"
-                value={phalaTeeUrl}
-                onChange={(e) => setPhalaTeeUrl(e.target.value)}
-                placeholder="http://phala-tee.ong.org:8080"
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
-              />
-            </div>
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+              <Server className="w-3.5 h-3.5 text-cyan-400" />
+              URL del Servidor Dedicado
+            </label>
+            <input
+              type="text"
+              value={apiBaseUrl}
+              onChange={(e) => setApiBaseUrl(e.target.value)}
+              placeholder="https://api.ong.org/api"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
+            />
           </div>
 
           {/* Blockchain RPC & Tech Limit */}
