@@ -186,14 +186,6 @@ export default function AuditIdentitiesPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/mobile-form-preview"
-              className="flex items-center gap-2 bg-[#28a745]/20 hover:bg-[#28a745]/30 text-[#28a745] border border-[#28a745]/40 px-4 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer"
-            >
-              <Smartphone className="w-4 h-4" />
-              Ver Formulario Móvil
-            </Link>
-
             <button
               onClick={() => refresh()}
               disabled={isLoading}
@@ -257,7 +249,7 @@ export default function AuditIdentitiesPage() {
         </div>
 
         {/* Filters bar */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className={`grid grid-cols-1 ${isSuperadmin ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4`}>
           {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -284,8 +276,8 @@ export default function AuditIdentitiesPage() {
             </select>
           </div>
 
-          {/* ONG Filter (Superadmin view) */}
-          {isSuperadmin ? (
+          {/* ONG Filter (Exclusivo para Superadmin) */}
+          {isSuperadmin && (
             <div className="relative">
               <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
               <select
@@ -300,11 +292,6 @@ export default function AuditIdentitiesPage() {
                   </option>
                 ))}
               </select>
-            </div>
-          ) : (
-            <div className="flex items-center bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white/80 text-sm font-poppins">
-              <Building2 className="w-4 h-4 mr-2 text-[#28a745]" />
-              <span>Organización: {data.currentUser.ongId || "Activa"}</span>
             </div>
           )}
         </div>
