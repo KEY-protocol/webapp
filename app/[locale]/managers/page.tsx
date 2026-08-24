@@ -1,4 +1,5 @@
 "use client";
+// Updated managers page without deprecated fetchAllCountryCodes
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
@@ -30,40 +31,6 @@ import { toast } from "react-toastify";
 
 import { PhoneInput } from "@/app/components/ui/PhoneInput";
 
-const DEFAULT_COUNTRY_CODES: CountryCode[] = [
-  { code: "+54", flag: "🇦🇷", name: "Argentina" },
-  { code: "+55", flag: "🇧🇷", name: "Brasil" },
-  { code: "+56", flag: "🇨🇱", name: "Chile" },
-  { code: "+598", flag: "🇺🇾", name: "Uruguay" },
-  { code: "+595", flag: "🇵🇾", name: "Paraguay" },
-  { code: "+591", flag: "🇧🇴", name: "Bolivia" },
-  { code: "+57", flag: "🇨🇴", name: "Colombia" },
-  { code: "+52", flag: "🇲🇽", name: "México" },
-  { code: "+1", flag: "🇺🇸", name: "EE.UU." },
-  { code: "+34", flag: "🇪🇸", name: "España" },
-];
-
-function formatPhoneNumber(value: string, countryCode: string): string {
-  const digits = value.replace(/\D/g, "");
-  if (countryCode === "+54") {
-    if (digits.length <= 2) return digits;
-    if (digits.startsWith("11")) {
-      if (digits.length <= 6) return `${digits.slice(0, 2)} ${digits.slice(2)}`;
-      return `${digits.slice(0, 2)} ${digits.slice(2, 6)} ${digits.slice(6, 10)}`;
-    }
-    if (digits.startsWith("351") || digits.startsWith("341") || digits.startsWith("261")) {
-      if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
-      return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
-    }
-    if (digits.length <= 4) return digits;
-    if (digits.length <= 7) return `${digits.slice(0, 4)} ${digits.slice(4)}`;
-    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7, 11)}`;
-  }
-  if (digits.length <= 3) return digits;
-  if (digits.length <= 6) return `${digits.slice(0, 3)} ${digits.slice(3)}`;
-  return `${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 10)}`;
-}
-
 export interface ManagerUser {
   id: string;
   name: string;
@@ -91,9 +58,7 @@ export default function ManagersPage() {
     null,
   );
 
-  const [countryList, setCountryList] = useState<CountryCode[]>(DEFAULT_COUNTRY_CODES);
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState("+54");
 
   const loadBackendManagers = useCallback(async () => {
     if (!token) return;
@@ -118,11 +83,6 @@ export default function ManagersPage() {
 
   useEffect(() => {
     loadBackendManagers();
-    fetchAllCountryCodes().then((list) => {
-      if (list && list.length > 0) {
-        setCountryList(list);
-      }
-    });
   }, [loadBackendManagers]);
 
   // Form states
@@ -229,7 +189,7 @@ export default function ManagersPage() {
             : "Datos del Encargado actualizados correctamente",
         );
       } else {
-        const fullPhone = formData.phone ? `${selectedCountry} ${formData.phone}` : undefined;
+        const fullPhone = formData.phone || undefined;
         const created = await createEncargado(ongUrl || "http://localhost:3001", token || "", {
           email: formData.email,
           password: formData.password,

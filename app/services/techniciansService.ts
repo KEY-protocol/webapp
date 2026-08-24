@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getOngBaseUrl } from "./encargadosService";
 
 export interface TechnicianDto {
   id: string;
@@ -22,7 +23,8 @@ export async function fetchTechnicians(
   token: string,
 ): Promise<TechnicianDto[]> {
   try {
-    const response = await axios.get(`${ongUrl}/technicians`, {
+    const baseUrl = getOngBaseUrl(ongUrl);
+    const response = await axios.get(`${baseUrl}/technicians`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data || [];
@@ -38,7 +40,8 @@ export async function fetchTechnicianById(
   id: string,
 ): Promise<TechnicianDto | null> {
   try {
-    const response = await axios.get(`${ongUrl}/technicians/${id}`, {
+    const baseUrl = getOngBaseUrl(ongUrl);
+    const response = await axios.get(`${baseUrl}/technicians/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
@@ -54,8 +57,9 @@ export async function approveTechnician(
   id: string,
 ): Promise<TechnicianDto | null> {
   try {
+    const baseUrl = getOngBaseUrl(ongUrl);
     const response = await axios.patch(
-      `${ongUrl}/technicians/${id}/approve`,
+      `${baseUrl}/technicians/${id}/approve`,
       {},
       { headers: { Authorization: `Bearer ${token}` } },
     );

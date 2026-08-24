@@ -8,9 +8,19 @@ export interface EncargadoDto {
   createdAt: string;
 }
 
+export function getOngBaseUrl(ongUrl?: string | null): string {
+  if (!ongUrl) return "http://localhost:3001";
+  let url = ongUrl.trim().replace(/\/+$/, "");
+  if (typeof window !== "undefined") {
+    url = url.replace(/https?:\/\/(ong-server|ongserver)/i, "http://localhost");
+  }
+  return url;
+}
+
 export async function fetchEncargados(ongUrl: string, token: string): Promise<EncargadoDto[]> {
   try {
-    const response = await axios.get(`${ongUrl}/users/encargados`, {
+    const baseUrl = getOngBaseUrl(ongUrl);
+    const response = await axios.get(`${baseUrl}/users/encargados`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data || [];
@@ -26,8 +36,9 @@ export async function createEncargado(
   data: { email: string; password: string },
 ): Promise<EncargadoDto | null> {
   try {
+    const baseUrl = getOngBaseUrl(ongUrl);
     const response = await axios.post(
-      `${ongUrl}/users`,
+      `${baseUrl}/users`,
       { ...data, role: "ENCARGADO" },
       { headers: { Authorization: `Bearer ${token}` } },
     );
@@ -44,7 +55,8 @@ export async function deleteEncargado(
   id: string,
 ): Promise<boolean> {
   try {
-    await axios.delete(`${ongUrl}/users/${id}`, {
+    const baseUrl = getOngBaseUrl(ongUrl);
+    await axios.delete(`${baseUrl}/users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return true;

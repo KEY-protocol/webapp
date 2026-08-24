@@ -123,7 +123,7 @@ export const Sidebar = () => {
       icon: Smartphone,
       label: "Formulario Mobile",
       href: "/mobile-form-preview",
-      roles: ["encargado", "admin"],
+      roles: ["admin"],
     },
     {
       id: "managers",
