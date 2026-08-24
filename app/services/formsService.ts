@@ -26,8 +26,7 @@ export async function fetchActiveForm(
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data || null;
-  } catch (error) {
-    console.error("Error al obtener formulario activo:", error);
+  } catch {
     return null;
   }
 }

@@ -10,13 +10,13 @@ import {
   ShieldCheck,
   CheckCircle2,
   Sparkles,
-  Info,
   User,
   MapPin,
   ListFilter,
   RefreshCw,
   Copy,
   Check,
+  Layers,
 } from "lucide-react";
 import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
@@ -31,141 +31,6 @@ import {
 } from "@/app/services/formsService";
 import { FormSchemaDto, FormFieldDef } from "@/app/types/api";
 
-export const MOCK_FORM_FIELDS: FormFieldDef[] = [
-  // Paso 1: Datos Personales
-  { name: "nombre", label: "Nombre", type: "text", required: true, step: 1 },
-  { name: "apellido", label: "Apellido", type: "text", required: true, step: 1 },
-  { name: "fechaNacimiento", label: "Fecha de Nacimiento", type: "date", required: true, step: 1 },
-  { name: "documentoIdentidad", label: "Documento de Identidad", type: "text", required: true, step: 1 },
-  {
-    name: "sexo",
-    label: "Sexo",
-    type: "select_one",
-    required: true,
-    step: 1,
-    options: [
-      { value: "masculino", label: "Masculino" },
-      { value: "femenino", label: "Femenino" },
-      { value: "no_especifica", label: "No Especifica" },
-    ],
-  },
-  {
-    name: "genero",
-    label: "Género",
-    type: "select_one",
-    required: false,
-    step: 1,
-    options: [
-      { value: "cisgenero", label: "Cisgénero" },
-      { value: "transgenero", label: "Transgénero" },
-      { value: "no_binario", label: "No Binario" },
-      { value: "no_especifica", label: "No Especifica" },
-    ],
-  },
-  {
-    name: "etnia",
-    label: "Etnia / Comunidad Originaria",
-    type: "select_one",
-    required: false,
-    step: 1,
-    options: [
-      { value: "wichi", label: "Wichí" },
-      { value: "qom", label: "Qom" },
-      { value: "chorote", label: "Chorote" },
-      { value: "chulupi", label: "Chulupí" },
-      { value: "mocovi", label: "Mocoví" },
-      { value: "ava_guarani", label: "Ava Guaraní" },
-    ],
-  },
-  { name: "cantidadIntegrantesFamilia", label: "Integrantes Familia", type: "number", required: false, step: 1 },
-  { name: "correoElectronico", label: "Correo Electrónico", type: "text", required: false, step: 1 },
-
-  // Paso 2: Datos Territoriales y Cadenas Productivas
-  {
-    name: "pais",
-    label: "País",
-    type: "select_one",
-    required: true,
-    step: 2,
-    options: [
-      { value: "argentina", label: "Argentina" },
-      { value: "paraguay", label: "Paraguay" },
-      { value: "bolivia", label: "Bolivia" },
-    ],
-  },
-  {
-    name: "provincia",
-    label: "Provincia",
-    type: "select_one",
-    required: true,
-    step: 2,
-    options: [
-      { value: "chaco", label: "Chaco" },
-      { value: "formosa", label: "Formosa" },
-      { value: "salta", label: "Salta" },
-      { value: "santiago_del_estero", label: "Santiago del Estero" },
-    ],
-  },
-  {
-    name: "localidad",
-    label: "Localidad",
-    type: "select_one",
-    required: true,
-    step: 2,
-    options: [
-      { value: "almirante_brown", label: "Almirante Brown" },
-      { value: "general_guemes", label: "General Güemes" },
-      { value: "las_lomitas", label: "Las Lomitas" },
-      { value: "oran", label: "Orán" },
-      { value: "rivadavia_salta", label: "Rivadavia" },
-    ],
-  },
-  {
-    name: "zona",
-    label: "Zona / Paraje",
-    type: "select_one",
-    required: false,
-    step: 2,
-    options: [
-      { value: "campo_del_cielo", label: "Campo del Cielo" },
-      { value: "jj_castelli", label: "JJ Castelli" },
-      { value: "el_sauzal", label: "El Sauzal" },
-      { value: "nueva_pompeya", label: "Nueva Pompeya" },
-      { value: "pampa_del_indio", label: "Pampa del Indio" },
-    ],
-  },
-  {
-    name: "actividadesPrincipales",
-    label: "Actividades Productivas Principales",
-    type: "select_multiple",
-    required: false,
-    step: 2,
-    options: [
-      { value: "apicultura", label: "Apicultura" },
-      { value: "artesania", label: "Artesanía" },
-      { value: "ganaderia_mayor", label: "Ganadería Mayor" },
-      { value: "ganaderia_menor", label: "Ganadería Menor" },
-      { value: "algarroba", label: "Algarroba" },
-      { value: "avicola", label: "Avícola" },
-    ],
-  },
-  {
-    name: "nivelConocimiento",
-    label: "Nivel de Conocimiento Productivo",
-    type: "select_one",
-    required: false,
-    step: 2,
-    options: [
-      { value: "principiante", label: "Principiante (está empezando)" },
-      { value: "entendido", label: "Entendido (prácticas básicas)" },
-      { value: "conocedor", label: "Conocedor (procesos completos)" },
-      { value: "vendedor", label: "Vendedor / Comercializador" },
-    ],
-  },
-  { name: "superficiePredio", label: "Superficie del Predio (ha)", type: "number", required: false, step: 2 },
-  { name: "superficieProductiva", label: "Superficie Productiva (ha)", type: "number", required: false, step: 2 },
-];
-
 export default function IdentityFormSimulator() {
   const { data } = useData();
   const { token, ongUrl, user } = useAuth();
@@ -175,7 +40,8 @@ export default function IdentityFormSimulator() {
   const isAdmin = userRole === "admin";
 
   const [formSchema, setFormSchema] = useState<FormSchemaDto | null>(null);
-  const [activeFields, setActiveFields] = useState<FormFieldDef[]>(MOCK_FORM_FIELDS);
+  const [activeFields, setActiveFields] = useState<FormFieldDef[]>([]);
+  const [selectedVersionId, setSelectedVersionId] = useState<string>("");
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
   const [isUpdatingVersion, setIsUpdatingVersion] = useState(false);
 
@@ -190,23 +56,73 @@ export default function IdentityFormSimulator() {
   const [activeViewMode, setActiveViewMode] = useState<"simulator" | "json">("simulator");
   const [copiedJson, setCopiedJson] = useState(false);
 
-  useEffect(() => {
-    async function loadForm() {
-      if (!token) return;
-      try {
-        const active = await fetchActiveForm(ongUrl || "http://localhost:3001", token, "IDENTITY");
-        if (active) {
-          setFormSchema(active);
-          if (active.activeVersion?.fields && active.activeVersion.fields.length > 0) {
-            setActiveFields(active.activeVersion.fields);
-          }
+  const loadActiveFormSchema = async () => {
+    if (!token) return;
+    try {
+      const active = await fetchActiveForm(ongUrl || "", token, "IDENTITY");
+      if (active) {
+        setFormSchema(active);
+        const activeVerId = active.activeVersionId || active.activeVersion?.id || (active.versions && active.versions[0]?.id) || "";
+        setSelectedVersionId(activeVerId);
+        if (active.activeVersion?.fields && active.activeVersion.fields.length > 0) {
+          setActiveFields(active.activeVersion.fields);
+        } else if (active.versions && active.versions.length > 0) {
+          setActiveFields(active.versions[0].fields || []);
         }
-      } catch (err) {
-        console.error("Error cargando formulario dinámico:", err);
+      }
+    } catch (err) {
+      console.error("Error cargando formulario dinámico:", err);
+    }
+  };
+
+  useEffect(() => {
+    loadActiveFormSchema();
+  }, [token, ongUrl]);
+
+  const handlePreviewVersionChange = (versionId: string) => {
+    setSelectedVersionId(versionId);
+    if (formSchema?.versions) {
+      const targetVer = formSchema.versions.find((v) => v.id === versionId);
+      if (targetVer && targetVer.fields) {
+        setActiveFields(targetVer.fields);
+        toast.info(`Previsualizando Versión v${targetVer.version}`);
       }
     }
-    loadForm();
-  }, [token, ongUrl]);
+  };
+
+  const handleApproveAndActivateVersion = async () => {
+    if (!token || !formSchema?.id || !selectedVersionId) return;
+    setIsUpdatingVersion(true);
+    try {
+      const ok = await setActiveFormVersion(
+        ongUrl || "",
+        token,
+        formSchema.id,
+        selectedVersionId,
+      );
+      if (ok) {
+        const targetVer = formSchema.versions?.find((v) => v.id === selectedVersionId);
+        if (targetVer) {
+          setFormSchema((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  activeVersionId: selectedVersionId,
+                  activeVersion: targetVer,
+                }
+              : prev,
+          );
+          toast.success(
+            `Versión v${targetVer.version} aprobada y activada exitosamente en la BD de la organización.`,
+          );
+        }
+      }
+    } catch (err) {
+      toast.error("Error al aprobar la versión del formulario");
+    } finally {
+      setIsUpdatingVersion(false);
+    }
+  };
 
   const handleInputChange = (field: string, val: any) => {
     setFormData((prev) => ({ ...prev, [field]: val }));
@@ -222,25 +138,15 @@ export default function IdentityFormSimulator() {
   };
 
   const fillSampleData = () => {
-    setFormData({
-      nombre: "María Belén",
-      apellido: "Maidana",
-      fechaNacimiento: "1998-11-24",
-      documentoIdentidad: "42111222",
-      sexo: "femenino",
-      genero: "cisgenero",
-      etnia: "qom",
-      cantidadIntegrantesFamilia: 4,
-      correoElectronico: "m.maidana@granchaco.org",
-      pais: "argentina",
-      provincia: "formosa",
-      localidad: "las_lomitas",
-      zona: "campo_del_cielo",
-      actividadesPrincipales: ["artesania", "algarroba"],
-      nivelConocimiento: "vendedor",
-      superficiePredio: 15,
-      superficieProductiva: 10,
+    const sampleObj: Record<string, any> = {};
+    activeFields.forEach((f) => {
+      if (f.type === "text") sampleObj[f.name] = `Ejemplo ${f.label}`;
+      else if (f.type === "number") sampleObj[f.name] = 10;
+      else if (f.type === "date") sampleObj[f.name] = "1995-05-15";
+      else if (f.type === "select_one" && f.options && f.options.length > 0) sampleObj[f.name] = f.options[0].value;
+      else if (f.type === "select_multiple" && f.options && f.options.length > 0) sampleObj[f.name] = [f.options[0].value];
     });
+    setFormData(sampleObj);
     setFaceCaptured(true);
     setFrontCaptured(true);
     setBackCaptured(true);
@@ -258,7 +164,7 @@ export default function IdentityFormSimulator() {
     try {
       if (formSchema?.id) {
         const newVer = await createFormVersion(
-          ongUrl || "http://localhost:3001",
+          ongUrl || "",
           token,
           formSchema.id,
           {
@@ -268,19 +174,20 @@ export default function IdentityFormSimulator() {
           },
         );
         if (newVer) {
+          await loadActiveFormSchema();
+          setSelectedVersionId(newVer.id);
           setActiveFields(formDataSaved.fields);
-          toast.success(`Nueva versión v${formDataSaved.version} publicada con éxito`);
+          toast.success(`Nueva versión v${formDataSaved.version} publicada y lista para previsualizar`);
         }
       } else {
         const created = await createFormSchema(
-          ongUrl || "http://localhost:3001",
+          ongUrl || "",
           token,
           formDataSaved,
         );
         if (created) {
-          setFormSchema(created);
-          setActiveFields(formDataSaved.fields);
-          toast.success(`Formulario y versión v${formDataSaved.version} creados con éxito`);
+          await loadActiveFormSchema();
+          toast.success(`Formulario y versión v${formDataSaved.version} creados con éxito en BD`);
         }
       }
     } catch (err) {
@@ -288,33 +195,11 @@ export default function IdentityFormSimulator() {
     }
   };
 
-  const handleSelectActiveVersion = async (versionId: string) => {
-    if (!token || !formSchema?.id) return;
-    setIsUpdatingVersion(true);
-    try {
-      const ok = await setActiveFormVersion(
-        ongUrl || "http://localhost:3001",
-        token,
-        formSchema.id,
-        versionId,
-      );
-      if (ok) {
-        const targetVer = formSchema.versions?.find((v) => v.id === versionId);
-        if (targetVer) {
-          setActiveFields(targetVer.fields);
-          setFormSchema((prev) => (prev ? { ...prev, activeVersionId: versionId } : prev));
-          toast.success(`Versión v${targetVer.version} activada para tu organización`);
-        }
-      }
-    } catch (err) {
-      toast.error("Error al cambiar la versión activa");
-    } finally {
-      setIsUpdatingVersion(false);
-    }
-  };
-
   const step1Fields = activeFields.filter((f) => (f.step || 1) === 1);
   const step2Fields = activeFields.filter((f) => f.step === 2);
+
+  const activeVersionObj = formSchema?.versions?.find((v) => v.id === (formSchema.activeVersionId || formSchema.activeVersion?.id));
+  const currentPreviewVersionObj = formSchema?.versions?.find((v) => v.id === selectedVersionId);
 
   const copyJsonToClipboard = () => {
     navigator.clipboard.writeText(JSON.stringify(formData, null, 2));
@@ -325,7 +210,7 @@ export default function IdentityFormSimulator() {
   return (
     <div className="w-full space-y-6">
       {/* Control bar / Mode switcher */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col lg:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#28a745]/15 border border-[#28a745]/30 flex items-center justify-center text-[#28a745]">
             <Smartphone className="w-5 h-5" />
@@ -333,19 +218,54 @@ export default function IdentityFormSimulator() {
           <div>
             <h3 className="text-white font-montserrat font-bold text-base flex items-center gap-2">
               Simulador del Formulario Móvil (FieldApp)
-              {formSchema?.activeVersion?.version && (
-                <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-                  v{formSchema.activeVersion.version}
+              {activeVersionObj?.version && (
+                <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full" title="Versión activa en base de datos">
+                  v{activeVersionObj.version} (Activa)
                 </span>
               )}
             </h3>
             <p className="text-white/50 text-xs font-poppins">
-              Visualiza paso a paso la Encuesta Inicial y Captura de Evidencias de Identidades en Territorio.
+              Visualiza paso a paso la Encuesta Inicial y Captura de Evidencias en Territorio.
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
+          {/* Dropdown Selector de Versiones en la BD */}
+          {formSchema && formSchema.versions && formSchema.versions.length > 0 && (
+            <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl p-1.5">
+              <Layers className="w-4 h-4 text-[#28a745] ml-1.5 shrink-0" />
+              <span className="text-xs text-white/70 font-poppins font-medium hidden sm:inline">Versión:</span>
+              <select
+                value={selectedVersionId}
+                onChange={(e) => handlePreviewVersionChange(e.target.value)}
+                className="bg-[#142612] border border-white/15 rounded-lg px-2.5 py-1 text-xs text-white font-mono font-bold focus:outline-none focus:border-[#28a745] cursor-pointer"
+              >
+                {formSchema.versions.map((ver) => {
+                  const isActive = ver.id === (formSchema.activeVersionId || formSchema.activeVersion?.id);
+                  return (
+                    <option key={ver.id} value={ver.id}>
+                      v{ver.version} {isActive ? "(Activa en BD)" : "(Histórica/Borrador)"}
+                    </option>
+                  );
+                })}
+              </select>
+
+              {/* Botón para Aprobar / Activar Versión Seleccionada */}
+              {selectedVersionId !== (formSchema.activeVersionId || formSchema.activeVersion?.id) && (
+                <button
+                  onClick={handleApproveAndActivateVersion}
+                  disabled={isUpdatingVersion}
+                  className="flex items-center gap-1 px-3 py-1 rounded-lg bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-md"
+                  title="Aprobar y establecer esta versión como la activa para la organización"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  Aprobar y Activar
+                </button>
+              )}
+            </div>
+          )}
+
           {isSuperadmin && (
             <button
               onClick={() => setIsBuilderOpen(true)}
@@ -361,7 +281,7 @@ export default function IdentityFormSimulator() {
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            Cargar Datos de Muestra
+            Datos Muestra
           </button>
 
           {isSuperadmin && (
@@ -391,11 +311,13 @@ export default function IdentityFormSimulator() {
         </div>
       </div>
 
-      {/* Org Admin Version Selector */}
+      {/* Org Admin Version Selector Card (If Admin role) */}
       {isAdmin && formSchema && formSchema.versions && formSchema.versions.length > 0 && (
         <FormVersionSelector
           formSchema={formSchema}
-          onSelectVersion={handleSelectActiveVersion}
+          onSelectVersion={async (verId) => {
+            handlePreviewVersionChange(verId);
+          }}
           isUpdating={isUpdatingVersion}
         />
       )}
@@ -420,7 +342,7 @@ export default function IdentityFormSimulator() {
                   <FileText className="w-5 h-5 text-[#28a745]" />
                   <div>
                     <h4 className="text-white font-montserrat font-bold text-xs">
-                      FieldApp Mobile
+                      FieldApp Mobile {currentPreviewVersionObj?.version && `v${currentPreviewVersionObj.version}`}
                     </h4>
                     <p className="text-[10px] text-white/50 font-poppins">
                       Paso {currentStep} de 4
@@ -467,37 +389,43 @@ export default function IdentityFormSimulator() {
                       </h5>
                     </div>
 
-                    {step1Fields.map((field) => (
-                      <div key={field.name} className="space-y-1">
-                        <label className="text-[11px] text-white/70 font-poppins flex justify-between">
-                          <span>
-                            {field.label} {field.required && <span className="text-red-400">*</span>}
-                          </span>
-                        </label>
+                    {step1Fields.length === 0 ? (
+                      <p className="text-xs text-white/40 italic py-4 text-center">
+                        No hay campos definidos para este paso. Haz clic en &quot;Crear Nueva Versión&quot; para añadir campos.
+                      </p>
+                    ) : (
+                      step1Fields.map((field) => (
+                        <div key={field.name} className="space-y-1">
+                          <label className="text-[11px] text-white/70 font-poppins flex justify-between">
+                            <span>
+                              {field.label} {field.required && <span className="text-red-400">*</span>}
+                            </span>
+                          </label>
 
-                        {field.type === "select_one" ? (
-                          <select
-                            value={formData[field.name] || ""}
-                            onChange={(e) => handleInputChange(field.name, e.target.value)}
-                            className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
-                          >
-                            <option value="">Seleccionar...</option>
-                            {field.options?.map((opt) => (
-                              <option key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input
-                            type={field.type === "number" ? "number" : field.type === "date" ? "date" : "text"}
-                            value={formData[field.name] || ""}
-                            onChange={(e) => handleInputChange(field.name, e.target.value)}
-                            className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
-                          />
-                        )}
-                      </div>
-                    ))}
+                          {field.type === "select_one" ? (
+                            <select
+                              value={formData[field.name] || ""}
+                              onChange={(e) => handleInputChange(field.name, e.target.value)}
+                              className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
+                            >
+                              <option value="">Seleccionar...</option>
+                              {field.options?.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <input
+                              type={field.type === "number" ? "number" : field.type === "date" ? "date" : "text"}
+                              value={formData[field.name] || ""}
+                              onChange={(e) => handleInputChange(field.name, e.target.value)}
+                              className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
+                            />
+                          )}
+                        </div>
+                      ))
+                    )}
                   </div>
                 )}
 
@@ -510,57 +438,63 @@ export default function IdentityFormSimulator() {
                       </h5>
                     </div>
 
-                    {step2Fields.map((field) => (
-                      <div key={field.name} className="space-y-1">
-                        <label className="text-[11px] text-white/70 font-poppins flex justify-between">
-                          <span>
-                            {field.label} {field.required && <span className="text-red-400">*</span>}
-                          </span>
-                        </label>
+                    {step2Fields.length === 0 ? (
+                      <p className="text-xs text-white/40 italic py-4 text-center">
+                        No hay campos definidos para este paso. Haz clic en &quot;Crear Nueva Versión&quot; para añadir campos.
+                      </p>
+                    ) : (
+                      step2Fields.map((field) => (
+                        <div key={field.name} className="space-y-1">
+                          <label className="text-[11px] text-white/70 font-poppins flex justify-between">
+                            <span>
+                              {field.label} {field.required && <span className="text-red-400">*</span>}
+                            </span>
+                          </label>
 
-                        {field.type === "select_one" ? (
-                          <select
-                            value={formData[field.name] || ""}
-                            onChange={(e) => handleInputChange(field.name, e.target.value)}
-                            className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
-                          >
-                            <option value="">Seleccionar...</option>
-                            {field.options?.map((opt) => (
-                              <option key={opt.value} value={opt.value}>
-                                {opt.label}
-                              </option>
-                            ))}
-                          </select>
-                        ) : field.type === "select_multiple" ? (
-                          <div className="grid grid-cols-2 gap-1.5 pt-1">
-                            {field.options?.map((opt) => {
-                              const isChecked = (formData[field.name] || []).includes(opt.value);
-                              return (
-                                <button
-                                  type="button"
-                                  key={opt.value}
-                                  onClick={() => handleMultiSelectToggle(field.name, opt.value)}
-                                  className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-left border transition-all cursor-pointer ${
-                                    isChecked
-                                      ? "bg-[#28a745]/20 border-[#28a745] text-emerald-300 font-bold"
-                                      : "bg-[#1b3218] border-white/10 text-white/60 hover:text-white"
-                                  }`}
-                                >
+                          {field.type === "select_one" ? (
+                            <select
+                              value={formData[field.name] || ""}
+                              onChange={(e) => handleInputChange(field.name, e.target.value)}
+                              className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
+                            >
+                              <option value="">Seleccionar...</option>
+                              {field.options?.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
                                   {opt.label}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <input
-                            type={field.type === "number" ? "number" : "text"}
-                            value={formData[field.name] || ""}
-                            onChange={(e) => handleInputChange(field.name, e.target.value)}
-                            className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
-                          />
-                        )}
-                      </div>
-                    ))}
+                                </option>
+                              ))}
+                            </select>
+                          ) : field.type === "select_multiple" ? (
+                            <div className="grid grid-cols-2 gap-1.5 pt-1">
+                              {field.options?.map((opt) => {
+                                const isChecked = (formData[field.name] || []).includes(opt.value);
+                                return (
+                                  <button
+                                    type="button"
+                                    key={opt.value}
+                                    onClick={() => handleMultiSelectToggle(field.name, opt.value)}
+                                    className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-left border transition-all cursor-pointer ${
+                                      isChecked
+                                        ? "bg-[#28a745]/20 border-[#28a745] text-emerald-300 font-bold"
+                                        : "bg-[#1b3218] border-white/10 text-white/60 hover:text-white"
+                                    }`}
+                                  >
+                                    {opt.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            <input
+                              type={field.type === "number" ? "number" : "text"}
+                              value={formData[field.name] || ""}
+                              onChange={(e) => handleInputChange(field.name, e.target.value)}
+                              className="w-full bg-[#1b3218] border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[#28a745]"
+                            />
+                          )}
+                        </div>
+                      ))
+                    )}
                   </div>
                 )}
 
@@ -675,13 +609,16 @@ export default function IdentityFormSimulator() {
                         Registro Completo Listo para Envío
                       </h5>
                       <p className="text-xs text-white/60 font-poppins">
-                        Las 17 respuestas de la encuesta y los binarios de fotos están empaquetados para cifrado en Phala TEE.
+                        Las respuestas de la encuesta y los binarios de fotos están empaquetados para cifrado en Phala TEE.
                       </p>
                     </div>
                     <div className="bg-[#162d14] p-3 rounded-xl border border-emerald-500/30 text-left space-y-1 text-xs">
                       <span className="font-bold text-emerald-400">Resumen de Envíos:</span>
-                      <p className="text-white/70">• Titular: {formData.nombre || "María Belén"} {formData.apellido || "Maidana"}</p>
-                      <p className="text-white/70">• DNI: {formData.documentoIdentidad || "42111222"}</p>
+                      {Object.entries(formData).map(([k, v]) => (
+                        <p key={k} className="text-white/70">
+                          • {k}: {Array.isArray(v) ? v.join(", ") : String(v)}
+                        </p>
+                      ))}
                       <p className="text-white/70">• Fotos: Selfie ✓ | DNI Frente ✓ | DNI Dorso ✓</p>
                     </div>
                   </div>
@@ -722,9 +659,9 @@ export default function IdentityFormSimulator() {
                   </div>
                   <span className="text-xs font-poppins text-white/50">
                     {currentStep === 1
-                      ? `${step1Fields.length} campos personales`
+                      ? `${step1Fields.length} campos`
                       : currentStep === 2
-                        ? `${step2Fields.length} campos territoriales`
+                        ? `${step2Fields.length} campos`
                         : currentStep === 3
                           ? "Módulo de captura de fotos"
                           : "Payload de envío TEE"}
@@ -792,7 +729,7 @@ export default function IdentityFormSimulator() {
                         Endpoint de Servidor TEE: POST /blockchain/crearIdentity
                       </p>
                       <p className="text-white/70">
-                        Envía un FormData con las imágenes binarias y el objeto `paqueteRaw` serializado en JSON conteniendo las 17 respuestas de la encuesta inicial.
+                        Envía un FormData con las imágenes binarias y el objeto `paqueteRaw` serializado en JSON conteniendo las respuestas de la encuesta.
                       </p>
                     </div>
                   )}
@@ -825,9 +762,9 @@ export default function IdentityFormSimulator() {
           <pre className="bg-[#0b140a] p-4 rounded-xl font-mono text-xs text-emerald-400 overflow-x-auto border border-white/5 leading-relaxed max-h-[500px]">
             {JSON.stringify(
               {
-                formId: formSchema?.id || "encuesta-inicial-v1",
+                formId: formSchema?.id || "form-schema-dinamico",
                 metadata: {
-                  version: formSchema?.activeVersion?.version || "1.0.0",
+                  version: currentPreviewVersionObj?.version || formSchema?.activeVersion?.version || "1.0.0",
                   language: "es",
                 },
                 capturedData: formData,
@@ -851,8 +788,8 @@ export default function IdentityFormSimulator() {
           onClose={() => setIsBuilderOpen(false)}
           onSave={handleSaveFormVersion}
           initialFields={activeFields}
-          existingTitle={formSchema?.title || "Encuesta Inicial de Identidad"}
-          existingVersion={formSchema?.activeVersion?.version || "1.0.0"}
+          existingTitle={formSchema?.title || ""}
+          existingVersion={currentPreviewVersionObj?.version || formSchema?.activeVersion?.version || "1.0.0"}
         />
       )}
     </div>

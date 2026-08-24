@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import {
   ShieldCheck,
   Search,
@@ -8,17 +8,13 @@ import {
   RefreshCw,
   Eye,
   CheckCircle2,
-  AlertCircle,
   X,
-  FileText,
   UserCheck,
   Filter,
-  Smartphone,
+  Trash2,
 } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 import { useData } from "@/app/context/DataContext";
 import { useTechnicians } from "@/app/hooks/useTechnicians";
-import TechnicianDetailModal from "@/app/components/technicians/TechnicianDetailModal";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
 import { toast } from "react-toastify";
 
@@ -47,7 +43,7 @@ export default function AuditIdentitiesPage() {
   const userRole = data.currentUser.role;
   const isSuperadmin = userRole === "superadmin";
 
-  const { technicians, isLoading, refresh, approve, isActing } = useTechnicians();
+  const { technicians, isLoading, refresh, approve, remove, isActing } = useTechnicians();
 
   // Mapear los datos de técnicos reales traídos desde la API a la interfaz MobileIdentityRecord
   const identities = useMemo<MobileIdentityRecord[]>(() => {
@@ -94,7 +90,7 @@ export default function AuditIdentitiesPage() {
     isOpen: false,
     title: "",
     variant: "success",
-    onConfirm: async () => {},
+    onConfirm: async () => { },
   });
 
   // Available ONGs for Superadmin filtering
@@ -164,6 +160,39 @@ export default function AuditIdentitiesPage() {
       });
     },
     [approve, refresh],
+  );
+
+  const handleDeleteIdentity = useCallback(
+    (record: MobileIdentityRecord) => {
+      if (record.status === "approved") {
+        toast.warning(
+          "Los registros validados y acuñados en blockchain no se pueden eliminar.",
+        );
+        return;
+      }
+      setConfirmConfig({
+        isOpen: true,
+        title: "Eliminar Registro Pendiente",
+        description: `¿Estás seguro de eliminar la solicitud de identidad de "${record.fullName}" (${record.documentNumber})? Como aún se encuentra pendiente de validación TEE, se removerá permanentemente del sistema.`,
+        confirmText: "Sí, Eliminar Registro",
+        variant: "danger",
+        onConfirm: async () => {
+          setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
+          try {
+            const ok = await remove(record.id);
+            if (ok) {
+              await refresh();
+              toast.success("Registro de identidad eliminado correctamente.");
+            } else {
+              toast.error("No se pudo eliminar el registro de identidad.");
+            }
+          } catch {
+            toast.error("Error al procesar la eliminación del registro.");
+          }
+        },
+      });
+    },
+    [remove, refresh],
   );
 
   return (
@@ -360,11 +389,10 @@ export default function AuditIdentitiesPage() {
 
                     <div>
                       <span
-                        className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${
-                          item.status === "approved"
-                            ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
-                            : "bg-amber-500/15 text-amber-400 border border-amber-500/25"
-                        }`}
+                        className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${item.status === "approved"
+                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
+                          : "bg-amber-500/15 text-amber-400 border border-amber-500/25"
+                          }`}
                       >
                         {item.status === "approved" ? "Validado TEE" : "Pendiente"}
                       </span>
@@ -381,13 +409,22 @@ export default function AuditIdentitiesPage() {
                       </button>
 
                       {item.status === "pending" && (
-                        <button
-                          onClick={() => handleApproveIdentity(item)}
-                          className="flex items-center gap-1.5 bg-[#28a745] hover:bg-[#218838] text-white px-3.5 py-2 rounded-xl text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/20"
-                        >
-                          <CheckCircle2 className="w-4 h-4" />
-                          Validar TEE
-                        </button>
+                        <>
+                          <button
+                            onClick={() => handleApproveIdentity(item)}
+                            className="flex items-center gap-1.5 bg-[#28a745] hover:bg-[#218838] text-white px-3.5 py-2 rounded-xl text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/20"
+                          >
+                            <CheckCircle2 className="w-4 h-4" />
+                            Validar TEE
+                          </button>
+                          <button
+                            onClick={() => handleDeleteIdentity(item)}
+                            className="p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400/80 hover:text-red-400 transition-colors cursor-pointer"
+                            title="Eliminar registro pendiente"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </>
                       )}
                     </div>
                   </div>
@@ -401,9 +438,8 @@ export default function AuditIdentitiesPage() {
       {/* Detail Modal */}
       {selectedRecord && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
-            isDetailOpen ? "block" : "hidden"
-          }`}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${isDetailOpen ? "block" : "hidden"
+            }`}
         >
           <div
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"

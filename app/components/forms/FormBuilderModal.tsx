@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { X, Plus, Trash2, ArrowUp, ArrowDown, Save, Sparkles, Layers } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { X, Plus, Trash2, ArrowUp, ArrowDown, Save, Sparkles, Layers, Building2 } from "lucide-react";
 import { FormFieldDef } from "@/app/types/api";
+import { organizationsService, OrganizationRecord } from "@/app/services/organizationsService";
 
 interface FormBuilderModalProps {
   isOpen: boolean;
@@ -18,6 +19,7 @@ interface FormBuilderModalProps {
   initialFields?: FormFieldDef[];
   existingTitle?: string;
   existingVersion?: string;
+  defaultOngId?: string;
 }
 
 export function FormBuilderModal({
@@ -25,10 +27,11 @@ export function FormBuilderModal({
   onClose,
   onSave,
   initialFields = [],
-  existingTitle = "Encuesta Inicial de Identidad",
+  existingTitle = "",
   existingVersion = "1.0.0",
+  defaultOngId = "GLOBAL",
 }: FormBuilderModalProps) {
-  const [title, setTitle] = useState(existingTitle);
+  const [title, setTitle] = useState(existingTitle || "Formulario de Captación");
   const [description, setDescription] = useState("Formulario dinámico de captación");
   const [version, setVersion] = useState(() => {
     const parts = existingVersion.split(".");
@@ -37,18 +40,21 @@ export function FormBuilderModal({
     }
     return "1.1.0";
   });
-  const [ongId, setOngId] = useState("GLOBAL");
+  const [ongId, setOngId] = useState(defaultOngId);
   const [category, setCategory] = useState("IDENTITY");
+  const [orgList, setOrgList] = useState<OrganizationRecord[]>([]);
 
-  const [fields, setFields] = useState<FormFieldDef[]>(
-    initialFields.length > 0
-      ? initialFields
-      : [
-          { name: "nombre", label: "Nombre", type: "text", required: true, step: 1 },
-          { name: "apellido", label: "Apellido", type: "text", required: true, step: 1 },
-          { name: "documentoIdentidad", label: "Documento de Identidad", type: "text", required: true, step: 1 },
-        ],
-  );
+  useEffect(() => {
+    if (isOpen) {
+      organizationsService.getOrganizations().then((orgs) => {
+        if (orgs && orgs.length > 0) {
+          setOrgList(orgs);
+        }
+      });
+    }
+  }, [isOpen]);
+
+  const [fields, setFields] = useState<FormFieldDef[]>(initialFields);
 
   const [saving, setSaving] = useState(false);
 
@@ -177,8 +183,11 @@ export function FormBuilderModal({
                 className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-white text-xs font-poppins focus:outline-none focus:ring-2 focus:ring-[#28a745]"
               >
                 <option value="GLOBAL">Todas las Organizaciones (GLOBAL)</option>
-                <option value="fundacion-gran-chaco">Fundación Gran Chaco</option>
-                <option value="asociacion-qom">Asociación Qom</option>
+                {orgList.map((org) => (
+                  <option key={org.id} value={org.slug || org.id}>
+                    {org.name} ({org.slug})
+                  </option>
+                ))}
               </select>
             </div>
           </div>
