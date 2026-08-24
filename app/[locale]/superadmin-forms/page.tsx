@@ -81,37 +81,16 @@ export default function SuperadminFormsPage() {
     <div className="flex-1 p-6 md:p-10 bg-primary min-h-screen">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-3">
-              <Sparkles className="w-8 h-8 text-[#28a745]" />
-              <h1 className="text-3xl font-montserrat font-bold text-white">
-                Gestión Global de Formularios Móviles
-              </h1>
-            </div>
-            <p className="text-white/50 font-poppins text-sm mt-1">
-              Panel exclusivo del Superadmin para crear, versionar y configurar la estructura de campos requeridos y opcionales para la captación móvil en territorio.
-            </p>
-          </div>
-
+        <div className="flex flex-col space-y-1">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsBuilderOpen(true)}
-              className="flex items-center gap-2 bg-[#28a745] hover:bg-[#218838] text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer shadow-lg shadow-green-950/20"
-            >
-              <Plus className="w-4 h-4" />
-              Nuevo Formulario / Versión
-            </button>
-
-            <button
-              onClick={loadAllForms}
-              disabled={loading}
-              className="flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-4 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer"
-            >
-              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-              Actualizar
-            </button>
+            <Sparkles className="w-8 h-8 text-[#28a745]" />
+            <h1 className="text-3xl font-montserrat font-bold text-white">
+              Gestión Global de Formularios Móviles
+            </h1>
           </div>
+          <p className="text-white/50 font-poppins text-sm pl-11">
+            Panel exclusivo del Superadmin para crear, versionar y configurar la estructura de campos requeridos y opcionales para la captación móvil en territorio.
+          </p>
         </div>
 
         {/* Dynamic Interactive Simulator & Inspector */}

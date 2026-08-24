@@ -210,36 +210,53 @@ export default function IdentityFormSimulator() {
   return (
     <div className="w-full space-y-6">
       {/* Control bar / Mode switcher */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col lg:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#28a745]/15 border border-[#28a745]/30 flex items-center justify-center text-[#28a745]">
-            <Smartphone className="w-5 h-5" />
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
+        {/* Row 1: Title & Main Action */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#28a745]/15 border border-[#28a745]/30 flex items-center justify-center text-[#28a745] shrink-0">
+              <Smartphone className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h3 className="text-white font-montserrat font-bold text-base whitespace-nowrap">
+                  Simulador del Formulario Móvil (FieldApp)
+                </h3>
+                {activeVersionObj?.version && (
+                  <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full whitespace-nowrap" title="Versión activa en base de datos">
+                    v{activeVersionObj.version} (Activa en BD)
+                  </span>
+                )}
+              </div>
+              <p className="text-white/50 text-xs font-poppins mt-0.5">
+                Visualiza paso a paso la Encuesta Inicial y Captura de Evidencias en Territorio.
+              </p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-white font-montserrat font-bold text-base flex items-center gap-2">
-              Simulador del Formulario Móvil (FieldApp)
-              {activeVersionObj?.version && (
-                <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full" title="Versión activa en base de datos">
-                  v{activeVersionObj.version} (Activa)
-                </span>
-              )}
-            </h3>
-            <p className="text-white/50 text-xs font-poppins">
-              Visualiza paso a paso la Encuesta Inicial y Captura de Evidencias en Territorio.
-            </p>
-          </div>
+
+          {/* Right Primary Action */}
+          {isSuperadmin && (
+            <button
+              onClick={() => setIsBuilderOpen(true)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/30 shrink-0"
+            >
+              <Sparkles className="w-4 h-4" />
+              Crear Nueva Versión
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center gap-3 shrink-0 flex-wrap">
+        {/* Row 2: Version Selector & View Mode Controls */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 flex-wrap">
           {/* Dropdown Selector de Versiones en la BD */}
-          {formSchema && formSchema.versions && formSchema.versions.length > 0 && (
-            <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl p-1.5">
+          {formSchema && formSchema.versions && formSchema.versions.length > 0 ? (
+            <div className="flex items-center gap-2 bg-black/40 border border-white/10 rounded-xl p-1.5 flex-wrap">
               <Layers className="w-4 h-4 text-[#28a745] ml-1.5 shrink-0" />
-              <span className="text-xs text-white/70 font-poppins font-medium hidden sm:inline">Versión:</span>
+              <span className="text-xs text-white/70 font-poppins font-semibold">Seleccionar Versión:</span>
               <select
                 value={selectedVersionId}
                 onChange={(e) => handlePreviewVersionChange(e.target.value)}
-                className="bg-[#142612] border border-white/15 rounded-lg px-2.5 py-1 text-xs text-white font-mono font-bold focus:outline-none focus:border-[#28a745] cursor-pointer"
+                className="bg-[#142612] border border-white/15 rounded-lg px-3 py-1.5 text-xs text-white font-mono font-bold focus:outline-none focus:border-[#28a745] cursor-pointer"
               >
                 {formSchema.versions.map((ver) => {
                   const isActive = ver.id === (formSchema.activeVersionId || formSchema.activeVersion?.id);
@@ -256,7 +273,7 @@ export default function IdentityFormSimulator() {
                 <button
                   onClick={handleApproveAndActivateVersion}
                   disabled={isUpdatingVersion}
-                  className="flex items-center gap-1 px-3 py-1 rounded-lg bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-md"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-md"
                   title="Aprobar y establecer esta versión como la activa para la organización"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
@@ -264,50 +281,45 @@ export default function IdentityFormSimulator() {
                 </button>
               )}
             </div>
+          ) : (
+            <div />
           )}
 
-          {isSuperadmin && (
+          {/* Secondary Actions: Sample Data & View Mode */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
-              onClick={() => setIsBuilderOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/30"
+              onClick={fillSampleData}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              Crear Nueva Versión
+              <RefreshCw className="w-3.5 h-3.5" />
+              Cargar Datos Muestra
             </button>
-          )}
 
-          <button
-            onClick={fillSampleData}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-            Datos Muestra
-          </button>
-
-          {isSuperadmin && (
-            <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
-              <button
-                onClick={() => setActiveViewMode("simulator")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  activeViewMode === "simulator"
-                    ? "bg-[#28a745] text-white shadow-md"
-                    : "text-white/60 hover:text-white"
-                }`}
-              >
-                Vista Dispositivo
-              </button>
-              <button
-                onClick={() => setActiveViewMode("json")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  activeViewMode === "json"
-                    ? "bg-[#28a745] text-white shadow-md"
-                    : "text-white/60 hover:text-white"
-                }`}
-              >
-                Esquema JSON
-              </button>
-            </div>
-          )}
+            {isSuperadmin && (
+              <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
+                <button
+                  onClick={() => setActiveViewMode("simulator")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    activeViewMode === "simulator"
+                      ? "bg-[#28a745] text-white shadow-md"
+                      : "text-white/60 hover:text-white"
+                  }`}
+                >
+                  Vista Dispositivo
+                </button>
+                <button
+                  onClick={() => setActiveViewMode("json")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                    activeViewMode === "json"
+                      ? "bg-[#28a745] text-white shadow-md"
+                      : "text-white/60 hover:text-white"
+                  }`}
+                >
+                  Esquema JSON
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
