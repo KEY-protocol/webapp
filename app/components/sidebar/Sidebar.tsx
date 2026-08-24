@@ -9,7 +9,6 @@ import {
   LogOut,
   FileBarChart,
   ShieldCheck,
-  UserCog,
   Smartphone,
 } from "lucide-react";
 import { LogoFullIcon } from "@/app/components/icons/org/LogoFullIcon";
@@ -123,13 +122,6 @@ export const Sidebar = () => {
       icon: Smartphone,
       label: "Formulario Mobile",
       href: "/mobile-form-preview",
-      roles: ["admin"],
-    },
-    {
-      id: "managers",
-      icon: UserCog,
-      label: t("menu.managers.title"),
-      href: "/managers",
       roles: ["admin"],
     },
     /*
