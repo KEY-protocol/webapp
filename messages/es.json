@@ -103,8 +103,8 @@
         "subtitle": "Panel de auditoría de identidades enviadas desde la app móvil"
       },
       "managers": {
-        "title": "Encargados",
-        "subtitle": "Gestión de encargados de la organización"
+        "title": "Administradores",
+        "subtitle": "Gestión de administradores de la organización"
       },
       "reports": {
         "title": "Reportes",
@@ -431,7 +431,6 @@
   },
   "roles": {
     "superadmin": "Superadmin",
-    "encargado": "Encargado de Org",
     "admin": "Administrador"
   }
 }

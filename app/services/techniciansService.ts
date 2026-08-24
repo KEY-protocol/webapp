@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getOngBaseUrl } from "./encargadosService";
+import { getOngBaseUrl } from "./formsService";
 
 export interface TechnicianDto {
   id: string;

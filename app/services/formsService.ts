@@ -1,6 +1,16 @@
 import axios from "axios";
 import { FormSchemaDto, FormVersionDto, FormFieldDef } from "../types/api";
-import { getOngBaseUrl } from "./encargadosService";
+
+export function getOngBaseUrl(ongUrl?: string): string {
+  let url = (ongUrl || "").trim().replace(/\/$/, "");
+  if (!url) return "http://localhost:3001";
+  if (typeof window !== "undefined") {
+    if (url.includes("ongserver") || url.includes("ong-server")) {
+      return "http://localhost:3001";
+    }
+  }
+  return url;
+}
 
 export async function fetchForms(ongUrl: string, token: string): Promise<FormSchemaDto[]> {
   try {

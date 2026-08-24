@@ -124,8 +124,7 @@ export default function AuditIdentitiesPage() {
           return false;
         }
       } else {
-        // Encargado & Admin filter to their ONG (e.g., fundacion_gran_chaco by default)
-        // If needed, match with data.currentUser.organizationId or fallback
+        // Org Admins filter to their ONG
       }
 
       return true;

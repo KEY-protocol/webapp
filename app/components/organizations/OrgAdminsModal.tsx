@@ -129,7 +129,7 @@ export default function OrgAdminsModal({
             </div>
             <div>
               <h2 className="font-montserrat text-xl font-bold text-white">
-                Gestión de Usuarios (Admins & Encargados)
+                Gestión de Usuarios (Administradores)
               </h2>
               <p className="text-xs text-white/50 font-poppins">
                 Organización: <strong className="text-cyan-300">{organization.name}</strong>
@@ -144,11 +144,11 @@ export default function OrgAdminsModal({
           </button>
         </div>
 
-        {/* Create new Admin/Encargado user section */}
+        {/* Create new Admin user section */}
         <form onSubmit={handleCreateUser} className="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
           <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <Shield className="w-4 h-4 text-cyan-400" />
-            Crear Nuevo Usuario (Administrador / Encargado)
+            Crear Nuevo Usuario Administrador
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -174,7 +174,6 @@ export default function OrgAdminsModal({
                 className="w-full bg-[#162713] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 font-poppins cursor-pointer"
               >
                 <option value="ADMIN">ADMINISTRADOR (Acceso completo)</option>
-                <option value="ENCARGADO">ENCARGADO (Operador de campo / Cursos)</option>
               </select>
             </div>
           </div>
@@ -203,13 +202,13 @@ export default function OrgAdminsModal({
         {/* Existing users list */}
         <div className="space-y-3">
           <h4 className="text-xs font-bold text-white/70 uppercase tracking-wider">
-            Usuarios Auditable de {organization.name} (Admins & Encargados)
+            Usuarios Auditables de {organization.name}
           </h4>
 
           <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
             {!organization.users || organization.users.length === 0 ? (
               <p className="text-xs text-white/40 italic p-3 bg-white/5 rounded-xl text-center">
-                Aún no hay usuarios o encargados creados para esta organización.
+                Aún no hay usuarios creados para esta organización.
               </p>
             ) : (
               organization.users.map((usr) => {
@@ -252,7 +251,6 @@ export default function OrgAdminsModal({
                           className="bg-[#162713] border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white"
                         >
                           <option value="ADMIN">ADMIN</option>
-                          <option value="ENCARGADO">ENCARGADO</option>
                         </select>
                         <PasswordInput
                           placeholder="Nueva clave (opcional)"

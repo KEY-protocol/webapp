@@ -71,7 +71,7 @@ export const Sidebar = () => {
       icon: LayoutDashboard,
       label: t("menu.home.title"),
       href: "/home",
-      roles: ["encargado", "admin"],
+      roles: ["admin"],
     },
     // TODO: [NEXT-RELEASE] Reactivar las siguientes secciones cuando los endpoints de backend estén listos:
     // - Dashboard: GET /api/dashboard/stats
@@ -91,7 +91,7 @@ export const Sidebar = () => {
       icon: AreaChart,
       label: t("menu.dashboard.title"),
       href: "/dashboard",
-      roles: ["encargado", "admin"],
+      roles: ["admin"],
     },
     */
     // TODO: [REPORTS-PANEL] Reactivar el panel de reportes cuando se integren las APIs finales de exportación y generación
@@ -101,7 +101,7 @@ export const Sidebar = () => {
       icon: FileBarChart,
       label: t("menu.reports.title"),
       href: "/reports",
-      roles: ["encargado", "admin"],
+      roles: ["admin"],
     },
     */
     {
@@ -109,14 +109,14 @@ export const Sidebar = () => {
       icon: Users,
       label: t("menu.technicians.title"),
       href: "/technicians",
-      roles: ["encargado", "admin"],
+      roles: ["admin"],
     },
     {
       id: "audit-identities",
       icon: ShieldCheck,
       label: t("menu.auditIdentities.title"),
       href: "/audit-identities",
-      roles: ["encargado", "admin"],
+      roles: ["admin"],
     },
     {
       id: "mobile-form-preview",

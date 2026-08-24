@@ -21,11 +21,8 @@ import {
 } from "lucide-react";
 import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
-import {
-  fetchEncargados,
-  createEncargado,
-  deleteEncargado,
-} from "@/app/services/encargadosService";
+import axios from "axios";
+import { getOngBaseUrl } from "@/app/services/formsService";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
 import { toast } from "react-toastify";
 
@@ -54,22 +51,25 @@ export default function ManagersPage() {
 
   // Modal states
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [editingManager, setEditingManager] = useState<ManagerUser | null>(
     null,
   );
 
-  const [showPassword, setShowPassword] = useState(false);
-
   const loadBackendManagers = useCallback(async () => {
     if (!token) return;
     try {
-      const data = await fetchEncargados(ongUrl || "http://localhost:3001", token);
-      const mapped: ManagerUser[] = data.map((item) => ({
+      const baseUrl = getOngBaseUrl(ongUrl || undefined);
+      const resp = await axios.get(`${baseUrl}/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const list: any[] = resp.data || [];
+      const mapped: ManagerUser[] = list.map((item: any) => ({
         id: item.id,
         name: item.email.split("@")[0],
         surname: "",
         email: item.email,
-        phone: (item as any).phone,
+        phone: item.phone,
         organizationId: item.ongId || "org_1",
         organizationName: "Fundación Gran Chaco",
         status: "active",
@@ -77,13 +77,15 @@ export default function ManagersPage() {
       }));
       setManagers(mapped);
     } catch (err) {
-      console.error("Error al obtener encargados:", err);
+      console.error("Error al obtener administradores:", err);
     }
   }, [token, ongUrl]);
 
   useEffect(() => {
     loadBackendManagers();
   }, [loadBackendManagers]);
+
+
 
   // Form states
   const [formData, setFormData] = useState({
@@ -137,14 +139,15 @@ export default function ManagersPage() {
         m.email.toLowerCase().includes(q),
     );
   }, [managers, search]);
-
   const handleOpenAddModal = () => {
-    setFormData({ name: "", surname: "", email: "", password: "", phone: "" });
     setEditingManager(null);
+    setFormData({ name: "", surname: "", email: "", password: "", phone: "" });
+    setShowPassword(false);
     setIsAddModalOpen(true);
   };
 
   const handleOpenEditModal = (manager: ManagerUser) => {
+    setEditingManager(manager);
     setFormData({
       name: manager.name,
       surname: manager.surname,
@@ -152,23 +155,26 @@ export default function ManagersPage() {
       password: "",
       phone: manager.phone || "",
     });
-    setEditingManager(manager);
+    setShowPassword(false);
     setIsAddModalOpen(true);
   };
 
   const handleSaveManager = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.surname || !formData.email) {
-      toast.error("Por favor completa los campos requeridos (Nombre, Apellido, Email)");
+
+    if (!formData.name.trim() || !formData.email.trim()) {
+      toast.error("Por favor completa el nombre y el correo electrónico.");
       return;
     }
 
-    if (!editingManager && !formData.password) {
-      toast.error("Por favor asigna una contraseña inicial para el Encargado");
+    if (!editingManager && !formData.password.trim()) {
+      toast.error("La contraseña es requerida para un nuevo administrador.");
       return;
     }
 
     try {
+      const baseUrl = getOngBaseUrl(ongUrl || undefined);
+
       if (editingManager) {
         setManagers((prev) =>
           prev.map((m) =>
@@ -178,22 +184,28 @@ export default function ManagersPage() {
                   name: formData.name,
                   surname: formData.surname,
                   email: formData.email,
-                  phone: formData.phone,
+                  phone: formData.phone || undefined,
                 }
               : m,
           ),
         );
         toast.success(
           formData.password
-            ? "Encargado y contraseña actualizados correctamente"
-            : "Datos del Encargado actualizados correctamente",
+            ? "Administrador y contraseña actualizados correctamente"
+            : "Datos del Administrador actualizados correctamente",
         );
       } else {
         const fullPhone = formData.phone || undefined;
-        const created = await createEncargado(ongUrl || "http://localhost:3001", token || "", {
-          email: formData.email,
-          password: formData.password,
-        });
+        const resp = await axios.post(
+          `${baseUrl}/users`,
+          {
+            email: formData.email,
+            password: formData.password,
+            role: "ADMIN",
+          },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+        const created = resp.data;
 
         const newManager: ManagerUser = {
           id: created?.id || `mgr_${Date.now()}`,
@@ -207,29 +219,36 @@ export default function ManagersPage() {
           createdAt: new Date().toISOString(),
         };
         setManagers((prev) => [newManager, ...prev]);
-        toast.success("Encargado creado con éxito en la base de datos. Ya puede iniciar sesión.");
+        toast.success("Administrador creado con éxito en la base de datos. Ya puede iniciar sesión.");
       }
 
       setIsAddModalOpen(false);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "No se pudo registrar el encargado en el servidor");
+      toast.error(err.response?.data?.message || "No se pudo registrar el administrador en el servidor");
     }
   };
 
   const handleDeleteManager = useCallback((manager: ManagerUser) => {
     setConfirmConfig({
       isOpen: true,
-      title: "Desvincular Encargado",
-      description: `¿Estás seguro de desvincular a "${manager.name} ${manager.surname}" (${manager.email}) como Encargado de la organización? Perderá el acceso de gestión.`,
+      title: "Desvincular Administrador",
+      description: `¿Estás seguro de desvincular a "${manager.name} ${manager.surname}" (${manager.email}) como Administrador de la organización?`,
       confirmText: "Sí, Desvincular",
       variant: "danger",
       onConfirm: async () => {
         setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
         if (token) {
-          await deleteEncargado(ongUrl || "http://localhost:3001", token, manager.id);
+          try {
+            const baseUrl = getOngBaseUrl(ongUrl || undefined);
+            await axios.delete(`${baseUrl}/users/${manager.id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+          } catch (e) {
+            console.error("Error deleting user:", e);
+          }
         }
         setManagers((prev) => prev.filter((m) => m.id !== manager.id));
-        toast.success("Encargado desvinculado de la organización");
+        toast.success("Administrador desvinculado de la organización");
       },
     });
   }, [token, ongUrl]);

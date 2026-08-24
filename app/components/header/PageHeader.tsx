@@ -48,8 +48,6 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
     switch (role) {
       case "superadmin":
         return r("superadmin");
-      case "encargado":
-        return r("encargado");
       case "admin":
         return r("admin");
       default:

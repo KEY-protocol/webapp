@@ -4,7 +4,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  role: "superadmin" | "encargado" | "admin";
+  role: "superadmin" | "admin";
   avatar?: string;
   organizationId?: string;
 }

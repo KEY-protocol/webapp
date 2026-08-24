@@ -20,7 +20,7 @@ import { PasswordInput } from "@/app/components/ui/PasswordInput";
  * - ENCARGADO: already pre-assigned to a specific ONG by the ADMIN who
  *   created their account, so they don't need to choose.
  */
-const ROLES_WITHOUT_ONG_SELECTION = ["SUPERADMIN", "ENCARGADO"];
+const ROLES_WITHOUT_ONG_SELECTION = ["SUPERADMIN"];
 
 /**
  * Login form component containing email and password fields.

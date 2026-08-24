@@ -6,27 +6,6 @@ import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
 
 export default function MobileFormPreviewPage() {
-  const { data } = useData();
-  const { user } = useAuth();
-
-  const userRole = (data?.currentUser?.role || user?.role || "").toLowerCase();
-  const isEncargado = userRole === "encargado";
-
-  if (isEncargado) {
-    return (
-      <div className="flex-1 p-8 bg-primary min-h-screen flex items-center justify-center">
-        <div className="bg-white/5 border border-white/10 p-8 rounded-3xl max-w-md text-center space-y-4">
-          <AlertCircle className="w-12 h-12 text-amber-400 mx-auto" />
-          <h2 className="text-xl font-bold text-white font-montserrat">
-            Acceso Restringido
-          </h2>
-          <p className="text-white/60 text-sm font-poppins">
-            Esta sección de vista previa del formulario móvil no está disponible para usuarios con rol Encargado.
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex-1 p-6 md:p-10 bg-primary min-h-screen">

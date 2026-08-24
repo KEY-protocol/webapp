@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Smartphone,
   ChevronRight,
@@ -22,7 +22,6 @@ import { useData } from "@/app/context/DataContext";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "react-toastify";
 import { FormBuilderModal } from "@/app/components/forms/FormBuilderModal";
-import { FormVersionSelector } from "@/app/components/forms/FormVersionSelector";
 import {
   fetchActiveForm,
   createFormVersion,
@@ -106,10 +105,10 @@ export default function IdentityFormSimulator() {
           setFormSchema((prev) =>
             prev
               ? {
-                  ...prev,
-                  activeVersionId: selectedVersionId,
-                  activeVersion: targetVer,
-                }
+                ...prev,
+                activeVersionId: selectedVersionId,
+                activeVersion: targetVer,
+              }
               : prev,
           );
           toast.success(
@@ -299,21 +298,19 @@ export default function IdentityFormSimulator() {
               <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
                 <button
                   onClick={() => setActiveViewMode("simulator")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeViewMode === "simulator"
-                      ? "bg-[#28a745] text-white shadow-md"
-                      : "text-white/60 hover:text-white"
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeViewMode === "simulator"
+                    ? "bg-[#28a745] text-white shadow-md"
+                    : "text-white/60 hover:text-white"
+                    }`}
                 >
                   Vista Dispositivo
                 </button>
                 <button
                   onClick={() => setActiveViewMode("json")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeViewMode === "json"
-                      ? "bg-[#28a745] text-white shadow-md"
-                      : "text-white/60 hover:text-white"
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${activeViewMode === "json"
+                    ? "bg-[#28a745] text-white shadow-md"
+                    : "text-white/60 hover:text-white"
+                    }`}
                 >
                   Esquema JSON
                 </button>
@@ -323,16 +320,7 @@ export default function IdentityFormSimulator() {
         </div>
       </div>
 
-      {/* Org Admin Version Selector Card (If Admin role) */}
-      {isAdmin && formSchema && formSchema.versions && formSchema.versions.length > 0 && (
-        <FormVersionSelector
-          formSchema={formSchema}
-          onSelectVersion={async (verId) => {
-            handlePreviewVersionChange(verId);
-          }}
-          isUpdating={isUpdatingVersion}
-        />
-      )}
+
 
       {activeViewMode === "simulator" ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -375,13 +363,12 @@ export default function IdentityFormSimulator() {
                 {[1, 2, 3, 4].map((stepNum) => (
                   <div key={stepNum} className="flex items-center gap-1">
                     <div
-                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                        currentStep === stepNum
-                          ? "bg-[#28a745] text-white"
-                          : currentStep > stepNum
-                            ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                            : "bg-white/5 text-white/30"
-                      }`}
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${currentStep === stepNum
+                        ? "bg-[#28a745] text-white"
+                        : currentStep > stepNum
+                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                          : "bg-white/5 text-white/30"
+                        }`}
                     >
                       {currentStep > stepNum ? <CheckCircle2 className="w-3.5 h-3.5" /> : stepNum}
                     </div>
@@ -485,11 +472,10 @@ export default function IdentityFormSimulator() {
                                     type="button"
                                     key={opt.value}
                                     onClick={() => handleMultiSelectToggle(field.name, opt.value)}
-                                    className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-left border transition-all cursor-pointer ${
-                                      isChecked
-                                        ? "bg-[#28a745]/20 border-[#28a745] text-emerald-300 font-bold"
-                                        : "bg-[#1b3218] border-white/10 text-white/60 hover:text-white"
-                                    }`}
+                                    className={`px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-left border transition-all cursor-pointer ${isChecked
+                                      ? "bg-[#28a745]/20 border-[#28a745] text-emerald-300 font-bold"
+                                      : "bg-[#1b3218] border-white/10 text-white/60 hover:text-white"
+                                      }`}
                                   >
                                     {opt.label}
                                   </button>
@@ -525,11 +511,10 @@ export default function IdentityFormSimulator() {
                           1. Fotografía Facial (Selfie)
                         </span>
                         <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                            faceCaptured
-                              ? "bg-emerald-500/20 text-emerald-400"
-                              : "bg-amber-500/20 text-amber-400"
-                          }`}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded ${faceCaptured
+                            ? "bg-emerald-500/20 text-emerald-400"
+                            : "bg-amber-500/20 text-amber-400"
+                            }`}
                         >
                           {faceCaptured ? "Capturada" : "Pendiente"}
                         </span>
@@ -556,22 +541,20 @@ export default function IdentityFormSimulator() {
                           <button
                             type="button"
                             onClick={() => setActiveTabDocument("front")}
-                            className={`px-2 py-0.5 text-[10px] font-bold rounded ${
-                              activeTabDocument === "front"
-                                ? "bg-[#28a745] text-white"
-                                : "bg-white/10 text-white/60"
-                            }`}
+                            className={`px-2 py-0.5 text-[10px] font-bold rounded ${activeTabDocument === "front"
+                              ? "bg-[#28a745] text-white"
+                              : "bg-white/10 text-white/60"
+                              }`}
                           >
                             Frente
                           </button>
                           <button
                             type="button"
                             onClick={() => setActiveTabDocument("back")}
-                            className={`px-2 py-0.5 text-[10px] font-bold rounded ${
-                              activeTabDocument === "back"
-                                ? "bg-[#28a745] text-white"
-                                : "bg-white/10 text-white/60"
-                            }`}
+                            className={`px-2 py-0.5 text-[10px] font-bold rounded ${activeTabDocument === "back"
+                              ? "bg-[#28a745] text-white"
+                              : "bg-white/10 text-white/60"
+                              }`}
                           >
                             Dorso
                           </button>
