@@ -99,8 +99,8 @@
         "subtitle": "Lista de pessoas pertencentes à organização autorizadas a operar o dApp"
       },
       "auditIdentities": {
-        "title": "Auditoria de Identidades",
-        "subtitle": "Painel de auditoria de identidades enviadas do aplicativo móvel"
+        "title": "Auditoria de Evidências",
+        "subtitle": "Painel de auditoria de evidências enviadas do aplicativo móvel"
       },
       "reports": {
         "title": "Relatórios",

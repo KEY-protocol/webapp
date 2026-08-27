@@ -18,7 +18,7 @@ import { useTechnicians } from "@/app/hooks/useTechnicians";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
 import { toast } from "react-toastify";
 
-export interface MobileIdentityRecord {
+export interface MobileEvidenceRecord {
   id: string;
   fullName: string;
   documentNumber: string;
@@ -38,35 +38,35 @@ export interface MobileIdentityRecord {
   notes?: string;
 }
 
-export default function AuditIdentitiesPage() {
+export default function AuditEvidencePage() {
   const { data } = useData();
   const userRole = data.currentUser.role;
   const isSuperadmin = userRole === "superadmin";
 
   const { technicians, isLoading, refresh, approve, remove, isActing } = useTechnicians();
 
-  // Mapear los datos de técnicos reales traídos desde la API a la interfaz MobileIdentityRecord
-  const identities = useMemo<MobileIdentityRecord[]>(() => {
+  // Mapear los datos de técnicos reales traídos desde la API a la interfaz MobileEvidenceRecord
+  const evidences = useMemo<MobileEvidenceRecord[]>(() => {
     return technicians.map((tech) => {
-      const isVerified = tech.status === "VERIFIED" || tech.status === "APPROVED";
+      const isVerified = tech.status === "verified" || tech.status === "approved";
       return {
         id: tech.id,
-        fullName: `${tech.name} ${tech.surname}`,
+        fullName: tech.fullName,
         documentNumber: tech.documentNumber,
         documentType: tech.documentType || "DNI",
-        registeredByTechnicianName: tech.name,
+        registeredByTechnicianName: tech.fullName,
         registeredByTechnicianDoc: tech.documentNumber,
-        ongId: tech.issuerOng || "local_ong",
-        ongName: tech.issuerOng || "Organización Local",
+        ongId: "local_ong",
+        ongName: "Organización Local",
         status: isVerified ? "approved" : "pending",
         submittedAt: tech.createdAt,
         validatedAt: isVerified ? tech.createdAt : undefined,
-        did: tech.did,
+        did: undefined,
         faceScore: isVerified ? 0.98 : 0.91,
         documentScore: isVerified ? 0.96 : 0.92,
         notes: isVerified
-          ? "Identidad registrada y verificada en blockchain con DID asignado."
-          : "Solicitud registrada por técnico en territorio. Pendiente de aprobación TEE.",
+          ? "Evidencia registrada y verificada en blockchain con DID asignado."
+          : "Solicitud de evidencia registrada por técnico en territorio. Pendiente de aprobación TEE.",
       };
     });
   }, [technicians]);
@@ -75,7 +75,7 @@ export default function AuditIdentitiesPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
 
   const [selectedRecord, setSelectedRecord] =
-    useState<MobileIdentityRecord | null>(null);
+    useState<MobileEvidenceRecord | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   // Confirm Modal state
@@ -96,15 +96,15 @@ export default function AuditIdentitiesPage() {
   // Available ONGs for Superadmin filtering
   const ongOptions = useMemo(() => {
     const map = new Map<string, string>();
-    identities.forEach((item) => {
+    evidences.forEach((item) => {
       map.set(item.ongId, item.ongName);
     });
     return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
-  }, [identities]);
+  }, [evidences]);
 
-  // Filtered identities based on search, status, and role (Superadmin vs Org users)
-  const filteredIdentities = useMemo(() => {
-    return identities.filter((item) => {
+  // Filtered evidences based on search, status, and role (Superadmin vs Org users)
+  const filteredEvidences = useMemo(() => {
+    return evidences.filter((item) => {
       // Filter by search query
       if (search.trim()) {
         const q = search.toLowerCase();
@@ -129,19 +129,19 @@ export default function AuditIdentitiesPage() {
 
       return true;
     });
-  }, [identities, search, selectedStatus, selectedOng, isSuperadmin]);
+  }, [evidences, search, selectedStatus, selectedOng, isSuperadmin]);
 
-  const handleViewDetail = (record: MobileIdentityRecord) => {
+  const handleViewDetail = (record: MobileEvidenceRecord) => {
     setSelectedRecord(record);
     setIsDetailOpen(true);
   };
 
-  const handleApproveIdentity = useCallback(
-    (record: MobileIdentityRecord) => {
+  const handleApproveEvidence = useCallback(
+    (record: MobileEvidenceRecord) => {
       setConfirmConfig({
         isOpen: true,
-        title: "Aprobar Identidad Móvil",
-        description: `¿Confirmas la validación de la identidad enviada por "${record.fullName}" (${record.documentNumber})? Se ejecutará la verificación en Phala TEE y el registro del DID en blockchain.`,
+        title: "Aprobar Evidencia Móvil",
+        description: `¿Confirmas la validación de la evidencia enviada por "${record.fullName}" (${record.documentNumber})? Se ejecutará la verificación en Phala TEE y el registro del DID en blockchain.`,
         confirmText: "Sí, Validar en TEE",
         variant: "success",
         onConfirm: async () => {
@@ -150,10 +150,10 @@ export default function AuditIdentitiesPage() {
             await approve(record.id);
             await refresh();
             toast.success(
-              "Identidad validada exitosamente en TEE y registrada en Blockchain",
+              "Evidencia validada exitosamente en TEE y registrada en Blockchain",
             );
           } catch {
-            toast.error("Error al procesar la aprobación de identidad");
+            toast.error("Error al procesar la aprobación de evidencia");
           }
         },
       });
@@ -161,8 +161,8 @@ export default function AuditIdentitiesPage() {
     [approve, refresh],
   );
 
-  const handleDeleteIdentity = useCallback(
-    (record: MobileIdentityRecord) => {
+  const handleDeleteEvidence = useCallback(
+    (record: MobileEvidenceRecord) => {
       if (record.status === "approved") {
         toast.warning(
           "Los registros validados y acuñados en blockchain no se pueden eliminar.",
@@ -171,8 +171,8 @@ export default function AuditIdentitiesPage() {
       }
       setConfirmConfig({
         isOpen: true,
-        title: "Eliminar Registro Pendiente",
-        description: `¿Estás seguro de eliminar la solicitud de identidad de "${record.fullName}" (${record.documentNumber})? Como aún se encuentra pendiente de validación TEE, se removerá permanentemente del sistema.`,
+        title: "Eliminar Registro Pendiente de Evidencia",
+        description: `¿Estás seguro de eliminar el registro de evidencia de "${record.fullName}" (${record.documentNumber})? Como aún se encuentra pendiente de validación TEE, se removerá permanentemente del sistema.`,
         confirmText: "Sí, Eliminar Registro",
         variant: "danger",
         onConfirm: async () => {
@@ -181,9 +181,9 @@ export default function AuditIdentitiesPage() {
             const ok = await remove(record.id);
             if (ok) {
               await refresh();
-              toast.success("Registro de identidad eliminado correctamente.");
+              toast.success("Registro de evidencia eliminado correctamente.");
             } else {
-              toast.error("No se pudo eliminar el registro de identidad.");
+              toast.error("No se pudo eliminar el registro de evidencia.");
             }
           } catch {
             toast.error("Error al procesar la eliminación del registro.");
@@ -203,13 +203,13 @@ export default function AuditIdentitiesPage() {
             <div className="flex items-center gap-3">
               <ShieldCheck className="w-8 h-8 text-[#28a745]" />
               <h1 className="text-3xl font-montserrat font-bold text-white">
-                Auditoría de Identidades en Territorio
+                Auditoría de Evidencias en Territorio
               </h1>
             </div>
             <p className="text-white/50 font-poppins text-sm mt-1">
               {isSuperadmin
-                ? "Vista global masiva: audita la totalidad de identidades captadas por los técnicos desde la App Móvil en todas las organizaciones y su acuñación en blockchain."
-                : "Audita las identidades registradas por los técnicos de tu organización a través del formulario de captación móvil."}
+                ? "Vista global masiva: audita la totalidad de evidencias captadas por los técnicos desde la App Móvil en todas las organizaciones y su acuñación en blockchain."
+                : "Audita las evidencias registradas por los técnicos de tu organización a través del formulario de captación móvil."}
             </p>
           </div>
 
@@ -232,10 +232,10 @@ export default function AuditIdentitiesPage() {
               Total Captadas por Técnicos
             </p>
             <p className="text-3xl font-montserrat font-bold text-white">
-              {identities.length}
+              {evidences.length}
             </p>
             <p className="text-white/50 text-xs font-poppins">
-              Identidades registradas en App Móvil
+              Evidencias registradas en App Móvil
             </p>
           </div>
 
@@ -244,7 +244,7 @@ export default function AuditIdentitiesPage() {
               Acuñadas en Blockchain
             </p>
             <p className="text-3xl font-montserrat font-bold text-emerald-400">
-              {identities.filter((i) => i.status === "approved").length}
+              {evidences.filter((i) => i.status === "approved").length}
             </p>
             <p className="text-emerald-300/60 text-xs font-poppins">
               Registradas satisfactoriamente en red
@@ -256,7 +256,7 @@ export default function AuditIdentitiesPage() {
               Pendientes de Validación TEE
             </p>
             <p className="text-3xl font-montserrat font-bold text-amber-400">
-              {identities.filter((i) => i.status === "pending").length}
+              {evidences.filter((i) => i.status === "pending").length}
             </p>
             <p className="text-amber-300/60 text-xs font-poppins">
               A la espera de verificación
@@ -268,10 +268,10 @@ export default function AuditIdentitiesPage() {
               Técnicos Operativos
             </p>
             <p className="text-3xl font-montserrat font-bold text-cyan-400">
-              {new Set(identities.map((i) => i.registeredByTechnicianDoc)).size}
+              {new Set(evidences.map((i) => i.registeredByTechnicianDoc)).size}
             </p>
             <p className="text-cyan-300/60 text-xs font-poppins">
-              Registrando en territorio
+              Registrando evidencias en territorio
             </p>
           </div>
         </div>
@@ -326,19 +326,19 @@ export default function AuditIdentitiesPage() {
 
         {/* Counter */}
         <p className="text-white/40 text-xs font-poppins">
-          Mostrando {filteredIdentities.length} registro(s) de identidad móvil
+          Mostrando {filteredEvidences.length} registro(s) de evidencia móvil
         </p>
 
         {/* Table / List */}
-        {filteredIdentities.length === 0 ? (
+        {filteredEvidences.length === 0 ? (
           <div className="bg-white/5 border border-dashed border-white/15 rounded-2xl p-16 text-center">
             <p className="text-white/40 font-poppins text-base">
-              No se encontraron registros de identidades móviles para los criterios seleccionados.
+              No se encontraron registros de evidencias móviles para los criterios seleccionados.
             </p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {filteredIdentities.map((item) => (
+            {filteredEvidences.map((item) => (
               <div
                 key={item.id}
                 className="bg-white/[0.03] hover:bg-white/[0.06] border border-white/5 hover:border-white/10 rounded-2xl p-5 transition-all duration-200"
@@ -410,14 +410,14 @@ export default function AuditIdentitiesPage() {
                       {item.status === "pending" && (
                         <>
                           <button
-                            onClick={() => handleApproveIdentity(item)}
+                            onClick={() => handleApproveEvidence(item)}
                             className="flex items-center gap-1.5 bg-[#28a745] hover:bg-[#218838] text-white px-3.5 py-2 rounded-xl text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/20"
                           >
                             <CheckCircle2 className="w-4 h-4" />
                             Validar TEE
                           </button>
                           <button
-                            onClick={() => handleDeleteIdentity(item)}
+                            onClick={() => handleDeleteEvidence(item)}
                             className="p-2.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400/80 hover:text-red-400 transition-colors cursor-pointer"
                             title="Eliminar registro pendiente"
                           >
@@ -450,7 +450,7 @@ export default function AuditIdentitiesPage() {
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-6 h-6 text-[#28a745]" />
                 <h2 className="font-montserrat text-xl font-bold text-white">
-                  Auditoría de Identidad Móvil
+                  Auditoría de Evidencia Móvil
                 </h2>
               </div>
               <button

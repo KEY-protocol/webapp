@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { InternalAppLayout } from "@/app/components/auth/InternalAppLayout";
 
-export default async function AuditIdentitiesLayout({
+export default async function AuditEvidenceLayout({
   children,
   params,
 }: {
@@ -13,4 +13,3 @@ export default async function AuditIdentitiesLayout({
 
   return <InternalAppLayout namespace="auditIdentities">{children}</InternalAppLayout>;
 }
-

@@ -111,10 +111,10 @@ export const Sidebar = () => {
       roles: ["admin"],
     },
     {
-      id: "audit-identities",
+      id: "audit-evidence",
       icon: ShieldCheck,
       label: t("menu.auditIdentities.title"),
-      href: "/audit-identities",
+      href: "/audit-evidence",
       roles: ["admin"],
     },
     {

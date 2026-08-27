@@ -26,11 +26,11 @@ export const OrganizationsHeader = ({
 
       <div className="flex items-center gap-3">
         <button
-          onClick={() => router.push("/audit-identities")}
+          onClick={() => router.push("/audit-evidence")}
           className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-5 py-3 rounded-xl font-bold font-poppins transition-all cursor-pointer"
         >
           <ShieldCheck size={20} className="text-[#28a745]" />
-          Auditoría de Identidades
+          Auditoría de Evidencias
         </button>
 
         <button
