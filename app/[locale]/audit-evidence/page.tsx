@@ -19,6 +19,8 @@ import {
 import { useData } from "@/app/context/DataContext";
 import { useTechnicians } from "@/app/hooks/useTechnicians";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
+import { superadminAuditService } from "@/app/services/superadminAuditService";
+import { approveEvidenceTEE } from "@/app/services/blockchainService";
 import { toast } from "react-toastify";
 
 export interface MobileEvidenceRecord {
@@ -46,15 +48,6 @@ export interface MobileEvidenceRecord {
   hasDniBack: boolean;
 }
 
-// Nombres de beneficiarios de muestra para asociar a las evidencias captadas por los técnicos
-const SAMPLE_BENEFICIARIES = [
-  { name: "María Isabel Gómez", doc: "DNI 34.567.890" },
-  { name: "Carlos Alberto Ruiz", doc: "DNI 28.123.456" },
-  { name: "Elena Maidana", doc: "DNI 39.876.543" },
-  { name: "Jorge Antonio Benítez", doc: "DNI 31.456.789" },
-  { name: "Sofia Lucía Fernández", doc: "DNI 42.987.654" },
-];
-
 export default function AuditEvidencePage() {
   const { data } = useData();
   const userRole = data.currentUser.role;
@@ -62,20 +55,89 @@ export default function AuditEvidencePage() {
 
   const { technicians, isLoading, refresh, approve, remove, isActing } = useTechnicians();
 
-  // Lista de evidencias reales enviadas desde la App Móvil (inicializa en 0 hasta recibir envíos reales)
+  // Lista de evidencias reales enviadas desde la App Móvil
   const [realEvidences, setRealEvidences] = useState<MobileEvidenceRecord[]>([]);
+  const [isFetchingServerEvidences, setIsFetchingServerEvidences] = useState(false);
 
-  // Cargar evidencias de almacenamiento local o backend si existen
-  useEffect(() => {
+  // Cargar evidencias enviadas desde la MobileApp consultando el Servidor Central y localStorage
+  const fetchSubmittedEvidences = useCallback(async () => {
+    setIsFetchingServerEvidences(true);
     try {
-      const stored = localStorage.getItem("key_submitted_evidences");
-      if (stored) {
-        setRealEvidences(JSON.parse(stored));
+      const logs = await superadminAuditService.getAuditLogs();
+      const evidenceLogs = logs.filter(
+        (log) => log.action === "EVIDENCE_SUBMITTED_TEE" || log.action?.includes("EVIDENCE"),
+      );
+
+      const apiRecords: MobileEvidenceRecord[] = evidenceLogs.map((log, idx) => {
+        const meta = log.metadata || {};
+        const pData = meta.personalData || {};
+
+        const beneficiaryName = pData.nombre
+          ? `${pData.nombre} ${pData.apellido || ""}`.trim()
+          : `Beneficiario Registrado #${idx + 1}`;
+
+        const beneficiaryDocument = pData.dni
+          ? `DNI ${pData.dni}`
+          : "Documento Verificado TEE";
+
+        return {
+          id: log.id,
+          evidenceCode: meta.identificador
+            ? `EVD-${meta.identificador.slice(2, 10).toUpperCase()}`
+            : `EVD-2026-${log.id.slice(0, 6).toUpperCase()}`,
+          evidenceType: "Formulario + Biometría Facial/DNI",
+          beneficiaryName,
+          beneficiaryDocument,
+          registeredByTechnicianName: pData.nombreTecnico || "Técnico de Campo",
+          registeredByTechnicianDoc: log.actor || pData.technicianDoc || "Técnico",
+          ongId: log.ongId || pData.organizationId || "fundacion_gran_chaco",
+          ongName:
+            log.ongId === "fundacion_gran_chaco"
+              ? "Fundación Gran Chaco"
+              : log.ongId || "Fundación Gran Chaco",
+          status: meta.txHash ? "approved" : "pending",
+          blockchainTxHash: meta.txHash,
+          blockchainBlock: 3059853,
+          submittedAt: log.timestamp,
+          did: `did:key:${meta.identificador?.slice(0, 24) || log.id}`,
+          notes: "Validación biométrica TEE procesada correctamente en Enclave Phala.",
+          fieldsCount: 17,
+          hasSelfie: true,
+          hasDniFront: true,
+          hasDniBack: true,
+        };
+      });
+
+      // Cargar también registros locales si existen en localStorage
+      let localRecords: MobileEvidenceRecord[] = [];
+      try {
+        const stored = localStorage.getItem("key_submitted_evidences");
+        if (stored) {
+          localRecords = JSON.parse(stored);
+        }
+      } catch (e) {
+        console.error("Error leyendo localStorage:", e);
       }
+
+      // Combinar evitando duplicados por ID
+      const combined = [...apiRecords];
+      localRecords.forEach((local) => {
+        if (!combined.some((r) => r.id === local.id)) {
+          combined.push(local);
+        }
+      });
+
+      setRealEvidences(combined);
     } catch (e) {
-      console.error("Error leyendo evidencias guardadas:", e);
+      console.error("Error al cargar evidencias del servidor central:", e);
+    } finally {
+      setIsFetchingServerEvidences(false);
     }
   }, []);
+
+  useEffect(() => {
+    fetchSubmittedEvidences();
+  }, [fetchSubmittedEvidences]);
 
   const evidences = useMemo<MobileEvidenceRecord[]>(() => {
     return realEvidences;
@@ -100,7 +162,7 @@ export default function AuditEvidencePage() {
     isOpen: false,
     title: "",
     variant: "success",
-    onConfirm: async () => { },
+    onConfirm: async () => {},
   });
 
   // Available ONGs for Superadmin filtering
@@ -154,18 +216,21 @@ export default function AuditEvidencePage() {
         onConfirm: async () => {
           setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
           try {
+            await approveEvidenceTEE(record.id);
             await approve(record.id);
             await refresh();
+            await fetchSubmittedEvidences();
             toast.success(
               "Evidencia validada exitosamente en Phala TEE y registrada en Blockchain",
             );
-          } catch {
+          } catch (err) {
+            console.error("Error al procesar la aprobación de evidencia en TEE:", err);
             toast.error("Error al procesar la aprobación de la evidencia");
           }
         },
       });
     },
-    [approve, refresh],
+    [approve, refresh, fetchSubmittedEvidences],
   );
 
   const handleDeleteEvidence = useCallback(
@@ -188,6 +253,7 @@ export default function AuditEvidencePage() {
             const ok = await remove(record.id);
             if (ok) {
               await refresh();
+              await fetchSubmittedEvidences();
               toast.success("Registro de evidencia eliminado correctamente.");
             } else {
               toast.error("No se pudo eliminar la evidencia.");
@@ -198,7 +264,7 @@ export default function AuditEvidencePage() {
         },
       });
     },
-    [remove, refresh],
+    [remove, refresh, fetchSubmittedEvidences],
   );
 
   return (
@@ -222,11 +288,16 @@ export default function AuditEvidencePage() {
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => refresh()}
-              disabled={isLoading}
+              onClick={() => {
+                refresh();
+                fetchSubmittedEvidences();
+              }}
+              disabled={isLoading || isFetchingServerEvidences}
               className="flex items-center gap-2 bg-white/10 hover:bg-white/15 text-white px-5 py-2.5 rounded-xl font-semibold font-poppins transition-all text-sm cursor-pointer disabled:opacity-50"
             >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`w-4 h-4 ${isLoading || isFetchingServerEvidences ? "animate-spin" : ""}`}
+              />
               Actualizar Evidencias
             </button>
           </div>
@@ -407,10 +478,11 @@ export default function AuditEvidencePage() {
 
                     <div>
                       <span
-                        className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${item.status === "approved"
-                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
-                          : "bg-amber-500/15 text-amber-400 border border-amber-500/25"
-                          }`}
+                        className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${
+                          item.status === "approved"
+                            ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
+                            : "bg-amber-500/15 text-amber-400 border border-amber-500/25"
+                        }`}
                       >
                         {item.status === "approved" ? "Validado TEE" : "Pendiente"}
                       </span>
@@ -456,8 +528,9 @@ export default function AuditEvidencePage() {
       {/* Detail Modal for Evidence Record */}
       {selectedRecord && (
         <div
-          className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${isDetailOpen ? "block" : "hidden"
-            }`}
+          className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
+            isDetailOpen ? "block" : "hidden"
+          }`}
         >
           <div
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"

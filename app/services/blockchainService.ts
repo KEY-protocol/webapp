@@ -26,3 +26,16 @@ export async function getTechnicianIdentityOnChain(
     return null;
   }
 }
+
+/**
+ * Invoca la aprobación del Administrador para procesar el TEE en Phala y acuñar en Blockchain.
+ */
+export async function approveEvidenceTEE(id: string): Promise<any> {
+  try {
+    const response = await axios.post(`${BLOCKCHAIN_BASE_URL}/approve-tee/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al aprobar evidencia en TEE:", error);
+    throw error;
+  }
+}
