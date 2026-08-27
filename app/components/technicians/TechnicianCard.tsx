@@ -64,6 +64,16 @@ export default function TechnicianRow({
 
         {/* Actions */}
         <div className="flex items-center gap-1 shrink-0">
+          {technician.status === "pending" && (
+            <button
+              onClick={() => onApprove(technician.id)}
+              className="flex items-center gap-1.5 bg-[#28a745]/20 hover:bg-[#28a745] text-[#28a745] hover:text-white border border-[#28a745]/40 px-3 py-1.5 rounded-xl font-semibold text-xs transition-all cursor-pointer mr-1"
+              title={t("actions.approve")}
+            >
+              <CheckCircle className="w-4 h-4" />
+              <span>Aprobar Técnico</span>
+            </button>
+          )}
           <ActionButton
             icon={<Eye className="w-4 h-4" />}
             label={t("actions.view")}

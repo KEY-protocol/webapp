@@ -189,7 +189,7 @@ export default function TechnicianDetailModal({
 
               {/* Footer Buttons */}
               <div className="flex justify-between items-center pt-2">
-                <div>
+                <div className="flex items-center gap-3">
                   {isAdmin && technician.sourceOfTruth && technician.status !== "PENDING_APPROVAL" && (
                     <button
                       onClick={() => setIsShareModalOpen(true)}
