@@ -11,7 +11,6 @@ import { Spinner } from "@/app/components/common/Spinner";
  */
 const AVAILABLE_ORGANIZATIONS = [
   { id: "key-protocol", name: "KEY Protocol" },
-  { id: "fundacion-gran-chaco", name: "Fundación Gran Chaco" },
 ];
 
 interface OngSelectionModalProps {
