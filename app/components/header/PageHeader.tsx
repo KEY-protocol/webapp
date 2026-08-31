@@ -197,7 +197,7 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
               name: currentUser.name,
               email: currentUser.email,
               role: getRoleLabel(currentUser.role),
-              authProvider: "google",
+              authProvider: "manual",
             }}
           />
         </>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { GoogleSignInButton } from "./GoogleSignInButton";
 import { Spinner } from "@/app/components/common/Spinner";
 
 interface LoginFormActionsProps {
@@ -11,7 +10,7 @@ interface LoginFormActionsProps {
 
 /**
  * Action buttons for the login form.
- * Includes the main sign-in button (as submit), divider, Google sign-in, and registration link.
+ * Includes the main sign-in button (as submit) and loading states.
  */
 export function LoginFormActions({ isLoading = false }: LoginFormActionsProps) {
   const t = useTranslations("auth.login");
@@ -32,9 +31,6 @@ export function LoginFormActions({ isLoading = false }: LoginFormActionsProps) {
           t("send")
         )}
       </button>
-
-      {/* Google Sign In — Deshabilitado temporalmente. TODO: Reactivar cuando el OAuth de Google esté configurado con el backend */}
-      {/* <GoogleSignInButton /> */}
     </div>
   );
 }
