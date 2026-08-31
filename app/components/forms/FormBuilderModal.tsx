@@ -293,10 +293,13 @@ export function FormBuilderModal({
                         onChange={(e) =>
                           handleUpdateField(idx, "step", parseInt(e.target.value, 10))
                         }
-                        className="bg-[#142612] border border-white/10 rounded-lg px-2 py-1 text-[11px] text-white/70"
+                        className="bg-[#142612] border border-white/10 rounded-lg px-2 py-1 text-[11px] text-white/70 font-poppins focus:outline-none focus:border-[#28a745]"
                       >
-                        <option value={1}>Paso 1</option>
-                        <option value={2}>Paso 2</option>
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((stepNum) => (
+                          <option key={stepNum} value={stepNum}>
+                            Paso {stepNum}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   </div>
