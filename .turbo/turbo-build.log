@@ -1,0 +1,96 @@
+
+> webapp@0.1.0 build E:\Apps\key\key-protocol\webapp
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+[BABEL] Note: The code generator has deoptimised the styling of E:\Apps\key\key-protocol\webapp\app\components\icons\services\PackageLock.tsx as it exceeds the max of 500KB.
+✓ Compiled successfully in 17.0s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/47) ...
+  Generating static pages using 7 workers (11/47) 
+  Generating static pages using 7 workers (23/47) 
+  Generating static pages using 7 workers (35/47) 
+✓ Generating static pages using 7 workers (47/47) in 3.5s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /_not-found
+├ ● /[locale]
+│ ├ /en
+│ ├ /es
+│ └ /pt
+├ ƒ /[locale]/[...rest]
+├ ● /[locale]/ai-agents
+│ ├ /en/ai-agents
+│ ├ /es/ai-agents
+│ └ /pt/ai-agents
+├ ● /[locale]/audit-evidence
+│ ├ /en/audit-evidence
+│ ├ /es/audit-evidence
+│ └ /pt/audit-evidence
+├ ● /[locale]/dashboard
+│ ├ /en/dashboard
+│ ├ /es/dashboard
+│ └ /pt/dashboard
+├ ● /[locale]/home
+│ ├ /en/home
+│ ├ /es/home
+│ └ /pt/home
+├ ● /[locale]/managers
+│ ├ /en/managers
+│ ├ /es/managers
+│ └ /pt/managers
+├ ● /[locale]/mobile-form-preview
+│ ├ /en/mobile-form-preview
+│ ├ /es/mobile-form-preview
+│ └ /pt/mobile-form-preview
+├ ● /[locale]/organizations
+│ ├ /en/organizations
+│ ├ /es/organizations
+│ └ /pt/organizations
+├ ● /[locale]/reports
+│ ├ /en/reports
+│ ├ /es/reports
+│ └ /pt/reports
+├ ● /[locale]/superadmin-audit
+│ ├ /en/superadmin-audit
+│ ├ /es/superadmin-audit
+│ └ /pt/superadmin-audit
+├ ● /[locale]/superadmin-forms
+│ ├ /en/superadmin-forms
+│ ├ /es/superadmin-forms
+│ └ /pt/superadmin-forms
+├ ● /[locale]/technicians
+│ ├ /en/technicians
+│ ├ /es/technicians
+│ └ /pt/technicians
+├ ● /[locale]/training
+│ ├ /en/training
+│ ├ /es/training
+│ └ /pt/training
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/courses
+├ ƒ /api/login
+├ ƒ /api/reports/course-completion/[courseId]
+├ ƒ /api/reports/monthly-activity
+├ ƒ /api/reports/technician-activity/[technicianId]
+├ ƒ /api/technicians
+├ ƒ /api/technicians/[id]
+├ ƒ /api/technicians/[id]/approve
+├ ƒ /api/technicians/[id]/images
+├ ƒ /api/technicians/[id]/memberships
+├ ƒ /api/technicians/[id]/share-permissions
+└ ƒ /api/technicians/pre-register
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -24,13 +24,12 @@ export const RoleListModal = ({
   if (!isOpen) return null;
 
   const getRoleIcon = (role: string) => {
-    switch (role) {
+    const r = role.toLowerCase();
+    switch (r) {
+      case "superadmin":
+        return <Shield size={18} className="text-purple-400" />;
       case "admin":
         return <Shield size={18} className="text-blue-400" />;
-      case "encargado":
-        return <UserCircle size={18} className="text-emerald-400" />;
-      case "tecnico":
-        return <HardHat size={18} className="text-amber-400" />;
       default:
         return <User size={18} className="text-white/40" />;
     }

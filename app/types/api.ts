@@ -1,4 +1,5 @@
-export type IdentityStatus = "pending" | "approved" | "rejected" | "in_review";
+export type EvidenceStatus = "pending" | "approved" | "rejected" | "in_review";
+export type IdentityStatus = EvidenceStatus;
 
 export interface UserProfile {
   id: string;
@@ -9,12 +10,12 @@ export interface UserProfile {
   organizationId?: string;
 }
 
-export interface IdentityRecord {
+export interface EvidenceRecord {
   id: string;
   fullName: string;
   documentNumber: string;
   documentType: "DNI" | "PASSPORT" | "LICENSE";
-  status: IdentityStatus;
+  status: EvidenceStatus;
   createdAt: string;
   updatedAt: string;
   verificationDetails?: {
@@ -24,11 +25,13 @@ export interface IdentityRecord {
   };
 }
 
+export type IdentityRecord = EvidenceRecord;
+
 export interface Organization {
   id: string;
   name: string;
   logo?: string;
-  encargadoId?: string;
+  adminId?: string;
   createdAt: string;
 }
 
@@ -36,7 +39,8 @@ export interface ServerData {
   currentUser: UserProfile;
   users: UserProfile[]; // To manage other users
   organizations: Organization[];
-  identities: IdentityRecord[];
+  evidences: EvidenceRecord[];
+  identities: EvidenceRecord[];
   stats: {
     totalPending: number;
     totalApproved: number;

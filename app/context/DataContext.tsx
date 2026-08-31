@@ -29,6 +29,7 @@ const EMPTY_SERVER_DATA: ServerData = {
   },
   users: [],
   organizations: [],
+  evidences: [],
   identities: [],
   stats: {
     totalPending: 0,
