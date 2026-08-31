@@ -217,7 +217,6 @@ export default function AuditEvidencePage() {
           setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
           try {
             await approveEvidenceTEE(record.id);
-            await approve(record.id);
             await refresh();
             await fetchSubmittedEvidences();
             toast.success(
@@ -250,9 +249,8 @@ export default function AuditEvidencePage() {
         onConfirm: async () => {
           setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
           try {
-            const ok = await remove(record.id);
+            const ok = await superadminAuditService.deleteAuditLog(record.id);
             if (ok) {
-              await refresh();
               await fetchSubmittedEvidences();
               toast.success("Registro de evidencia eliminado correctamente.");
             } else {
@@ -264,7 +262,7 @@ export default function AuditEvidencePage() {
         },
       });
     },
-    [remove, refresh, fetchSubmittedEvidences],
+    [fetchSubmittedEvidences],
   );
 
   return (

@@ -62,4 +62,14 @@ export const superadminAuditService = {
       };
     }
   },
+
+  async deleteAuditLog(id: string): Promise<boolean> {
+    try {
+      await axios.delete(`${API_BASE_URL}/audit/${id}`);
+      return true;
+    } catch (error) {
+      console.error("Error al eliminar log de auditoría:", error);
+      return false;
+    }
+  },
 };
