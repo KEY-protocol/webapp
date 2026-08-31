@@ -64,7 +64,7 @@ export default function TechnicianRow({
 
         {/* Actions */}
         <div className="flex items-center gap-1 shrink-0">
-          {technician.status === "pending" && (
+          {technician.status === "pending" && technician.hasUploadedDocuments && (
             <button
               onClick={() => onApprove(technician.id)}
               className="flex items-center gap-1.5 bg-[#28a745]/20 hover:bg-[#28a745] text-[#28a745] hover:text-white border border-[#28a745]/40 px-3 py-1.5 rounded-xl font-semibold text-xs transition-all cursor-pointer mr-1"
@@ -73,6 +73,14 @@ export default function TechnicianRow({
               <CheckCircle className="w-4 h-4" />
               <span>Aprobar Técnico</span>
             </button>
+          )}
+          {technician.status === "pending" && !technician.hasUploadedDocuments && (
+            <span
+              className="inline-flex items-center gap-1 bg-white/5 border border-white/10 text-white/40 px-3 py-1.5 rounded-xl text-xs font-mono mr-1"
+              title="El técnico aún no ha cargado sus documentos desde la aplicación móvil"
+            >
+              Sin documentos cargados
+            </span>
           )}
           <ActionButton
             icon={<Eye className="w-4 h-4" />}

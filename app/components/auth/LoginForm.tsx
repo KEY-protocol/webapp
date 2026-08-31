@@ -206,6 +206,7 @@ export function LoginForm() {
         <OngSelectionModal
           onConfirm={handleOngConfirm}
           isLoading={isModalLoading}
+          defaultOngId={pendingAuth.user?.ongId}
         />
       )}
     </>

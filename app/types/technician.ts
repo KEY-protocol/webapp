@@ -33,6 +33,7 @@ export interface TechnicianSummary {
   documentNumber: string;
   documentType: string;
   status: TechnicianStatus;
+  hasUploadedDocuments?: boolean;
   createdAt: string;
   updatedAt: string;
 }

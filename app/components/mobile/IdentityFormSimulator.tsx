@@ -13,7 +13,6 @@ import {
   User,
   MapPin,
   ListFilter,
-  RefreshCw,
   Copy,
   Check,
   Layers,
@@ -37,6 +36,7 @@ export default function IdentityFormSimulator() {
   const userRole = (data?.currentUser?.role || user?.role || "").toLowerCase();
   const isSuperadmin = userRole === "superadmin";
   const isAdmin = userRole === "admin";
+  const canManageForms = isSuperadmin || isAdmin;
 
   const [formSchema, setFormSchema] = useState<FormSchemaDto | null>(null);
   const [activeFields, setActiveFields] = useState<FormFieldDef[]>([]);
@@ -136,20 +136,7 @@ export default function IdentityFormSimulator() {
     }
   };
 
-  const fillSampleData = () => {
-    const sampleObj: Record<string, any> = {};
-    activeFields.forEach((f) => {
-      if (f.type === "text") sampleObj[f.name] = `Ejemplo ${f.label}`;
-      else if (f.type === "number") sampleObj[f.name] = 10;
-      else if (f.type === "date") sampleObj[f.name] = "1995-05-15";
-      else if (f.type === "select_one" && f.options && f.options.length > 0) sampleObj[f.name] = f.options[0].value;
-      else if (f.type === "select_multiple" && f.options && f.options.length > 0) sampleObj[f.name] = [f.options[0].value];
-    });
-    setFormData(sampleObj);
-    setFaceCaptured(true);
-    setFrontCaptured(true);
-    setBackCaptured(true);
-  };
+
 
   const handleSaveFormVersion = async (formDataSaved: {
     title: string;
@@ -233,7 +220,7 @@ export default function IdentityFormSimulator() {
             </div>
           </div>
 
-          {/* Right Primary Action */}
+          {/* Right Primary Action (Superadmin Only) */}
           {isSuperadmin && (
             <button
               onClick={() => setIsBuilderOpen(true)}
@@ -284,15 +271,8 @@ export default function IdentityFormSimulator() {
             <div />
           )}
 
-          {/* Secondary Actions: Sample Data & View Mode */}
+          {/* Secondary Actions: View Mode */}
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={fillSampleData}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              Cargar Datos Muestra
-            </button>
 
             {isSuperadmin && (
               <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
@@ -776,7 +756,7 @@ export default function IdentityFormSimulator() {
         </div>
       )}
 
-      {/* Superadmin Form Builder Modal */}
+      {/* Form Builder Modal (Superadmin Only) */}
       {isSuperadmin && (
         <FormBuilderModal
           isOpen={isBuilderOpen}

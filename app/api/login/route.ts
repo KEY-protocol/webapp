@@ -34,11 +34,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const targetOng = ong || DEFAULT_ONG_ID;
     const requestBody: { email: string; password: string; ong?: string } = {
       email,
       password,
-      ong: targetOng,
+      ...(ong && { ong }),
     };
 
     const { data: servidorData } = await axios.post(

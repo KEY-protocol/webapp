@@ -1,43 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Spinner } from "@/app/components/common/Spinner";
-
-/**
- * TODO: Replace this static list with an API call to the SERVIDOR
- * that returns the ONGs the logged-in ADMIN is assigned to manage.
- * An ADMIN can be assigned to multiple ONGs by the SUPERADMIN.
- */
-const AVAILABLE_ORGANIZATIONS = [
-  { id: "key-protocol", name: "KEY Protocol" },
-];
+import { organizationsService } from "@/app/services/organizationsService";
 
 interface OngSelectionModalProps {
   /** Called when the ADMIN confirms which ONG to administer. */
   onConfirm: (ongId: string) => void;
   /** Whether the confirmation is being processed. */
   isLoading?: boolean;
+  /** Initial default user ongId if available */
+  defaultOngId?: string;
 }
 
 /**
- * Modal displayed after login exclusively for ADMIN users.
- *
- * An ADMIN may be assigned to manage multiple ONGs (by the SUPERADMIN),
- * so they must choose which one to work in for the current session.
- * Only the data for the selected ONG will be visible.
- *
- * This modal is NOT shown to:
- * - SUPERADMIN — has global platform access.
- * - ENCARGADO — pre-assigned to a specific ONG by the ADMIN who created
- *   their account, so they go directly to their ONG's view.
+ * Modal displayed after login for ADMIN users.
+ * Dynamically fetches registered active ONGs so the ADMIN can choose which ONG to work in.
  */
 export function OngSelectionModal({
   onConfirm,
   isLoading = false,
+  defaultOngId,
 }: OngSelectionModalProps) {
   const t = useTranslations("auth.login");
-  const [selectedOng, setSelectedOng] = useState("");
+  const [selectedOng, setSelectedOng] = useState(defaultOngId || "");
+  const [organizations, setOrganizations] = useState<Array<{ id: string; name: string }>>([]);
+  const [loadingOrgs, setLoadingOrgs] = useState(true);
+
+  useEffect(() => {
+    async function loadOrgs() {
+      try {
+        const data = await organizationsService.getOrganizations();
+        const active = data
+          .filter((o) => o.status === "ACTIVE" && o.slug !== "key-protocol")
+          .map((o) => ({ id: o.slug, name: o.name }));
+
+        if (active.length > 0) {
+          setOrganizations(active);
+          if (!selectedOng) {
+            setSelectedOng(active[0].id);
+          }
+        } else {
+          setOrganizations([{ id: defaultOngId || "key-protocol", name: defaultOngId || "KEY Protocol" }]);
+          if (!selectedOng) setSelectedOng(defaultOngId || "key-protocol");
+        }
+      } catch {
+        setOrganizations([{ id: defaultOngId || "key-protocol", name: defaultOngId || "KEY Protocol" }]);
+        if (!selectedOng) setSelectedOng(defaultOngId || "key-protocol");
+      } finally {
+        setLoadingOrgs(false);
+      }
+    }
+    loadOrgs();
+  }, [defaultOngId]);
 
   const handleConfirm = () => {
     if (selectedOng) {
@@ -88,50 +104,56 @@ export function OngSelectionModal({
         </div>
 
         {/* Body */}
-        <div className="px-6 py-5 space-y-3">
-          {AVAILABLE_ORGANIZATIONS.map((org) => (
-            <button
-              key={org.id}
-              type="button"
-              onClick={() => setSelectedOng(org.id)}
-              disabled={isLoading}
-              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all font-poppins text-left
-                ${
-                  selectedOng === org.id
-                    ? "bg-[#28a745]/10 border-[#28a745]/50 text-white shadow-lg shadow-green-950/10"
-                    : "bg-white/3 border-white/8 text-white/70 hover:bg-white/5 hover:border-white/15"
-                }
-                disabled:opacity-50 disabled:cursor-not-allowed`}
-            >
-              {/* Radio indicator */}
-              <span
-                className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all
+        <div className="px-6 py-5 space-y-3 max-h-60 overflow-y-auto">
+          {loadingOrgs ? (
+            <div className="flex items-center justify-center py-6">
+              <Spinner />
+            </div>
+          ) : (
+            organizations.map((org) => (
+              <button
+                key={org.id}
+                type="button"
+                onClick={() => setSelectedOng(org.id)}
+                disabled={isLoading}
+                className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all font-poppins text-left cursor-pointer
                   ${
                     selectedOng === org.id
-                      ? "border-[#28a745] bg-[#28a745]"
-                      : "border-white/30"
-                  }`}
+                      ? "bg-[#28a745]/10 border-[#28a745]/50 text-white shadow-lg shadow-green-950/10"
+                      : "bg-white/3 border-white/8 text-white/70 hover:bg-white/5 hover:border-white/15"
+                  }
+                  disabled:opacity-50 disabled:cursor-not-allowed`}
               >
-                {selectedOng === org.id && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                )}
-              </span>
+                {/* Radio indicator */}
+                <span
+                  className={`shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all
+                    ${
+                      selectedOng === org.id
+                        ? "border-[#28a745] bg-[#28a745]"
+                        : "border-white/30"
+                    }`}
+                >
+                  {selectedOng === org.id && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </span>
 
-              <span className="font-medium text-sm">{org.name}</span>
-            </button>
-          ))}
+                <span className="font-medium text-sm">{org.name}</span>
+              </button>
+            ))
+          )}
         </div>
 
         {/* Footer */}
@@ -140,7 +162,7 @@ export function OngSelectionModal({
             type="button"
             onClick={handleConfirm}
             disabled={!selectedOng || isLoading}
-            className="w-full bg-[#28a745] hover:bg-[#218838] text-white font-poppins font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-green-950/20 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
+            className="w-full bg-[#28a745] hover:bg-[#218838] text-white font-poppins font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-green-950/20 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 cursor-pointer"
           >
             {isLoading ? (
               <>
