@@ -16,6 +16,12 @@ export interface OrganizationConfig {
   apiBaseUrl?: string | null;
   phalaTeeUrl?: string | null;
   blockchainRpcUrl?: string | null;
+  blockchainPrivateKey?: string | null;
+  blockchainContractAddress?: string | null;
+  pinataJwt?: string | null;
+  pinataApiKey?: string | null;
+  pinataSecretApiKey?: string | null;
+  embeddingServiceUrl?: string | null;
   maxTechniciansLimit?: number | null;
   metadata?: any;
 }
@@ -50,6 +56,12 @@ export interface CreateOrgPayload {
   apiBaseUrl?: string;
   phalaTeeUrl?: string;
   blockchainRpcUrl?: string;
+  blockchainPrivateKey?: string;
+  blockchainContractAddress?: string;
+  pinataJwt?: string;
+  pinataApiKey?: string;
+  pinataSecretApiKey?: string;
+  embeddingServiceUrl?: string;
   maxTechniciansLimit?: number;
 }
 
@@ -58,6 +70,12 @@ export interface UpdateOrgCredentialsPayload {
   apiBaseUrl?: string;
   phalaTeeUrl?: string;
   blockchainRpcUrl?: string;
+  blockchainPrivateKey?: string;
+  blockchainContractAddress?: string;
+  pinataJwt?: string;
+  pinataApiKey?: string;
+  pinataSecretApiKey?: string;
+  embeddingServiceUrl?: string;
   maxTechniciansLimit?: number;
 }
 

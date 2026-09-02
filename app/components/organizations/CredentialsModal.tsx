@@ -26,6 +26,10 @@ export default function CredentialsModal({
   const [apiBaseUrl, setApiBaseUrl] = useState("");
   const [phalaTeeUrl, setPhalaTeeUrl] = useState("");
   const [blockchainRpcUrl, setBlockchainRpcUrl] = useState("");
+  const [blockchainPrivateKey, setBlockchainPrivateKey] = useState("");
+  const [blockchainContractAddress, setBlockchainContractAddress] = useState("");
+  const [pinataJwt, setPinataJwt] = useState("");
+  const [embeddingServiceUrl, setEmbeddingServiceUrl] = useState("");
   const [maxTechniciansLimit, setMaxTechniciansLimit] = useState(100);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,12 +39,20 @@ export default function CredentialsModal({
       setApiBaseUrl(organization.config.apiBaseUrl || "");
       setPhalaTeeUrl(organization.config.phalaTeeUrl || "");
       setBlockchainRpcUrl(organization.config.blockchainRpcUrl || "");
+      setBlockchainPrivateKey(organization.config.blockchainPrivateKey || "");
+      setBlockchainContractAddress(organization.config.blockchainContractAddress || "");
+      setPinataJwt(organization.config.pinataJwt || "");
+      setEmbeddingServiceUrl(organization.config.embeddingServiceUrl || "");
       setMaxTechniciansLimit(organization.config.maxTechniciansLimit || 100);
     } else {
       setDbConnectionString("");
       setApiBaseUrl("");
       setPhalaTeeUrl("");
       setBlockchainRpcUrl("");
+      setBlockchainPrivateKey("");
+      setBlockchainContractAddress("");
+      setPinataJwt("");
+      setEmbeddingServiceUrl("");
       setMaxTechniciansLimit(100);
     }
   }, [organization]);
@@ -55,7 +67,12 @@ export default function CredentialsModal({
       const payload: UpdateOrgCredentialsPayload = {
         dbConnectionString,
         apiBaseUrl,
+        phalaTeeUrl,
         blockchainRpcUrl,
+        blockchainPrivateKey,
+        blockchainContractAddress,
+        pinataJwt,
+        embeddingServiceUrl,
         maxTechniciansLimit: Number(maxTechniciansLimit),
       };
 
@@ -123,22 +140,38 @@ export default function CredentialsModal({
             />
           </div>
 
-          {/* API Base URL */}
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-              <Server className="w-3.5 h-3.5 text-cyan-400" />
-              URL del Servidor Dedicado
-            </label>
-            <input
-              type="text"
-              value={apiBaseUrl}
-              onChange={(e) => setApiBaseUrl(e.target.value)}
-              placeholder="https://api.ong.org/api"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
-            />
+          {/* API Base URL & Embedding URL */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+                <Server className="w-3.5 h-3.5 text-cyan-400" />
+                URL del Servidor Dedicado
+              </label>
+              <input
+                type="text"
+                value={apiBaseUrl}
+                onChange={(e) => setApiBaseUrl(e.target.value)}
+                placeholder="https://api.ong.org/api"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+                <Cpu className="w-3.5 h-3.5 text-amber-400" />
+                URL Servicio IA (Embedding)
+              </label>
+              <input
+                type="text"
+                value={embeddingServiceUrl}
+                onChange={(e) => setEmbeddingServiceUrl(e.target.value)}
+                placeholder="http://localhost:8001"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
+              />
+            </div>
           </div>
 
-          {/* Blockchain RPC & Tech Limit */}
+          {/* Blockchain RPC & Contract Address */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
@@ -149,22 +182,68 @@ export default function CredentialsModal({
                 type="text"
                 value={blockchainRpcUrl}
                 onChange={(e) => setBlockchainRpcUrl(e.target.value)}
-                placeholder="https://rpc.shibuya.astar.network"
+                placeholder="https://eth-sepolia.g.alchemy.com/v2/your-key"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-white/80">
-                Límite Máximo de Técnicos
+              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                Dirección del Contrato Identity
               </label>
               <input
-                type="number"
-                value={maxTechniciansLimit}
-                onChange={(e) => setMaxTechniciansLimit(Number(e.target.value))}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#28a745]"
+                type="text"
+                value={blockchainContractAddress}
+                onChange={(e) => setBlockchainContractAddress(e.target.value)}
+                placeholder="0x..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
               />
             </div>
+          </div>
+
+          {/* Blockchain Private Key & Pinata JWT */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-red-400" />
+                Blockchain Wallet Private Key
+              </label>
+              <input
+                type="password"
+                value={blockchainPrivateKey}
+                onChange={(e) => setBlockchainPrivateKey(e.target.value)}
+                placeholder="0x..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+                <Database className="w-3.5 h-3.5 text-cyan-400" />
+                Pinata IPFS JWT / Token
+              </label>
+              <input
+                type="password"
+                value={pinataJwt}
+                onChange={(e) => setPinataJwt(e.target.value)}
+                placeholder="eyJhbGciOi..."
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
+              />
+            </div>
+          </div>
+
+          {/* Limit */}
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-white/80">
+              Límite Máximo de Técnicos
+            </label>
+            <input
+              type="number"
+              value={maxTechniciansLimit}
+              onChange={(e) => setMaxTechniciansLimit(Number(e.target.value))}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#28a745]"
+            />
           </div>
 
           {/* Actions */}
