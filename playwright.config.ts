@@ -12,16 +12,19 @@ const braveExecutablePath = fs.existsSync(BRAVE_PATH_64)
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   reporter: 'html',
   use: {
     baseURL: 'http://localhost:3002',
     trace: 'on-first-retry',
+    headless: false,
     launchOptions: {
       executablePath: braveExecutablePath,
+      headless: false,
+      slowMo: 1000,
     },
   },
   projects: [
@@ -29,8 +32,11 @@ export default defineConfig({
       name: 'brave',
       use: {
         ...devices['Desktop Chrome'],
+        headless: false,
         launchOptions: {
           executablePath: braveExecutablePath,
+          headless: false,
+          slowMo: 1000,
         },
       },
     },

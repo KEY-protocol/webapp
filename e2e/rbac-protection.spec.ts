@@ -9,6 +9,7 @@ function createDummyJwt(role: string): string {
 test.describe('RBAC Route Protection E2E (Brave Browser)', () => {
   test('redirects SUPERADMIN from /es/technicians to /es/organizations', async ({ context, page }) => {
     const superadminToken = createDummyJwt('SUPERADMIN');
+    await page.goto('/es/');
     await context.addCookies([
       {
         name: 'kp_token',
@@ -24,6 +25,7 @@ test.describe('RBAC Route Protection E2E (Brave Browser)', () => {
 
   test('redirects ADMIN from /es/organizations to /es/home', async ({ context, page }) => {
     const adminToken = createDummyJwt('ADMIN');
+    await page.goto('/es/');
     await context.addCookies([
       {
         name: 'kp_token',
