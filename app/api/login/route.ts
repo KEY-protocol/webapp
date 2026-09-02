@@ -40,10 +40,15 @@ export async function POST(request: NextRequest) {
       ...(ong && { ong }),
     };
 
-    const { data: servidorData } = await axios.post(
-      `${SERVIDOR_BASE_URL}/api/ong/login`,
-      requestBody,
-    );
+    const loginEndpoint = `${SERVIDOR_BASE_URL}/api/v1/ong/login`;
+    const { data: servidorData } = await axios
+      .post(loginEndpoint, requestBody)
+      .catch(async (err) => {
+        if (err.response?.status === 404) {
+          return axios.post(`${SERVIDOR_BASE_URL}/api/ong/login`, requestBody);
+        }
+        throw err;
+      });
 
     // SERVIDOR wraps success responses in { ok: true, data: { ... } }
     const payload = servidorData?.data || servidorData;
