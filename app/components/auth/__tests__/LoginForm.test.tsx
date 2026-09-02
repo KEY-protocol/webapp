@@ -23,13 +23,13 @@ describe('LoginForm', () => {
   });
 
   it('shows error message if fields are empty on submit', async () => {
-    render(
+    const { container } = render(
       <AuthProvider>
         <LoginForm />
       </AuthProvider>
     );
 
-    const submitBtn = screen.getByRole('button');
+    const submitBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -44,7 +44,7 @@ describe('LoginForm', () => {
       ong_url: 'http://localhost:3000',
     });
 
-    render(
+    const { container } = render(
       <AuthProvider>
         <LoginForm />
       </AuthProvider>
@@ -56,7 +56,7 @@ describe('LoginForm', () => {
     fireEvent.change(emailInput, { target: { value: 'general@key.com.ar' } });
     fireEvent.change(passwordInput, { target: { value: 'Devconnect25+' } });
 
-    const submitBtn = screen.getByRole('button');
+    const submitBtn = container.querySelector('button[type="submit"]') as HTMLButtonElement;
     fireEvent.click(submitBtn);
 
     await waitFor(() => {

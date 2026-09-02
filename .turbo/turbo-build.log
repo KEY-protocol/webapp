@@ -8,14 +8,14 @@
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
   Creating an optimized production build ...
 [BABEL] Note: The code generator has deoptimised the styling of E:\Apps\key\key-protocol\webapp\app\components\icons\services\PackageLock.tsx as it exceeds the max of 500KB.
-✓ Compiled successfully in 21.4s
+✓ Compiled successfully in 13.8s
   Running TypeScript ...
   Collecting page data using 7 workers ...
   Generating static pages using 7 workers (0/47) ...
   Generating static pages using 7 workers (11/47) 
   Generating static pages using 7 workers (23/47) 
   Generating static pages using 7 workers (35/47) 
-✓ Generating static pages using 7 workers (47/47) in 1929.7ms
+✓ Generating static pages using 7 workers (47/47) in 2.2s
   Finalizing page optimization ...
 
 Route (app)

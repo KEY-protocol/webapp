@@ -20,14 +20,18 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:3002',
     trace: 'on-first-retry',
-    executablePath: braveExecutablePath,
+    launchOptions: {
+      executablePath: braveExecutablePath,
+    },
   },
   projects: [
     {
       name: 'brave',
       use: {
         ...devices['Desktop Chrome'],
-        executablePath: braveExecutablePath,
+        launchOptions: {
+          executablePath: braveExecutablePath,
+        },
       },
     },
   ],

@@ -1,6 +1,19 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 
+// Polyfill Request/Response/Headers para entorno jsdom
+if (typeof global.Request === 'undefined' && typeof globalThis.Request !== 'undefined') {
+  global.Request = globalThis.Request;
+  global.Response = globalThis.Response;
+  global.Headers = globalThis.Headers;
+}
+
+// Mock next-auth/react para evitar importación ESM en Node/Jest
+jest.mock('next-auth/react', () => ({
+  SessionProvider: ({ children }: { children: React.ReactNode }) => children,
+  useSession: () => ({ data: null, status: 'unauthenticated' }),
+}));
+
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -43,3 +56,22 @@ jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
   useLocale: () => 'es',
 }));
+
+// Mock next-intl/routing y @/i18n/routing
+jest.mock('next-intl/routing', () => ({
+  defineRouting: jest.fn().mockImplementation((config) => config),
+}));
+
+jest.mock('@/i18n/routing', () => ({
+  routing: { locales: ['es', 'en', 'pt'], defaultLocale: 'es' },
+}));
+
+// Mock next-intl/middleware para evitar modulos ESM no transformados
+jest.mock('next-intl/middleware', () => {
+  return jest.fn().mockImplementation(() => {
+    return () => {
+      const { NextResponse } = require('next/server');
+      return NextResponse.next();
+    };
+  });
+});
