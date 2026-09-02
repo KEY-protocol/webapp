@@ -95,6 +95,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (typeof window !== "undefined") {
       localStorage.removeItem(AUTH_STORAGE_KEY);
       localStorage.removeItem(LAST_ACTIVITY_KEY);
+      document.cookie = "kp_token=; path=/; max-age=0; SameSite=Lax";
     }
   }, []);
 
@@ -112,6 +113,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (typeof window !== "undefined") {
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(authData));
       localStorage.setItem(LAST_ACTIVITY_KEY, now.toString());
+      if (response.token) {
+        document.cookie = `kp_token=${encodeURIComponent(response.token)}; path=/; max-age=86400; SameSite=Lax`;
+      }
     }
   }, []);
 

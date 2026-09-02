@@ -4,19 +4,86 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
+// Rutas exclusivas para el rol SUPERADMIN
+const SUPERADMIN_ROUTES = [
+  "/organizations",
+  "/managers",
+  "/superadmin-audit",
+  "/superadmin-forms",
+];
+
+// Rutas exclusivas para administradores de ONG (ADMIN / ENCARGADO)
+const ADMIN_ROUTES = [
+  "/home",
+  "/technicians",
+  "/audit-evidence",
+  "/mobile-form-preview",
+  "/dashboard",
+  "/reports",
+  "/training",
+  "/ai-agents",
+];
+
+/** Extrae el rol del usuario desde el JWT sin firma */
+function getRoleFromToken(token: string): string | null {
+  try {
+    const parts = token.split(".");
+    if (parts.length < 2) return null;
+    const base64Url = parts[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonString =
+      typeof atob === "function"
+        ? atob(base64)
+        : Buffer.from(base64, "base64").toString("utf-8");
+    const payload = JSON.parse(jsonString);
+    return payload.role ? String(payload.role).toUpperCase() : null;
+  } catch {
+    return null;
+  }
+}
+
 export default function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
   // Skip next-intl middleware for all API routes
-  // NextAuth (/api/auth/*) and the login proxy (/api/login) need to work without locale prefixing
-  if (request.nextUrl.pathname.startsWith("/api/")) {
+  if (pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 
-  // TODO: When protected routes are implemented, add auth checks here.
-  // Example: check session and redirect unauthenticated users to login.
-  // const session = await auth();
-  // if (!session && isProtectedRoute(request.nextUrl.pathname)) {
-  //   return NextResponse.redirect(new URL("/", request.url));
-  // }
+  const localeMatch = pathname.match(/^\/(es|en)(\/|$)/);
+  const localePrefix = localeMatch ? `/${localeMatch[1]}` : "";
+
+  const isSuperadminRoute = SUPERADMIN_ROUTES.some((route) =>
+    pathname.includes(route)
+  );
+  const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.includes(route));
+
+  if (isSuperadminRoute || isAdminRoute) {
+    const token = request.cookies.get("kp_token")?.value;
+
+    // 1. Si no hay token de sesión, redirigir al login principal (/)
+    if (!token) {
+      const loginUrl = new URL(`${localePrefix}/`, request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    const userRole = getRoleFromToken(token);
+
+    // 2. SUPERADMIN intentando acceder a rutas de ONG (/technicians, /home, etc.) -> redirigir a /organizations
+    if (userRole === "SUPERADMIN" && isAdminRoute) {
+      const superadminDefaultUrl = new URL(
+        `${localePrefix}/organizations`,
+        request.url
+      );
+      return NextResponse.redirect(superadminDefaultUrl);
+    }
+
+    // 3. ADMIN / ENCARGADO intentando acceder a rutas de SUPERADMIN (/organizations, etc.) -> redirigir a /home
+    if (userRole !== "SUPERADMIN" && isSuperadminRoute) {
+      const adminDefaultUrl = new URL(`${localePrefix}/home`, request.url);
+      return NextResponse.redirect(adminDefaultUrl);
+    }
+  }
 
   return intlMiddleware(request);
 }

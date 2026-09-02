@@ -48,11 +48,22 @@ export async function POST(request: NextRequest) {
     // SERVIDOR wraps success responses in { ok: true, data: { ... } }
     const payload = servidorData?.data || servidorData;
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       user: payload.user,
       token: payload.token,
       ong_url: payload.ong_url,
     });
+
+    if (payload.token) {
+      response.cookies.set("kp_token", payload.token, {
+        path: "/",
+        httpOnly: false,
+        maxAge: 86400,
+        sameSite: "lax",
+      });
+    }
+
+    return response;
   } catch (error) {
     console.error("[/api/login] Error:", error);
 
