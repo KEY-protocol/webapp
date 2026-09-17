@@ -2,14 +2,25 @@
 trigger: always_on
 ---
 
-- El proyecto está utilizando NextJS 16, React, TailwindCSS, TypeScript, i18n, Next-intl para traducciones.
-- Utilizar datos hardcodeados ya que el backend aún no está desarrollado.
-- Desarrollar funcionalidades con el servidor de manera simulada, pero dejando TODOs para futuras implementaciones con el servidor.
-- Las fuentes de texto que se utilizan son montserrat para titulos y subtitulos, poppins para el resto.
-- El proyecto tiene su paleta de colores ya definida en el globals.css.
-- No utilizar testing aún.
-- El proyecto involucra tanto web2 como web3.
-- El proyecto utiliza husky para los commits hacía git.
-- No hace falta que pruebes como se ve la página, lo hago yo manualmente.
-- No hace falta verificar que el dev server no tenga errores.
-- Utilizo pnpm.
+# Reglas de Arquitectura - Webapp (`key-protocol`)
+
+## Stack Tecnológico Principal
+- **Framework Web**: Next.js 16 (App Router con estructura `app/[locale]/...`).
+- **Librería UI**: React 19.
+- **Estilos**: TailwindCSS v4 + CSS Modules/Globals (`globals.css`).
+- **Lenguaje**: TypeScript 5 (Modo estricto habilitado).
+- **Internacionalización (i18n)**: `next-intl` para textos multilenguaje.
+- **Autenticación**: `next-auth` (v5).
+- **Gestor de Paquetes**: `pnpm` (`pnpm@10`).
+
+## Naturaleza del Proyecto
+- El proyecto integra arquitecturas e interacciones tanto **Web2** (APIs REST/JSON, autenticación, bases de datos) como **Web3** (Wallet connections, Smart Contracts, DIDs, credenciales verificables).
+
+## Estructura de Directorios en `app/`
+- `app/[locale]/`: Páginas, layouts y rutas internacionalizadas.
+- `app/components/`: Componentes UI reutilizables y modulares.
+- `app/services/`: Capas de integración de datos, llamadas HTTP/Fetch/Axios y conectores Web3.
+- `app/hooks/`: Hooks personalizados de React.
+- `app/context/`: Proveedores de contexto global (ej. Auth, Theme, Web3State).
+- `app/lib/` & `app/utils/`: Utilidades puras, constantes y helpers generales.
+- `app/types/`: Definiciones de interfaces y tipos TypeScript centrales.
