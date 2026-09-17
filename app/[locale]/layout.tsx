@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import "@/app/styles/globals.css";
 
+import { Analytics } from "@vercel/analytics/next"
+
 import { AuthProvider } from "@/app/context/AuthContext";
 import { SidebarProvider } from "@/app/context/SidebarContext";
 import { DataProvider } from "@/app/context/DataContext";
@@ -45,6 +47,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale}>
       <body className="bg-primary min-h-screen flex flex-col">
+        <Analytics />
         <AuthProvider>
           <DataProvider>
             <SidebarProvider>
