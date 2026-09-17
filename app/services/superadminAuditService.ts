@@ -6,8 +6,8 @@ const rawUrl =
   process.env.SERVIDOR_BASE_URL ||
   "http://localhost:3000";
 
-const cleanBaseUrl = rawUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
-const API_BASE_URL = `${cleanBaseUrl}/api/superadmin`;
+const cleanBaseUrl = rawUrl.replace(/\/api(\/v1)?\/?$/, "").replace(/\/$/, "");
+const API_BASE_URL = `${cleanBaseUrl}/api/v1/superadmin`;
 
 export interface AuditLogRecord {
   id: string;

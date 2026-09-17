@@ -3,13 +3,14 @@ import { FormSchemaDto, FormVersionDto, FormFieldDef } from "../types/api";
 
 export function getOngBaseUrl(ongUrl?: string): string {
   let url = (ongUrl || "").trim().replace(/\/$/, "");
-  if (!url) return "http://localhost:3001";
+  if (!url) return "http://localhost:3001/api/v1";
   if (typeof window !== "undefined") {
     if (url.includes("ongserver") || url.includes("ong-server")) {
-      return "http://localhost:3001";
+      return "http://localhost:3001/api/v1";
     }
   }
-  return url;
+  const cleanUrl = url.replace(/\/api(\/v1)?\/?$/, "");
+  return `${cleanUrl}/api/v1`;
 }
 
 export async function fetchForms(ongUrl: string, token: string): Promise<FormSchemaDto[]> {
