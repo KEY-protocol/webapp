@@ -27,6 +27,21 @@ export interface SuperadminStats {
   totalAuditLogs: number;
 }
 
+function getAuthHeaders() {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem("kp_auth");
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (parsed?.token) {
+      return { Authorization: `Bearer ${parsed.token}` };
+    }
+  } catch {
+    // ignore
+  }
+  return {};
+}
+
 export const superadminAuditService = {
   async getAuditLogs(filters?: {
     actor?: string;
@@ -38,6 +53,7 @@ export const superadminAuditService = {
     try {
       const response = await axios.get(`${API_BASE_URL}/audit`, {
         params: filters,
+        headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
@@ -48,7 +64,9 @@ export const superadminAuditService = {
 
   async getSuperadminStats(): Promise<SuperadminStats> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/audit/stats`);
+      const response = await axios.get(`${API_BASE_URL}/audit/stats`, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error) {
       console.error("Error al obtener estadísticas del Superadmin:", error);
@@ -65,7 +83,9 @@ export const superadminAuditService = {
 
   async deleteAuditLog(id: string): Promise<boolean> {
     try {
-      await axios.delete(`${API_BASE_URL}/audit/${id}`);
+      await axios.delete(`${API_BASE_URL}/audit/${id}`, {
+        headers: getAuthHeaders(),
+      });
       return true;
     } catch (error) {
       console.error("Error al eliminar log de auditoría:", error);

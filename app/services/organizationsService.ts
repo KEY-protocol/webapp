@@ -79,10 +79,27 @@ export interface UpdateOrgCredentialsPayload {
   maxTechniciansLimit?: number;
 }
 
+function getAuthHeaders() {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = localStorage.getItem("kp_auth");
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (parsed?.token) {
+      return { Authorization: `Bearer ${parsed.token}` };
+    }
+  } catch {
+    // ignore
+  }
+  return {};
+}
+
 export const organizationsService = {
   async getOrganizations(): Promise<OrganizationRecord[]> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/organizations`);
+      const response = await axios.get(`${API_BASE_URL}/organizations`, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error) {
       console.error("Error al obtener lista de organizaciones:", error);
@@ -92,7 +109,9 @@ export const organizationsService = {
 
   async getOrganization(id: string): Promise<OrganizationRecord | null> {
     try {
-      const response = await axios.get(`${API_BASE_URL}/organizations/${id}`);
+      const response = await axios.get(`${API_BASE_URL}/organizations/${id}`, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error) {
       console.error(`Error al obtener la organización ${id}:`, error);
@@ -102,7 +121,9 @@ export const organizationsService = {
 
   async createOrganization(data: CreateOrgPayload): Promise<OrganizationRecord> {
     try {
-      const response = await axios.post(`${API_BASE_URL}/organizations`, data);
+      const response = await axios.post(`${API_BASE_URL}/organizations`, data, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
@@ -119,7 +140,9 @@ export const organizationsService = {
     data: { name?: string; description?: string; contactEmail?: string; status?: string }
   ): Promise<OrganizationRecord> {
     try {
-      const response = await axios.put(`${API_BASE_URL}/organizations/${id}`, data);
+      const response = await axios.put(`${API_BASE_URL}/organizations/${id}`, data, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
@@ -134,7 +157,9 @@ export const organizationsService = {
     data: UpdateOrgCredentialsPayload
   ): Promise<OrganizationConfig> {
     try {
-      const response = await axios.put(`${API_BASE_URL}/organizations/${id}/credentials`, data);
+      const response = await axios.put(`${API_BASE_URL}/organizations/${id}/credentials`, data, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
@@ -149,7 +174,9 @@ export const organizationsService = {
     data: { email: string; passwordRaw: string; role?: string }
   ): Promise<OrganizationAdmin> {
     try {
-      const response = await axios.post(`${API_BASE_URL}/organizations/${id}/admins`, data);
+      const response = await axios.post(`${API_BASE_URL}/organizations/${id}/admins`, data, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
@@ -165,7 +192,9 @@ export const organizationsService = {
     data: { role?: string; passwordRaw?: string }
   ): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await axios.patch(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`, data);
+      const response = await axios.patch(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`, data, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
@@ -180,7 +209,9 @@ export const organizationsService = {
     userId: string
   ): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`);
+      const response = await axios.delete(`${API_BASE_URL}/organizations/${orgId}/users/${userId}`, {
+        headers: getAuthHeaders(),
+      });
       return response.data;
     } catch (error: any) {
       if (error.code === "ERR_NETWORK" || !error.response) {
