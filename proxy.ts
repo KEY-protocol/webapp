@@ -45,7 +45,7 @@ function getRoleFromToken(token: string): string | null {
   }
 }
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip next-intl middleware for all API routes
