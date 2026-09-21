@@ -3,12 +3,18 @@ import { FormSchemaDto, FormVersionDto, FormFieldDef } from "../types/api";
 
 export function getOngBaseUrl(ongUrl?: string): string {
   let url = (ongUrl || "").trim().replace(/\/$/, "");
-  if (!url) return "http://localhost:3001/api/v1";
-  if (typeof window !== "undefined") {
-    if (url.includes("ongserver") || url.includes("ong-server")) {
-      return "http://localhost:3001/api/v1";
-    }
+  
+  const CENTRAL_API_URL =
+    process.env.NEXT_PUBLIC_CENTRAL_SERVER_URL ||
+    process.env.NEXT_PUBLIC_SERVIDOR_BASE_URL ||
+    "https://api-central.keyprotocol.ar";
+
+  const cleanCentralUrl = CENTRAL_API_URL.replace(/\/api(\/v1)?\/?$/, "").replace(/\/$/, "");
+
+  if (!url || url.includes("localhost:3001") || url.includes("ongserver") || url.includes("ong-server")) {
+    return `${cleanCentralUrl}/api/v1`;
   }
+
   const cleanUrl = url.replace(/\/api(\/v1)?\/?$/, "");
   return `${cleanUrl}/api/v1`;
 }
@@ -36,7 +42,9 @@ export async function fetchActiveForm(
     const response = await axios.get(`${baseUrl}/forms/active?category=${category}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.data || null;
+    const res = response.data;
+    if (res?.data) return res.data;
+    return res || null;
   } catch {
     return null;
   }
