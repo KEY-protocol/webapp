@@ -15,6 +15,7 @@ import {
   Server,
   Loader2,
   Filter,
+  Square,
 } from "lucide-react";
 import {
   OrganizationRecord,
@@ -347,12 +348,13 @@ export default function OrganizationsPage() {
                     {org.slug !== "key-protocol" && (
                       <button
                         onClick={() => handleToggleStatus(org)}
-                        className={`px-3 py-2 rounded-xl text-xs font-bold font-poppins transition-all cursor-pointer border ${org.status === "ACTIVE"
+                        title={org.status === "ACTIVE" ? "Suspender Organización" : "Activar Organización"}
+                        className={`p-2 rounded-xl text-xs font-bold transition-all cursor-pointer border ${org.status === "ACTIVE"
                           ? "border-red-500/30 text-red-400 hover:bg-red-500/10"
                           : "border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
                           }`}
                       >
-                        {org.status === "ACTIVE" ? "Suspender" : "Activar"}
+                        <Square className={`w-3.5 h-3.5 ${org.status === "ACTIVE" ? "fill-red-400/20" : "fill-emerald-400/20"}`} />
                       </button>
                     )}
                   </div>
