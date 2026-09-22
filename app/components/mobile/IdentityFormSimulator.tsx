@@ -67,8 +67,10 @@ export default function IdentityFormSimulator() {
         setSelectedVersionId(activeVerId);
         if (active.activeVersion?.fields && active.activeVersion.fields.length > 0) {
           setActiveFields(active.activeVersion.fields);
-        } else if (active.versions && active.versions.length > 0) {
-          setActiveFields(active.versions[0].fields || []);
+        } else if (active.versions && active.versions.length > 0 && active.versions[0].fields) {
+          setActiveFields(active.versions[0].fields);
+        } else if (Array.isArray((active as any).fields) && (active as any).fields.length > 0) {
+          setActiveFields((active as any).fields);
         }
       }
     } catch (err) {
