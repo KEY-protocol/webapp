@@ -125,9 +125,9 @@ export default function OrganizationsPage() {
     } catch (err: any) {
       toast.error(
         err.response?.data?.error ||
-          err.response?.data?.message ||
-          err.message ||
-          "Error al crear la organización"
+        err.response?.data?.message ||
+        err.message ||
+        "Error al crear la organización"
       );
     } finally {
       setIsSubmittingNew(false);
@@ -319,11 +319,10 @@ export default function OrganizationsPage() {
                   <div className="flex flex-wrap lg:flex-nowrap items-center gap-3 shrink-0">
                     <div>
                       <span
-                        className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${
-                          org.status === "ACTIVE"
-                            ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
-                            : "bg-red-500/15 text-red-400 border border-red-500/25"
-                        }`}
+                        className={`inline-block px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-wider ${org.status === "ACTIVE"
+                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/25"
+                          : "bg-red-500/15 text-red-400 border border-red-500/25"
+                          }`}
                       >
                         {org.status}
                       </span>
@@ -334,8 +333,7 @@ export default function OrganizationsPage() {
                       className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer border border-white/10"
                       title="Configurar credenciales de DB e Infraestructura"
                     >
-                      <Database className="w-3.5 h-3.5 text-emerald-400" />
-                      Credenciales BD
+                      Configuración
                     </button>
 
                     <button
@@ -343,18 +341,16 @@ export default function OrganizationsPage() {
                       className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer border border-white/10"
                       title="Crear o gestionar administradores de la ONG"
                     >
-                      <UserPlus className="w-3.5 h-3.5 text-cyan-400" />
-                      Crear Admins
+                      Administrar
                     </button>
 
                     {org.slug !== "key-protocol" && (
                       <button
                         onClick={() => handleToggleStatus(org)}
-                        className={`px-3 py-2 rounded-xl text-xs font-bold font-poppins transition-all cursor-pointer border ${
-                          org.status === "ACTIVE"
-                            ? "border-red-500/30 text-red-400 hover:bg-red-500/10"
-                            : "border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
-                        }`}
+                        className={`px-3 py-2 rounded-xl text-xs font-bold font-poppins transition-all cursor-pointer border ${org.status === "ACTIVE"
+                          ? "border-red-500/30 text-red-400 hover:bg-red-500/10"
+                          : "border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                          }`}
                       >
                         {org.status === "ACTIVE" ? "Suspender" : "Activar"}
                       </button>
