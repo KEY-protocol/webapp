@@ -119,39 +119,24 @@ export default function CredentialsModal({
         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 flex items-start gap-3">
           <ShieldCheck className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" />
           <p className="text-xs text-white/80 font-poppins leading-relaxed">
-            Cada organización cuenta con su propia base de datos PostgreSQL independiente y servidor de backend dedicado. Configura la cadena de conexión y servicios asociados a continuación.
+            Cada organización cuenta con su propio servidor de backend dedicado. Configura la URL del API y los servicios de infraestructura asociados a continuación.
           </p>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* DB Connection String */}
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-              <Database className="w-3.5 h-3.5 text-emerald-400" />
-              Cadena de Conexión a Base de Datos (DATABASE_URL PostgreSQL)
-            </label>
-            <input
-              type="text"
-              value={dbConnectionString}
-              onChange={(e) => setDbConnectionString(e.target.value)}
-              placeholder="postgresql://usuario:password@host-ong.com:5432/key_db_ong"
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
-            />
-          </div>
-
           {/* API Base URL & Embedding URL */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-                <Server className="w-3.5 h-3.5 text-cyan-400" />
-                URL del Servidor Dedicado
+                <Server className="w-3.5 h-3.5 text-emerald-400" />
+                URL del Servidor Dedicado de la ONG (API Base URL)
               </label>
               <input
                 type="text"
                 value={apiBaseUrl}
                 onChange={(e) => setApiBaseUrl(e.target.value)}
-                placeholder="https://api.ong.org/api"
+                placeholder="https://api-org.keyprotocol.ar/api"
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
               />
             </div>

@@ -222,13 +222,13 @@ export default function OrganizationsPage() {
 
           <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-5 space-y-2">
             <p className="text-amber-400/80 text-xs font-poppins font-bold uppercase tracking-wider">
-              Bases de Datos Dedicadas
+              Servidores de ONG
             </p>
             <p className="text-3xl font-montserrat font-bold text-amber-400">
-              {organizations.filter((o) => o.config?.dbConnectionString).length}
+              {organizations.filter((o) => o.config?.apiBaseUrl).length}
             </p>
             <p className="text-amber-300/60 text-xs font-poppins">
-              DBs PostgreSQL independientes
+              APIs Backend federadas activas
             </p>
           </div>
         </div>
@@ -459,17 +459,17 @@ export default function OrganizationsPage() {
                 />
               </div>
 
-              {/* Initial DB & Server Config Optional */}
+              {/* Initial Server API Config */}
               <div className="space-y-1 pt-2 border-t border-white/10">
                 <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-                  <Database className="w-3.5 h-3.5 text-emerald-400" />
-                  Cadena de Conexión BD PostgreSQL (Opcional)
+                  <Server className="w-3.5 h-3.5 text-emerald-400" />
+                  URL de la API del Servidor de la ONG (Recomendado)
                 </label>
                 <input
-                  type="text"
-                  value={newOrgDbString}
-                  onChange={(e) => setNewOrgDbString(e.target.value)}
-                  placeholder="postgresql://user:pass@host:5432/db_ong"
+                  type="url"
+                  value={newOrgServerUrl}
+                  onChange={(e) => setNewOrgServerUrl(e.target.value)}
+                  placeholder="https://api-org.keyprotocol.ar (o http://localhost:3001)"
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
                 />
               </div>
