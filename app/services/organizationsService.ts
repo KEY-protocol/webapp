@@ -220,4 +220,18 @@ export const organizationsService = {
       throw error;
     }
   },
+
+  async testApiUrl(url: string): Promise<{ success: boolean; message: string; url?: string }> {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/organizations/test-url`, { url }, {
+        headers: getAuthHeaders(),
+      });
+      return response.data;
+    } catch (error: any) {
+      return {
+        success: false,
+        message: error.response?.data?.message || "No se pudo conectar con el Servidor Central.",
+      };
+    }
+  },
 };
