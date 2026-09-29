@@ -10,6 +10,7 @@ import {
   Key,
   Loader2,
   CheckCircle2,
+  AlertCircle,
   Trash2,
   Edit2,
   Save,
@@ -235,9 +236,15 @@ export default function OrgAdminsModal({
                           >
                             {usr.role}
                           </span>
-                          <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" /> Activo
-                          </span>
+                          {usr.emailVerified ? (
+                            <span className="text-[10px] text-emerald-300 font-mono bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                              <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Confirmado
+                            </span>
+                          ) : (
+                            <span className="text-[10px] text-amber-300 font-mono bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
+                              <AlertCircle className="w-3 h-3 text-amber-400" /> No Confirmado
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>

@@ -30,6 +30,8 @@ export interface OrganizationAdmin {
   id: string;
   email: string;
   role: string;
+  emailVerified?: boolean;
+  emailVerifiedAt?: string | null;
   createdAt: string;
 }
 
