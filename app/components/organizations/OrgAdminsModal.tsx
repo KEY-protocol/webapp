@@ -43,7 +43,6 @@ export default function OrgAdminsModal({
 
   // Modificación / Edición
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
-  const [editRole, setEditRole] = useState("ADMIN");
   const [editPassword, setEditPassword] = useState("");
   const [isActionLoading, setIsActionLoading] = useState(false);
 
@@ -78,7 +77,6 @@ export default function OrgAdminsModal({
 
   const handleStartEdit = (usr: OrganizationAdmin) => {
     setEditingUserId(usr.id);
-    setEditRole(usr.role || "ADMIN");
     setEditPassword("");
   };
 
@@ -86,7 +84,6 @@ export default function OrgAdminsModal({
     setIsActionLoading(true);
     try {
       await organizationsService.updateOrgUser(organization.id, userId, {
-        role: editRole,
         ...(editPassword.trim() && { passwordRaw: editPassword.trim() }),
       });
       toast.success("Usuario actualizado correctamente");
@@ -227,15 +224,6 @@ export default function OrgAdminsModal({
                       <div className="min-w-0 flex-1">
                         <p className="text-white font-semibold truncate">{usr.email}</p>
                         <div className="flex items-center gap-2 mt-0.5">
-                          <span
-                            className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded ${
-                              usr.role === "ADMIN" || usr.role === "SUPERADMIN"
-                                ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
-                                : "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                            }`}
-                          >
-                            {usr.role}
-                          </span>
                           {usr.emailVerified ? (
                             <span className="text-[10px] text-emerald-300 font-mono bg-emerald-500/20 border border-emerald-500/30 px-2 py-0.5 rounded flex items-center gap-1 font-semibold">
                               <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Confirmado
@@ -252,13 +240,6 @@ export default function OrgAdminsModal({
                     {/* Inline edit form or Action Buttons */}
                     {isEditing ? (
                       <div className="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
-                        <select
-                          value={editRole}
-                          onChange={(e) => setEditRole(e.target.value)}
-                          className="bg-[#162713] border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white"
-                        >
-                          <option value="ADMIN">ADMIN</option>
-                        </select>
                         <PasswordInput
                           placeholder="Nueva clave (opcional)"
                           value={editPassword}
