@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Database, Server, Cpu, Link as LinkIcon, ShieldCheck, Loader2 } from "lucide-react";
+import { X, Database, Server, Cpu, Link as LinkIcon, ShieldCheck, Loader2, Radio, CheckCircle2, AlertTriangle } from "lucide-react";
 import {
   OrganizationRecord,
   organizationsService,
@@ -31,6 +31,8 @@ export default function CredentialsModal({
   const [pinataJwt, setPinataJwt] = useState("");
   const [maxTechniciansLimit, setMaxTechniciansLimit] = useState(100);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTestingUrl, setIsTestingUrl] = useState(false);
+  const [testResult, setTestResult] = useState<{ success: boolean; message: string; statusCode?: number } | null>(null);
 
   useEffect(() => {
     if (organization?.config) {
@@ -52,9 +54,36 @@ export default function CredentialsModal({
       setPinataJwt("");
       setMaxTechniciansLimit(100);
     }
+    setTestResult(null);
   }, [organization]);
 
   if (!isOpen) return null;
+
+  const handleTestUrl = async () => {
+    if (!apiBaseUrl || !apiBaseUrl.trim()) {
+      toast.warn("Por favor, ingresa una URL válida antes de probar.");
+      return;
+    }
+
+    setIsTestingUrl(true);
+    setTestResult(null);
+
+    try {
+      const res = await organizationsService.testApiUrl(apiBaseUrl.trim());
+      setTestResult(res);
+      if (res.success) {
+        toast.success(res.message);
+      } else {
+        toast.error(res.message);
+      }
+    } catch (err: any) {
+      const errorMsg = err?.message || "No se pudo realizar la prueba de conexión.";
+      setTestResult({ success: false, message: errorMsg });
+      toast.error(errorMsg);
+    } finally {
+      setIsTestingUrl(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,19 +150,57 @@ export default function CredentialsModal({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* API Base URL */}
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
-              <Server className="w-3.5 h-3.5 text-emerald-400" />
-              URL del Servidor Dedicado de la ONG (API Base URL)
-            </label>
+          {/* API Base URL con Botón de Prueba */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between items-center">
+              <label className="text-xs font-semibold text-white/80 flex items-center gap-2">
+                <Server className="w-3.5 h-3.5 text-emerald-400" />
+                URL del Servidor Dedicado de la ONG (API Base URL)
+              </label>
+
+              <button
+                type="button"
+                onClick={handleTestUrl}
+                disabled={isTestingUrl || !apiBaseUrl.trim()}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300 text-xs font-semibold transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isTestingUrl ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Radio className="w-3.5 h-3.5" />
+                )}
+                <span>{isTestingUrl ? "Probando..." : "Probar Conexión"}</span>
+              </button>
+            </div>
+
             <input
               type="text"
               value={apiBaseUrl}
-              onChange={(e) => setApiBaseUrl(e.target.value)}
+              onChange={(e) => {
+                setApiBaseUrl(e.target.value);
+                if (testResult) setTestResult(null);
+              }}
               placeholder="https://api-org.keyprotocol.ar/api"
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#28a745] font-mono"
             />
+
+            {/* Banner Result Status */}
+            {testResult && (
+              <div
+                className={`p-3 rounded-xl text-xs flex items-center gap-2.5 transition-all ${
+                  testResult.success
+                    ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                    : "bg-rose-500/15 text-rose-300 border border-rose-500/30"
+                }`}
+              >
+                {testResult.success ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                ) : (
+                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+                )}
+                <span className="font-poppins">{testResult.message}</span>
+              </div>
+            )}
           </div>
 
           {/* Blockchain RPC & Contract Address */}

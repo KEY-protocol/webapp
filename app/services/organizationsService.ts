@@ -223,7 +223,9 @@ export const organizationsService = {
     }
   },
 
-  async testApiUrl(url: string): Promise<{ success: boolean; message: string; url?: string }> {
+  async testApiUrl(
+    url: string
+  ): Promise<{ success: boolean; message: string; url?: string; statusCode?: number }> {
     try {
       const response = await axios.post(`${API_BASE_URL}/organizations/test-url`, { url }, {
         headers: getAuthHeaders(),
@@ -236,4 +238,25 @@ export const organizationsService = {
       };
     }
   },
+
+  async testOrganizationConnection(id: string): Promise<{
+    organizationId: string;
+    slug: string;
+    timestamp: string;
+    results: Record<string, { status: "OK" | "ERROR"; message: string }>;
+  }> {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/organizations/${id}/test-connection`,
+        {},
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error: any) {
+      throw new Error(
+        error.response?.data?.message || "Error al probar las conexiones de la organización."
+      );
+    }
+  },
 };
+
