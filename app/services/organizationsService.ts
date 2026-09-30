@@ -97,6 +97,16 @@ function getAuthHeaders() {
 }
 
 export const organizationsService = {
+  async getPublicOrganizations(): Promise<Array<{ ongId: string; name: string; description?: string; url?: string; isActive?: boolean }>> {
+    try {
+      const response = await axios.get(`${cleanBaseUrl}/api/v1/ong/list`);
+      return response.data;
+    } catch (error) {
+      console.error("Error al obtener lista pública de organizaciones:", error);
+      return [];
+    }
+  },
+
   async getOrganizations(): Promise<OrganizationRecord[]> {
     try {
       const response = await axios.get(`${API_BASE_URL}/organizations`, {

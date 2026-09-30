@@ -31,10 +31,10 @@ export function OngSelectionModal({
   useEffect(() => {
     async function loadOrgs() {
       try {
-        const data = await organizationsService.getOrganizations();
+        const data = await organizationsService.getPublicOrganizations();
         const active = data
-          .filter((o) => o.status === "ACTIVE" && o.slug !== "key-protocol")
-          .map((o) => ({ id: o.slug, name: o.name }));
+          .filter((o) => o.isActive !== false && o.ongId !== "key-protocol")
+          .map((o) => ({ id: o.ongId, name: o.name }));
 
         if (active.length > 0) {
           setOrganizations(active);
