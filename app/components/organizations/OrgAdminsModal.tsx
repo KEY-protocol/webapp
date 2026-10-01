@@ -9,8 +9,6 @@ import {
   Mail,
   Key,
   Loader2,
-  CheckCircle2,
-  AlertCircle,
   Trash2,
   Edit2,
   Save,
@@ -162,17 +160,6 @@ export default function OrgAdminsModal({
                   className="w-full bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 font-poppins"
                 />
               </div>
-            </div>
-
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-white/70">Rol de Usuario</label>
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="w-full bg-[#162713] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/50 font-poppins cursor-pointer"
-              >
-                <option value="ADMIN">ADMINISTRADOR (Acceso completo)</option>
-              </select>
             </div>
           </div>
 
