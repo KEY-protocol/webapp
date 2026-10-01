@@ -3,8 +3,9 @@ import axios, { AxiosError } from "axios";
 
 function getOngServerUrl(request: NextRequest): string {
   const headerUrl = request.headers.get("x-ong-url");
-  if (headerUrl) return headerUrl;
-  return process.env.ONG_SERVER_URL || "http://localhost:3001";
+  const rawUrl = (headerUrl || process.env.ONG_SERVER_URL || "http://localhost:3001").trim();
+  const cleanUrl = rawUrl.replace(/\/api(\/v1)?\/?$/, "").replace(/\/$/, "");
+  return `${cleanUrl}/api/v1`;
 }
 
 function getAuthToken(request: NextRequest): string | null {
