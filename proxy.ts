@@ -72,8 +72,11 @@ export default function proxy(request: NextRequest) {
 
     const userRole = getRoleFromToken(token);
 
+    // Normalize role string comparison
+    const isSuperAdminRole = userRole?.trim().toUpperCase() === "SUPERADMIN";
+
     // 2. SUPERADMIN intentando acceder a rutas de ONG (/technicians, /home, etc.) -> redirigir a /organizations
-    if (userRole === "SUPERADMIN" && isAdminRoute) {
+    if (isSuperAdminRole && isAdminRoute) {
       const superadminDefaultUrl = new URL(
         `${localePrefix}/organizations`,
         request.url
@@ -82,7 +85,7 @@ export default function proxy(request: NextRequest) {
     }
 
     // 3. ADMIN / ENCARGADO intentando acceder a rutas de SUPERADMIN (/organizations, etc.) -> redirigir a /home
-    if (userRole !== "SUPERADMIN" && isSuperadminRoute) {
+    if (!isSuperAdminRole && isSuperadminRoute) {
       const adminDefaultUrl = new URL(`${localePrefix}/home`, request.url);
       return NextResponse.redirect(adminDefaultUrl);
     }

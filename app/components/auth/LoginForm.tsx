@@ -63,7 +63,12 @@ export function LoginForm() {
   const completeLogin = (response: FederatedLoginResponse) => {
     setAuth(response);
     const isSuperadmin = response.user.role.toUpperCase() === "SUPERADMIN";
-    router.push(isSuperadmin ? "/organizations" : "/home");
+    const targetPath = isSuperadmin ? "/organizations" : "/home";
+    if (typeof window !== "undefined") {
+      window.location.href = targetPath;
+    } else {
+      router.push(targetPath);
+    }
   };
 
   /**
