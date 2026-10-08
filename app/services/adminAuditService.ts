@@ -7,7 +7,7 @@ const rawUrl =
   "http://localhost:3000";
 
 const cleanBaseUrl = rawUrl.replace(/\/api(\/v1)?\/?$/, "").replace(/\/$/, "");
-const API_BASE_URL = `${cleanBaseUrl}/api/v1/superadmin`;
+const API_BASE_URL = `${cleanBaseUrl}/api/v1/admin`;
 
 export interface AuditLogRecord {
   id: string;
@@ -18,7 +18,7 @@ export interface AuditLogRecord {
   timestamp: string;
 }
 
-export interface SuperadminStats {
+export interface AdminStats {
   totalOrgs: number;
   activeOrgs: number;
   totalAdmins: number;
@@ -42,7 +42,7 @@ function getAuthHeaders() {
   return {};
 }
 
-export const superadminAuditService = {
+export const adminAuditService = {
   async getAuditLogs(filters?: {
     actor?: string;
     action?: string;
@@ -62,14 +62,14 @@ export const superadminAuditService = {
     }
   },
 
-  async getSuperadminStats(): Promise<SuperadminStats> {
+  async getAdminStats(): Promise<AdminStats> {
     try {
       const response = await axios.get(`${API_BASE_URL}/audit/stats`, {
         headers: getAuthHeaders(),
       });
       return response.data;
     } catch (error) {
-      console.error("Error al obtener estadísticas del Superadmin:", error);
+      console.error("Error al obtener estadísticas de Administración:", error);
       return {
         totalOrgs: 0,
         activeOrgs: 0,

@@ -25,7 +25,7 @@ const EMPTY_SERVER_DATA: ServerData = {
     id: "",
     name: "Usuario",
     email: "",
-    role: "admin",
+    role: "user",
   },
   users: [],
   organizations: [],

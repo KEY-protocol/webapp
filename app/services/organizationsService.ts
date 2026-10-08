@@ -7,7 +7,7 @@ const rawUrl =
   "http://localhost:3000";
 
 const cleanBaseUrl = rawUrl.replace(/\/api(\/v1)?\/?$/, "").replace(/\/$/, "");
-const API_BASE_URL = `${cleanBaseUrl}/api/v1/superadmin`;
+const API_BASE_URL = `${cleanBaseUrl}/api/v1/admin`;
 
 export interface OrganizationConfig {
   id: string;

@@ -34,7 +34,7 @@ export default function IdentityFormSimulator() {
   const { token, ongUrl, user } = useAuth();
 
   const userRole = (data?.currentUser?.role || user?.role || "").toLowerCase();
-  const isSuperadmin = userRole === "superadmin";
+  const isAdmin = userRole === "admin";
 
   const [formSchema, setFormSchema] = useState<FormSchemaDto | null>(null);
   const [activeFields, setActiveFields] = useState<FormFieldDef[]>([]);
@@ -293,8 +293,8 @@ export default function IdentityFormSimulator() {
             </div>
           </div>
 
-          {/* Right Primary Action (Superadmin Only) */}
-          {isSuperadmin && (
+          {/* Right Primary Action (Admin Only) */}
+          {isAdmin && (
             <button
               onClick={() => setIsBuilderOpen(true)}
               className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/30 shrink-0"
@@ -347,15 +347,15 @@ export default function IdentityFormSimulator() {
             <div />
           )}
 
-          {/* Secondary Actions: View Mode (Superadmin Only) */}
+          {/* Secondary Actions: View Mode (Admin Only) */}
           <div className="flex items-center gap-3 shrink-0">
-            {isSuperadmin && (
+            {isAdmin && (
               <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
                 <button
                   onClick={() => setActiveViewMode("simulator")}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     activeViewMode === "simulator"
-                      ? "bg-[#28a745] text-white shadow-md"
+                       ? "bg-[#28a745] text-white shadow-md"
                       : "text-white/60 hover:text-white"
                   }`}
                 >
@@ -382,7 +382,7 @@ export default function IdentityFormSimulator() {
           {/* Smartphone Container */}
           <div
             className={`${
-              isSuperadmin ? "lg:col-span-6" : "lg:col-span-12 max-w-md mx-auto"
+              isAdmin ? "lg:col-span-6" : "lg:col-span-12 max-w-md mx-auto"
             } flex justify-center w-full`}
           >
             <div className="w-full max-w-[380px] bg-[#0c170b] border-[10px] border-[#1e381b] rounded-[48px] shadow-2xl overflow-hidden flex flex-col min-h-[640px] relative">
@@ -666,8 +666,8 @@ export default function IdentityFormSimulator() {
             </div>
           </div>
 
-          {/* Right Column: Detailed Field Inspector & JSON (Superadmin Only) */}
-          {isSuperadmin && (
+          {/* Right Column: Detailed Field Inspector & JSON (Admin Only) */}
+          {isAdmin && (
             <div className="lg:col-span-6 space-y-6">
               <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-4">
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
@@ -756,7 +756,7 @@ export default function IdentityFormSimulator() {
           )}
         </div>
       ) : (
-        /* JSON View Mode (Superadmin Only) */
+        /* JSON View Mode (Admin Only) */
         <div className="bg-black/50 border border-white/10 rounded-2xl p-6 space-y-4">
           <div className="flex justify-between items-center border-b border-white/10 pb-3">
             <div>
@@ -801,8 +801,8 @@ export default function IdentityFormSimulator() {
         </div>
       )}
 
-      {/* Form Builder Modal (Superadmin Only) */}
-      {isSuperadmin && (
+      {/* Form Builder Modal (Admin Only) */}
+      {isAdmin && (
         <FormBuilderModal
           isOpen={isBuilderOpen}
           onClose={() => setIsBuilderOpen(false)}

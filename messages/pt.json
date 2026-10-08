@@ -420,8 +420,8 @@
     "pendingFeature": "Funcionalidade '{feature}' (Pendente no Backend)"
   },
   "roles": {
-    "superadmin": "Superadmin",
     "encargado": "Gerente da Org",
-    "admin": "Administrador"
+    "admin": "Administrador",
+    "user": "Usuário"
   }
 }

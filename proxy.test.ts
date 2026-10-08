@@ -21,11 +21,11 @@ describe('webapp proxy', () => {
     expect(res.headers.get('location')).toBe('http://localhost:3002/es/');
   });
 
-  it('redirects SUPERADMIN user from /es/technicians to /es/organizations', () => {
-    const superadminToken = createDummyJwt('SUPERADMIN');
+  it('redirects ADMIN user from /es/technicians to /es/organizations', () => {
+    const adminToken = createDummyJwt('ADMIN');
     const req = new NextRequest(new URL('http://localhost:3002/es/technicians'), {
       headers: {
-        cookie: `kp_token=${superadminToken}`,
+        cookie: `kp_token=${adminToken}`,
       },
     });
     const res = proxy(req);
@@ -33,11 +33,23 @@ describe('webapp proxy', () => {
     expect(res.headers.get('location')).toBe('http://localhost:3002/es/organizations');
   });
 
-  it('redirects ADMIN user from /es/organizations to /es/home', () => {
-    const adminToken = createDummyJwt('ADMIN');
+  it('redirects USER user from /es/organizations to /es/home', () => {
+    const userToken = createDummyJwt('USER');
     const req = new NextRequest(new URL('http://localhost:3002/es/organizations'), {
       headers: {
-        cookie: `kp_token=${adminToken}`,
+        cookie: `kp_token=${userToken}`,
+      },
+    });
+    const res = proxy(req);
+    expect(res.status).toBe(307);
+    expect(res.headers.get('location')).toBe('http://localhost:3002/es/home');
+  });
+
+  it('redirects USER user from /es/admin-forms to /es/home', () => {
+    const userToken = createDummyJwt('USER');
+    const req = new NextRequest(new URL('http://localhost:3002/es/admin-forms'), {
+      headers: {
+        cookie: `kp_token=${userToken}`,
       },
     });
     const res = proxy(req);

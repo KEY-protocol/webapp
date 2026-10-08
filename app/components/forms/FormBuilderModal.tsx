@@ -127,7 +127,7 @@ export function FormBuilderModal({
             </div>
             <div>
               <h2 className="text-xl font-montserrat font-bold text-white">
-                Creador de Versiones de Formulario (Superadmin)
+                Creador de Versiones de Formulario (Admin)
               </h2>
               <p className="text-white/50 font-poppins text-xs">
                 Diseña, modifica tipos de campos y publica una nueva versión para las organizaciones.

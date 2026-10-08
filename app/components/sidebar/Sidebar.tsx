@@ -61,8 +61,8 @@ export const Sidebar = () => {
   const t = useTranslations("sidebar");
   const userRole = data.currentUser.role;
 
-  // Superadmin has no sidebar — uses a simplified header-only layout
-  if (userRole === "superadmin") return null;
+  // Admin has no sidebar — uses a simplified header-only layout
+  if (userRole === "admin") return null;
 
   const menuItems = [
     {
@@ -70,7 +70,7 @@ export const Sidebar = () => {
       icon: LayoutDashboard,
       label: t("menu.home.title"),
       href: "/home",
-      roles: ["admin"],
+      roles: ["user"],
     },
     // TODO: [NEXT-RELEASE] Reactivar las siguientes secciones cuando los endpoints de backend estén listos:
     // - Dashboard: GET /api/dashboard/stats
@@ -83,14 +83,14 @@ export const Sidebar = () => {
       icon: Building2,
       label: "Organizaciones",
       href: "/organizations",
-      roles: ["superadmin"],
+      roles: ["admin"],
     },
     {
       id: "dashboard",
       icon: AreaChart,
       label: t("menu.dashboard.title"),
       href: "/dashboard",
-      roles: ["admin"],
+      roles: ["user"],
     },
     */
     // TODO: [REPORTS-PANEL] Reactivar el panel de reportes cuando se integren las APIs finales de exportación y generación
@@ -100,7 +100,7 @@ export const Sidebar = () => {
       icon: FileBarChart,
       label: t("menu.reports.title"),
       href: "/reports",
-      roles: ["admin"],
+      roles: ["user"],
     },
     */
     {
@@ -108,21 +108,21 @@ export const Sidebar = () => {
       icon: Users,
       label: t("menu.technicians.title"),
       href: "/technicians",
-      roles: ["admin"],
+      roles: ["user"],
     },
     {
       id: "audit-evidence",
       icon: ShieldCheck,
       label: t("menu.auditIdentities.title"),
       href: "/audit-evidence",
-      roles: ["admin"],
+      roles: ["user"],
     },
     {
       id: "mobile-form-preview",
       icon: Smartphone,
       label: "Formulario Mobile",
       href: "/mobile-form-preview",
-      roles: ["admin"],
+      roles: ["user"],
     },
     /*
     {

@@ -25,7 +25,7 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
   const { clearAuth } = useAuth();
   const router = useRouter();
   const currentUser = data.currentUser;
-  const isSuperadmin = currentUser.role === "superadmin";
+  const isAdmin = currentUser.role === "admin";
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -46,10 +46,10 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
 
   const getRoleLabel = (role: string) => {
     switch (role) {
-      case "superadmin":
-        return r("superadmin");
       case "admin":
         return r("admin");
+      case "user":
+        return r("user");
       default:
         return role;
     }
@@ -58,8 +58,8 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
   return (
     <header className="w-full bg-primary border-b border-white/10 px-8 py-4 flex items-center justify-between relative z-40">
       <div className="flex items-center gap-6">
-        {/* Menu Icon — hidden for superadmin (no sidebar) */}
-        {!isSuperadmin && (
+        {/* Menu Icon — hidden for admin (no sidebar) */}
+        {!isAdmin && (
           <button
             onClick={toggle}
             className="text-white/80 hover:text-white transition-colors"
@@ -78,8 +78,8 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
           </p>
         </div>
 
-        {/* Superadmin Top Nav Links */}
-        {isSuperadmin && (
+        {/* Admin Top Nav Links */}
+        {isAdmin && (
           <div className="hidden md:flex items-center gap-2 ml-6">
             <Link
               href="/organizations"
@@ -88,13 +88,13 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
               Organizaciones
             </Link>
             <Link
-              href="/superadmin-forms"
+              href="/admin-forms"
               className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-poppins font-semibold text-xs transition-all border border-white/10"
             >
               Formularios Mobile
             </Link>
             <Link
-              href="/superadmin-audit"
+              href="/admin-audit"
               className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-poppins font-semibold text-xs transition-all border border-white/10"
             >
               Auditoría Global
@@ -108,8 +108,8 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
 
-          {/* Settings — only for encargado/admin */}
-          {!isSuperadmin && (
+          {/* Settings — only for user */}
+          {!isAdmin && (
             <>
               {/* TODO: [FUTURE-FEATURE] Descomentar la campanita de notificaciones cuando se conecte con el servicio en tiempo real / websockets */}
               {/*
@@ -134,8 +134,8 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
             </>
           )}
 
-          {/* Logout button — only for superadmin (sidebar handles logout for others) */}
-          {isSuperadmin && (
+          {/* Logout button — only for admin (sidebar handles logout for others) */}
+          {isAdmin && (
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 text-white/70 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5"
@@ -177,8 +177,8 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
         </div>
       </div>
 
-      {/* Modals — only rendered for non-superadmin roles */}
-      {!isSuperadmin && (
+      {/* Modals — only rendered for non-admin roles */}
+      {!isAdmin && (
         <>
           {/* TODO: [FUTURE-FEATURE] Habilitar NotificationsModal una vez implementado el backend de notificaciones en tiempo real */}
           {/*

@@ -161,7 +161,7 @@ export default function OrganizationsPage() {
               </h1>
             </div>
             <p className="text-white/50 font-poppins text-sm mt-1">
-              Panel Superadmin: Administra las organizaciones que tienen acceso a la plataforma, configura sus bases de datos e infraestructuras independientes y asigna sus usuarios administradores.
+              Panel de Administración: Administra las organizaciones que tienen acceso a la plataforma, configura sus bases de datos e infraestructuras independientes y asigna sus usuarios administradores.
             </p>
           </div>
 

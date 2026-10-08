@@ -39,7 +39,7 @@ describe('LoginForm', () => {
 
   it('calls loginWithCredentials with email and password', async () => {
     (authApi.loginWithCredentials as jest.Mock).mockResolvedValueOnce({
-      user: { id: 's1', email: 'general@key.com.ar', role: 'SUPERADMIN', ongId: 'key-protocol' },
+      user: { id: 's1', email: 'general@key.com.ar', role: 'ADMIN', ongId: 'key-protocol' },
       token: 'mock-jwt-token',
       ong_url: 'http://localhost:3000',
     });

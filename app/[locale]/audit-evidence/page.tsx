@@ -19,7 +19,7 @@ import {
 import { useData } from "@/app/context/DataContext";
 import { useTechnicians } from "@/app/hooks/useTechnicians";
 import ConfirmModal, { ConfirmVariant } from "@/app/components/ui/ConfirmModal";
-import { superadminAuditService } from "@/app/services/superadminAuditService";
+import { adminAuditService } from "@/app/services/adminAuditService";
 import { approveEvidenceTEE } from "@/app/services/blockchainService";
 import { toast } from "react-toastify";
 
@@ -51,7 +51,7 @@ export interface MobileEvidenceRecord {
 export default function AuditEvidencePage() {
   const { data } = useData();
   const userRole = data.currentUser.role;
-  const isSuperadmin = userRole === "superadmin";
+  const isAdmin = userRole === "admin";
 
   const { technicians, isLoading, refresh, approve, remove, isActing } = useTechnicians();
 
@@ -63,7 +63,7 @@ export default function AuditEvidencePage() {
   const fetchSubmittedEvidences = useCallback(async () => {
     setIsFetchingServerEvidences(true);
     try {
-      const logs = await superadminAuditService.getAuditLogs();
+      const logs = await adminAuditService.getAuditLogs();
       const evidenceLogs = logs.filter(
         (log) => log.action === "EVIDENCE_SUBMITTED_TEE" || log.action?.includes("EVIDENCE"),
       );
@@ -165,7 +165,7 @@ export default function AuditEvidencePage() {
     onConfirm: async () => {},
   });
 
-  // Available ONGs for Superadmin filtering
+  // Available ONGs for Admin filtering
   const ongOptions = useMemo(() => {
     const map = new Map<string, string>();
     evidences.forEach((item) => {
@@ -190,7 +190,7 @@ export default function AuditEvidencePage() {
         return false;
       }
 
-      if (isSuperadmin) {
+      if (isAdmin) {
         if (selectedOng !== "all" && item.ongId !== selectedOng) {
           return false;
         }
@@ -198,7 +198,7 @@ export default function AuditEvidencePage() {
 
       return true;
     });
-  }, [evidences, search, selectedStatus, selectedOng, isSuperadmin]);
+  }, [evidences, search, selectedStatus, selectedOng, isAdmin]);
 
   const handleViewDetail = (record: MobileEvidenceRecord) => {
     setSelectedRecord(record);
@@ -249,7 +249,7 @@ export default function AuditEvidencePage() {
         onConfirm: async () => {
           setConfirmConfig((prev) => ({ ...prev, isOpen: false }));
           try {
-            const ok = await superadminAuditService.deleteAuditLog(record.id);
+            const ok = await adminAuditService.deleteAuditLog(record.id);
             if (ok) {
               await fetchSubmittedEvidences();
               toast.success("Registro de evidencia eliminado correctamente.");
@@ -278,7 +278,7 @@ export default function AuditEvidencePage() {
               </h1>
             </div>
             <p className="text-white/50 font-poppins text-sm mt-1">
-              {isSuperadmin
+              {isAdmin
                 ? "Vista global masiva: audita la totalidad de evidencias enviadas por los técnicos desde la App Móvil en todas las organizaciones."
                 : "Audita las evidencias (formularios, fotos y biometría) capturadas y enviadas por los técnicos de tu organización a los servidores centralizados."}
             </p>
@@ -353,7 +353,7 @@ export default function AuditEvidencePage() {
         </div>
 
         {/* Filters bar */}
-        <div className={`grid grid-cols-1 ${isSuperadmin ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4`}>
+        <div className={`grid grid-cols-1 ${isAdmin ? "md:grid-cols-3" : "md:grid-cols-2"} gap-4`}>
           {/* Search */}
           <div className="relative flex-1">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
@@ -380,8 +380,8 @@ export default function AuditEvidencePage() {
             </select>
           </div>
 
-          {/* ONG Filter (Superadmin Only) */}
-          {isSuperadmin && (
+          {/* ONG Filter (Admin Only) */}
+          {isAdmin && (
             <div className="relative">
               <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
               <select

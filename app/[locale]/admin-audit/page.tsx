@@ -7,25 +7,20 @@ import {
   Filter,
   RefreshCw,
   Building2,
-  Users,
   Activity,
-  Calendar,
-  FileText,
   Loader2,
-  Lock,
-  UserCheck,
 } from "lucide-react";
 import {
   AuditLogRecord,
-  SuperadminStats,
-  superadminAuditService,
-} from "@/app/services/superadminAuditService";
+  AdminStats,
+  adminAuditService,
+} from "@/app/services/adminAuditService";
 import { organizationsService, OrganizationRecord } from "@/app/services/organizationsService";
 import { toast } from "react-toastify";
 
-export default function SuperadminAuditPage() {
+export default function AdminAuditPage() {
   const [logs, setLogs] = useState<AuditLogRecord[]>([]);
-  const [stats, setStats] = useState<SuperadminStats>({
+  const [stats, setStats] = useState<AdminStats>({
     totalOrgs: 0,
     activeOrgs: 0,
     totalAdmins: 0,
@@ -45,8 +40,8 @@ export default function SuperadminAuditPage() {
     setIsLoading(true);
     try {
       const [logsData, statsData, orgsData] = await Promise.all([
-        superadminAuditService.getAuditLogs(),
-        superadminAuditService.getSuperadminStats(),
+        adminAuditService.getAuditLogs(),
+        adminAuditService.getAdminStats(),
         organizationsService.getOrganizations(),
       ]);
 
@@ -75,8 +70,12 @@ export default function SuperadminAuditPage() {
       if (selectedOng !== "all" && log.ongId !== selectedOng) {
         return false;
       }
-      if (selectedAction !== "all" && !log.action.includes(selectedAction)) {
-        return false;
+      if (selectedAction !== "all") {
+        if (selectedAction === "ADMIN") {
+          if (!log.action.includes("ADMIN")) return false;
+        } else if (!log.action.includes(selectedAction)) {
+          return false;
+        }
       }
       return true;
     });
@@ -126,13 +125,13 @@ export default function SuperadminAuditPage() {
 
           <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-2xl p-5 space-y-2">
             <p className="text-cyan-400/80 text-xs font-poppins font-bold uppercase tracking-wider">
-              Usuarios Administradores
+              Usuarios Operadores
             </p>
             <p className="text-3xl font-montserrat font-bold text-cyan-400">
               {stats.totalAdmins}
             </p>
             <p className="text-cyan-300/60 text-xs font-poppins">
-              Admins de ONG operando
+              Usuarios institucionales operando
             </p>
           </div>
 
@@ -198,7 +197,7 @@ export default function SuperadminAuditPage() {
               className="w-full bg-[#162713] border border-white/10 rounded-xl pl-11 pr-4 py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#28a745]/40 transition-all font-poppins cursor-pointer"
             >
               <option value="all">Todos los tipos de evento</option>
-              <option value="SUPERADMIN">Acciones Superadmin</option>
+              <option value="ADMIN">Acciones de Administración</option>
               <option value="CREATE">Creación de Recursos</option>
               <option value="UPDATE">Modificaciones</option>
               <option value="SEED">Bootstrap / Seeds</option>

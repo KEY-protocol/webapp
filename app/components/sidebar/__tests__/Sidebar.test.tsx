@@ -20,10 +20,10 @@ describe('Sidebar Component', () => {
     jest.clearAllMocks();
   });
 
-  it('returns null when userRole is superadmin', () => {
+  it('returns null when userRole is admin', () => {
     (useData as jest.Mock).mockReturnValue({
       data: {
-        currentUser: { role: 'superadmin' },
+        currentUser: { role: 'admin' },
       },
     });
 
@@ -36,10 +36,10 @@ describe('Sidebar Component', () => {
     expect(container.firstChild).toBeNull();
   });
 
-  it('renders menu items when userRole is admin', () => {
+  it('renders menu items when userRole is user', () => {
     (useData as jest.Mock).mockReturnValue({
       data: {
-        currentUser: { role: 'admin' },
+        currentUser: { role: 'user' },
       },
     });
 

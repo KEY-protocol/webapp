@@ -4,16 +4,16 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
-// Rutas exclusivas para el rol SUPERADMIN
-const SUPERADMIN_ROUTES = [
+// Rutas exclusivas para el rol ADMIN (Plataforma Global)
+const ADMIN_ROUTES = [
   "/organizations",
   "/managers",
-  "/superadmin-audit",
-  "/superadmin-forms",
+  "/admin-audit",
+  "/admin-forms",
 ];
 
-// Rutas exclusivas para administradores de ONG (ADMIN / ENCARGADO)
-const ADMIN_ROUTES = [
+// Rutas exclusivas para usuarios de ONG (USER / ENCARGADO)
+const USER_ROUTES = [
   "/home",
   "/technicians",
   "/audit-evidence",
@@ -55,13 +55,12 @@ export default function proxy(request: NextRequest) {
 
   const localeMatch = pathname.match(/^\/(es|en)(\/|$)/);
   const localePrefix = localeMatch ? `/${localeMatch[1]}` : "";
-
-  const isSuperadminRoute = SUPERADMIN_ROUTES.some((route) =>
+  const isAdminRoute = ADMIN_ROUTES.some((route) =>
     pathname.includes(route)
   );
-  const isAdminRoute = ADMIN_ROUTES.some((route) => pathname.includes(route));
+  const isUserRoute = USER_ROUTES.some((route) => pathname.includes(route));
 
-  if (isSuperadminRoute || isAdminRoute) {
+  if (isAdminRoute || isUserRoute) {
     const token = request.cookies.get("kp_token")?.value;
 
     // 1. Si no hay token de sesión, redirigir al login principal (/)
@@ -73,21 +72,21 @@ export default function proxy(request: NextRequest) {
     const userRole = getRoleFromToken(token);
 
     // Normalize role string comparison
-    const isSuperAdminRole = userRole?.trim().toUpperCase() === "SUPERADMIN";
+    const isAdminRole = userRole?.trim().toUpperCase() === "ADMIN";
 
-    // 2. SUPERADMIN intentando acceder a rutas de ONG (/technicians, /home, etc.) -> redirigir a /organizations
-    if (isSuperAdminRole && isAdminRoute) {
-      const superadminDefaultUrl = new URL(
+    // 2. ADMIN intentando acceder a rutas de ONG (/technicians, /home, etc.) -> redirigir a /organizations
+    if (isAdminRole && isUserRoute) {
+      const adminDefaultUrl = new URL(
         `${localePrefix}/organizations`,
         request.url
       );
-      return NextResponse.redirect(superadminDefaultUrl);
+      return NextResponse.redirect(adminDefaultUrl);
     }
 
-    // 3. ADMIN / ENCARGADO intentando acceder a rutas de SUPERADMIN (/organizations, etc.) -> redirigir a /home
-    if (!isSuperAdminRole && isSuperadminRoute) {
-      const adminDefaultUrl = new URL(`${localePrefix}/home`, request.url);
-      return NextResponse.redirect(adminDefaultUrl);
+    // 3. USER intentando acceder a rutas de ADMIN (/organizations, etc.) -> redirigir a /home
+    if (!isAdminRole && isAdminRoute) {
+      const userDefaultUrl = new URL(`${localePrefix}/home`, request.url);
+      return NextResponse.redirect(userDefaultUrl);
     }
   }
 

@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { InternalAppLayout } from "@/app/components/auth/InternalAppLayout";
 
-export default async function SuperadminAuditLayout({
+export default async function AdminAuditLayout({
   children,
   params,
 }: {

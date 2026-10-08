@@ -16,26 +16,26 @@ import { PasswordInput } from "@/app/components/ui/PasswordInput";
 /**
  * Roles that bypass the ONG selection modal.
  *
- * - SUPERADMIN: manages the entire platform, creates ADMIN users for ONGs.
- * - ENCARGADO: already pre-assigned to a specific ONG by the ADMIN who
+ * - ADMIN: manages the entire platform, creates USER accounts for ONGs.
+ * - ENCARGADO: already pre-assigned to a specific ONG by the USER who
  *   created their account, so they don't need to choose.
  */
-const ROLES_WITHOUT_ONG_SELECTION = ["SUPERADMIN"];
+const ROLES_WITHOUT_ONG_SELECTION = ["ADMIN"];
 
 /**
  * Login form component containing email and password fields.
  *
  * Role hierarchy:
- * - SUPERADMIN creates ADMIN users and assigns them to one or more ONGs.
- * - ADMIN logs in and selects which ONG to administer (may manage several).
- * - ADMIN creates ENCARGADO users scoped to a specific ONG.
+ * - ADMIN creates USER accounts and assigns them to one or more ONGs.
+ * - USER logs in and selects which ONG to administer (may manage several).
+ * - USER creates ENCARGADO users scoped to a specific ONG.
  * - ENCARGADO logs in and is taken directly to their assigned ONG's view.
  *
  * Post-login flow:
  * 1. User enters email + password and submits.
  * 2. Credentials are sent to the federated login proxy (no ONG needed).
- * 3. ADMIN → ONG selection modal appears (they choose which ONG to work in).
- * 4. SUPERADMIN → redirect to /organizations (their home view).
+ * 3. USER → ONG selection modal appears (they choose which ONG to work in).
+ * 4. ADMIN → redirect to /organizations (their home view).
  * 5. ENCARGADO → redirect to /home directly.
  */
 export function LoginForm() {
@@ -57,13 +57,13 @@ export function LoginForm() {
 
   /**
    * Completes the login by storing auth data and redirecting.
-   * Superadmin goes to /organizations (their only view).
+   * Admin goes to /organizations (their only view).
    * Everyone else goes to /home.
    */
   const completeLogin = (response: FederatedLoginResponse) => {
     setAuth(response);
-    const isSuperadmin = response.user.role.toUpperCase() === "SUPERADMIN";
-    const targetPath = isSuperadmin ? "/organizations" : "/home";
+    const isAdmin = response.user.role.toUpperCase() === "ADMIN";
+    const targetPath = isAdmin ? "/organizations" : "/home";
     if (typeof window !== "undefined") {
       window.location.href = targetPath;
     } else {
@@ -96,11 +96,11 @@ export function LoginForm() {
       const userRole = response.user.role.toUpperCase();
 
       if (ROLES_WITHOUT_ONG_SELECTION.includes(userRole)) {
-        // SUPERADMIN → global access, no ONG context needed
-        // ENCARGADO → pre-assigned to a specific ONG by the ADMIN
+        // ADMIN → global access, no ONG context needed
+        // ENCARGADO → pre-assigned to a specific ONG by the USER
         completeLogin(response);
       } else {
-        // ADMIN → may administer multiple ONGs, must choose one
+        // USER → may administer multiple ONGs, must choose one
         setPendingAuth(response);
       }
     } catch (err) {

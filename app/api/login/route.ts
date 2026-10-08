@@ -12,7 +12,7 @@ import axios, { AxiosError } from "axios";
  *
  * Expected body: { email: string; password: string; ong?: string }
  *
- * When `ong` is omitted (SUPERADMIN / ENCARGADO flow), the server
+ * When `ong` is omitted (ADMIN / ENCARGADO flow), the server
  * falls back to DEFAULT_ONG_ID from the environment.
  */
 

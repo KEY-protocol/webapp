@@ -1,16 +1,17 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TechnicianRow from '../TechnicianCard';
+import { TechnicianSummary } from '@/app/types/technician';
 
-const mockTechnician = {
+const mockTechnician: TechnicianSummary = {
   id: 'tech-1',
   fullName: 'Carlos Gómez',
   documentType: 'DNI',
   documentNumber: '38492019',
   status: 'pending',
   createdAt: '2026-09-01T10:00:00Z',
+  updatedAt: '2026-09-01T10:00:00Z',
   hasUploadedDocuments: true,
-  ongId: 'ong-1',
 };
 
 describe('TechnicianRow Component', () => {
