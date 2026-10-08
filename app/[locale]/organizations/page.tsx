@@ -16,6 +16,7 @@ import {
   Loader2,
   Filter,
   Square,
+  History,
 } from "lucide-react";
 import {
   OrganizationRecord,
@@ -24,6 +25,7 @@ import {
 } from "@/app/services/organizationsService";
 import CredentialsModal from "@/app/components/organizations/CredentialsModal";
 import OrgAdminsModal from "@/app/components/organizations/OrgAdminsModal";
+import OrgAuditModal from "@/app/components/organizations/OrgAuditModal";
 import { toast } from "react-toastify";
 
 export default function OrganizationsPage() {
@@ -36,6 +38,8 @@ export default function OrganizationsPage() {
   const [selectedOrgForCredentials, setSelectedOrgForCredentials] =
     useState<OrganizationRecord | null>(null);
   const [selectedOrgForAdmins, setSelectedOrgForAdmins] =
+    useState<OrganizationRecord | null>(null);
+  const [selectedOrgForAudit, setSelectedOrgForAudit] =
     useState<OrganizationRecord | null>(null);
 
   // New Org Modal
@@ -330,6 +334,15 @@ export default function OrganizationsPage() {
                     </div>
 
                     <button
+                      onClick={() => setSelectedOrgForAudit(org)}
+                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer border border-white/10"
+                      title="Ver bitácora de auditoría y movimientos de esta organización"
+                    >
+                      <History className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Auditar</span>
+                    </button>
+
+                    <button
                       onClick={() => setSelectedOrgForCredentials(org)}
                       className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold font-poppins transition-all cursor-pointer border border-white/10"
                       title="Configurar credenciales de DB e Infraestructura"
@@ -364,6 +377,15 @@ export default function OrganizationsPage() {
           </div>
         )}
       </div>
+
+      {/* Org Audit Modal */}
+      {selectedOrgForAudit && (
+        <OrgAuditModal
+          isOpen={!!selectedOrgForAudit}
+          onClose={() => setSelectedOrgForAudit(null)}
+          organization={selectedOrgForAudit}
+        />
+      )}
 
       {/* Credentials Modal */}
       {selectedOrgForCredentials && (

@@ -69,6 +69,30 @@ describe('webapp proxy', () => {
     expect(res.headers.get('location')).toBe('http://localhost:3002/es/organizations');
   });
 
+  it('redirects ADMIN user from legacy /es/admin-audit to /es/organizations', () => {
+    const adminToken = createDummyJwt('ADMIN');
+    const req = new NextRequest(new URL('http://localhost:3002/es/admin-audit'), {
+      headers: {
+        cookie: `kp_token=${adminToken}`,
+      },
+    });
+    const res = proxy(req);
+    expect(res.status).toBe(307);
+    expect(res.headers.get('location')).toBe('http://localhost:3002/es/organizations');
+  });
+
+  it('redirects USER user from legacy /es/admin-audit to /es/home', () => {
+    const userToken = createDummyJwt('USER');
+    const req = new NextRequest(new URL('http://localhost:3002/es/admin-audit'), {
+      headers: {
+        cookie: `kp_token=${userToken}`,
+      },
+    });
+    const res = proxy(req);
+    expect(res.status).toBe(307);
+    expect(res.headers.get('location')).toBe('http://localhost:3002/es/home');
+  });
+
   it('allows USER user to access /es/forms without redirection', () => {
     const userToken = createDummyJwt('USER');
     const req = new NextRequest(new URL('http://localhost:3002/es/forms'), {

@@ -8,7 +8,6 @@ const intlMiddleware = createIntlMiddleware(routing);
 const ADMIN_ROUTES = [
   "/organizations",
   "/managers",
-  "/admin-audit",
 ];
 
 // Rutas exclusivas para usuarios de ONG (USER / ENCARGADO)
@@ -63,6 +62,18 @@ export default function proxy(request: NextRequest) {
     const isAdmin = userRole?.trim().toUpperCase() === "ADMIN";
     const redirectUrl = new URL(
       `${localePrefix}${isAdmin ? "/organizations" : "/forms"}`,
+      request.url
+    );
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  // Redirigir ruta obsoleta /admin-audit hacia /organizations
+  if (pathname.includes("/admin-audit")) {
+    const token = request.cookies.get("kp_token")?.value;
+    const userRole = token ? getRoleFromToken(token) : null;
+    const isAdmin = userRole?.trim().toUpperCase() === "ADMIN";
+    const redirectUrl = new URL(
+      `${localePrefix}${isAdmin ? "/organizations" : "/home"}`,
       request.url
     );
     return NextResponse.redirect(redirectUrl);

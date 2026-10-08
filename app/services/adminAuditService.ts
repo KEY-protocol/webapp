@@ -62,6 +62,28 @@ export const adminAuditService = {
     }
   },
 
+  async getOrganizationAudit(
+    orgIdOrSlug: string,
+    filters?: { actor?: string; action?: string },
+  ): Promise<AuditLogRecord[]> {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/organizations/${encodeURIComponent(orgIdOrSlug)}/audit`,
+        {
+          params: filters,
+          headers: getAuthHeaders(),
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.warn(
+        `Error al obtener auditoría de la organización ${orgIdOrSlug}, usando fallback:`,
+        error,
+      );
+      return this.getAuditLogs({ ongId: orgIdOrSlug, ...filters });
+    }
+  },
+
   async getAdminStats(): Promise<AdminStats> {
     try {
       const response = await axios.get(`${API_BASE_URL}/audit/stats`, {

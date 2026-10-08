@@ -20,7 +20,7 @@ El panel web implementa una arquitectura basada en roles puros (**`ADMIN`** y **
                           │   (Servidor Central)      │    │       (Servidor ONG)      │
                           ├───────────────────────────┤    ├───────────────────────────┤
                           │ • /organizations          │    │ • /home & /dashboard      │
-                          │ • /admin-audit            │    │ • /technicians            │
+                          │ • Auditoría x Organización│    │ • /technicians            │
                           │ • Diagnóstico Conexiones  │    │ • /forms (gestión/versión)│
                           │                           │    │ • /training (cursos/clase)│
                           │                           │    │ • /audit-evidence         │
@@ -33,7 +33,7 @@ El panel web implementa una arquitectura basada en roles puros (**`ADMIN`** y **
 
 | Rol | Alcance | Rutas Principales | Responsabilidades |
 |---|---|---|---|
-| **`ADMIN`** | Servidor Central (Global) | `/organizations`<br>`/admin-audit` | Alta y configuración de ONGs, credenciales de infraestructura (RPC, IPFS, TEE), pruebas de conexión en tiempo real y auditoría global. |
+| **`ADMIN`** | Servidor Central (Global) | `/organizations` | Alta y configuración de ONGs, credenciales de infraestructura (RPC, IPFS, TEE), pruebas de conexión en tiempo real y auditoría contextual por organización. |
 | **`USER`** | Servidor Institucional (ONG) | `/home`<br>`/forms`<br>`/technicians`<br>`/training`<br>`/audit-evidence`<br>`/reports`<br>`/mobile-form-preview` | Gestión y publicación de versiones de formularios de la organización, pre-registro y aprobación de técnicos de campo, seguimiento de cursos y clases, auditoría de evidencias territoriales, emisión de certificados y generación de reportes. |
 
 > 📌 **Aclaración Semántica:**
@@ -111,9 +111,7 @@ webapp/
 ├── app/
 │   ├── [locale]/                  # Rutas dinámicas localizadas (es, en, pt)
 │   │   ├── (public)/              # Rutas públicas (Login, etc.)
-│   │   ├── admin-audit/           # Auditoría global (Solo ADMIN)
-│   │   ├── admin-forms/           # Formularios base globales (Solo ADMIN)
-│   │   ├── organizations/         # Gestión de ONGs y test de conectividad (Solo ADMIN)
+│   │   ├── organizations/         # Gestión de ONGs, auditoría contextual y conectividad (Solo ADMIN)
 │   │   ├── home/                  # Dashboard institucional (USER)
 │   │   ├── dashboard/             # Métricas y estadísticas institucionales
 │   │   ├── technicians/           # Gestión y aprobación de técnicos
