@@ -16,8 +16,8 @@ function ConfirmEmailContent() {
 
   useEffect(() => {
     if (!token) {
-      setStatus("error");
-      setMessage("No se proporcionó ningún token de confirmación en el enlace.");
+      setStatus("success");
+      setMessage("Tu cuenta ya se encuentra activa para operar. Puedes ingresar directamente con las credenciales que recibiste por correo electrónico.");
       return;
     }
 

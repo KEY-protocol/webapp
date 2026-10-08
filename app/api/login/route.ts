@@ -17,7 +17,9 @@ import axios, { AxiosError } from "axios";
  */
 
 const SERVIDOR_BASE_URL =
-  process.env.SERVIDOR_BASE_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_CENTRAL_SERVER_URL ||
+  process.env.SERVIDOR_BASE_URL ||
+  "http://localhost:3000";
 
 const DEFAULT_ONG_ID =
   process.env.DEFAULT_ONG_ID || "key-protocol";
@@ -47,66 +49,102 @@ export async function POST(request: NextRequest) {
     };
 
     const centralBase = cleanUrl(SERVIDOR_BASE_URL);
-    const orgBase = cleanUrl(ONG_SERVER_URL);
-
+    let targetServerBase = centralBase;
     let authResponse: any = null;
 
-    // If an explicit organization other than default was requested, try org server first
-    const isSpecificOrg = Boolean(ong && ong !== DEFAULT_ONG_ID);
+    // Determinar si la autenticación es para una ONG descentralizada o para el Superadministrador (central)
+    const isSpecificOrg = Boolean(ong && ong !== DEFAULT_ONG_ID && ong !== "key-protocol");
 
     if (isSpecificOrg) {
+      let orgBase = cleanUrl(ONG_SERVER_URL);
+
+      // Resolver dinámicamente la URL del servidor de la ONG consultando al servidor central
+      try {
+        const orgsResp = await axios.get(`${centralBase}/api/v1/ong/list`, {
+          timeout: 4000,
+        });
+        const orgList = Array.isArray(orgsResp.data) ? orgsResp.data : [];
+        const found = orgList.find(
+          (o: any) => o.ongId === ong || o.id === ong || o.slug === ong,
+        );
+        if (found?.apiBaseUrl || found?.url) {
+          orgBase = cleanUrl(found.apiBaseUrl || found.url);
+        }
+      } catch (discoveryErr: any) {
+        console.warn(
+          `[Login Proxy] No se pudo resolver URL para ONG '${ong}' vía discovery. Usando fallback (${orgBase}):`,
+          discoveryErr?.message,
+        );
+      }
+
+      targetServerBase = orgBase;
+
+      // Autenticar contra el servidor de la ONG
       try {
         const resp = await axios.post(
-          `${orgBase}/api/v1/auth/login`,
+          `${targetServerBase}/api/v1/auth/login`,
           credentials,
           {
             headers: {
               "Content-Type": "application/json",
-              ...(ong ? { "x-ong-id": ong } : {}),
+              "x-ong-id": ong,
             },
+            timeout: 10000,
           },
         );
         authResponse = resp.data;
       } catch (err: any) {
-        // Fallback to central server if org server returns 401 or 404
-        if (err.response?.status === 401 || err.response?.status === 404) {
-          const resp = await axios.post(
-            `${centralBase}/api/v1/auth/login`,
-            credentials,
-            { headers: { "Content-Type": "application/json" } },
-          );
-          authResponse = resp.data;
+        // Fallback amistoso: si falla en la ONG y las credenciales son del superadmin central
+        if (
+          err.response?.status === 401 &&
+          credentials.email.toLowerCase() === "general@key.com.ar"
+        ) {
+          try {
+            const respCentral = await axios.post(
+              `${centralBase}/api/v1/auth/login`,
+              credentials,
+              { headers: { "Content-Type": "application/json" }, timeout: 7000 },
+            );
+            authResponse = respCentral.data;
+            targetServerBase = centralBase;
+          } catch {
+            throw err;
+          }
         } else {
           throw err;
         }
       }
     } else {
-      // Default: try central server first
+      // Flujo de Superadministrador / KEY Protocol central
       try {
         const resp = await axios.post(
           `${centralBase}/api/v1/auth/login`,
           credentials,
-          { headers: { "Content-Type": "application/json" } },
+          { headers: { "Content-Type": "application/json" }, timeout: 10000 },
         );
         authResponse = resp.data;
+        targetServerBase = centralBase;
       } catch (err: any) {
-        // If central server returns 401 or 404 or connection error, fallback to org server
+        // Fallback: si el servidor central devuelve 401 o 404, intentar con el servidor local de ONG
         if (
           err.response?.status === 401 ||
           err.response?.status === 404 ||
           !err.response
         ) {
+          const fallbackOrgBase = cleanUrl(ONG_SERVER_URL);
           const resp = await axios.post(
-            `${orgBase}/api/v1/auth/login`,
+            `${fallbackOrgBase}/api/v1/auth/login`,
             credentials,
             {
               headers: {
                 "Content-Type": "application/json",
                 ...(ong ? { "x-ong-id": ong } : {}),
               },
+              timeout: 10000,
             },
           );
           authResponse = resp.data;
+          targetServerBase = fallbackOrgBase;
         } else {
           throw err;
         }
@@ -136,7 +174,7 @@ export async function POST(request: NextRequest) {
       },
       token: token,
       accessToken: token,
-      ong_url: payload.ong_url || orgBase,
+      ong_url: payload.ong_url || targetServerBase,
     });
 
     response.cookies.set("kp_token", token, {
