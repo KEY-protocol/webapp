@@ -17,6 +17,7 @@ const USER_ROUTES = [
   "/home",
   "/technicians",
   "/audit-evidence",
+  "/forms",
   "/mobile-form-preview",
   "/dashboard",
   "/reports",

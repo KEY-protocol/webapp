@@ -118,10 +118,10 @@ export const Sidebar = () => {
       roles: ["user"],
     },
     {
-      id: "mobile-form-preview",
+      id: "forms",
       icon: Smartphone,
-      label: "Formulario Mobile",
-      href: "/mobile-form-preview",
+      label: "Formularios de la Organización",
+      href: "/forms",
       roles: ["user"],
     },
     /*

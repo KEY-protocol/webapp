@@ -51,6 +51,6 @@ describe('Sidebar Component', () => {
 
     expect(screen.getByText('menu.home.title')).toBeInTheDocument();
     expect(screen.getByText('menu.technicians.title')).toBeInTheDocument();
-    expect(screen.getByText('Formulario Mobile')).toBeInTheDocument();
+    expect(screen.getByText('Formularios de la Organización')).toBeInTheDocument();
   });
 });

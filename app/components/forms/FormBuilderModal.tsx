@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { X, Plus, Trash2, ArrowUp, ArrowDown, Save, Sparkles, Layers, Building2 } from "lucide-react";
 import { FormFieldDef } from "@/app/types/api";
 import { organizationsService, OrganizationRecord } from "@/app/services/organizationsService";
+import { useAuth } from "@/app/context/AuthContext";
 
 interface FormBuilderModalProps {
   isOpen: boolean;
@@ -31,6 +32,9 @@ export function FormBuilderModal({
   existingVersion = "1.0.0",
   defaultOngId = "GLOBAL",
 }: FormBuilderModalProps) {
+  const { user } = useAuth();
+  const isAdmin = user?.role?.toUpperCase() === "ADMIN";
+
   const [title, setTitle] = useState(existingTitle || "Formulario de Captación");
   const [description, setDescription] = useState("Formulario dinámico de captación");
   const [version, setVersion] = useState(() => {
@@ -40,19 +44,19 @@ export function FormBuilderModal({
     }
     return "1.1.0";
   });
-  const [ongId, setOngId] = useState(defaultOngId);
+  const [ongId, setOngId] = useState(isAdmin ? defaultOngId : (user?.ongId || defaultOngId));
   const [category, setCategory] = useState("IDENTITY");
   const [orgList, setOrgList] = useState<OrganizationRecord[]>([]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && isAdmin) {
       organizationsService.getOrganizations().then((orgs) => {
         if (orgs && orgs.length > 0) {
           setOrgList(orgs);
         }
       });
     }
-  }, [isOpen]);
+  }, [isOpen, isAdmin]);
 
   const [fields, setFields] = useState<FormFieldDef[]>(initialFields);
 
@@ -127,10 +131,14 @@ export function FormBuilderModal({
             </div>
             <div>
               <h2 className="text-xl font-montserrat font-bold text-white">
-                Creador de Versiones de Formulario (Admin)
+                {isAdmin
+                  ? "Creador de Versiones de Formulario (Admin)"
+                  : "Editor de Versiones de Formulario"}
               </h2>
               <p className="text-white/50 font-poppins text-xs">
-                Diseña, modifica tipos de campos y publica una nueva versión para las organizaciones.
+                {isAdmin
+                  ? "Diseña, modifica tipos de campos y publica una nueva versión para las organizaciones."
+                  : "Diseña y publica una nueva versión de formulario para tu organización."}
               </p>
             </div>
           </div>
@@ -175,20 +183,27 @@ export function FormBuilderModal({
 
             <div>
               <label className="block text-xs font-bold text-white/60 mb-1">
-                Organización Destino
+                {isAdmin ? "Organización Destino" : "Organización"}
               </label>
-              <select
-                value={ongId}
-                onChange={(e) => setOngId(e.target.value)}
-                className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-white text-xs font-poppins focus:outline-none focus:ring-2 focus:ring-[#28a745]"
-              >
-                <option value="GLOBAL">Todas las Organizaciones (GLOBAL)</option>
-                {orgList.map((org) => (
-                  <option key={org.id} value={org.slug || org.id}>
-                    {org.name} ({org.slug})
-                  </option>
-                ))}
-              </select>
+              {isAdmin ? (
+                <select
+                  value={ongId}
+                  onChange={(e) => setOngId(e.target.value)}
+                  className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-white text-xs font-poppins focus:outline-none focus:ring-2 focus:ring-[#28a745]"
+                >
+                  <option value="GLOBAL">Todas las Organizaciones (GLOBAL)</option>
+                  {orgList.map((org) => (
+                    <option key={org.id} value={org.slug || org.id}>
+                      {org.name} ({org.slug})
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <div className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-emerald-400 text-xs font-mono font-bold flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-emerald-400" />
+                  <span>{user?.ongId || defaultOngId}</span>
+                </div>
+              )}
             </div>
           </div>
 

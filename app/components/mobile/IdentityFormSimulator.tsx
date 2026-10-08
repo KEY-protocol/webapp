@@ -293,16 +293,14 @@ export default function IdentityFormSimulator() {
             </div>
           </div>
 
-          {/* Right Primary Action (Admin Only) */}
-          {isAdmin && (
-            <button
-              onClick={() => setIsBuilderOpen(true)}
-              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/30 shrink-0"
-            >
-              <Sparkles className="w-4 h-4" />
-              Crear Nueva Versión
-            </button>
-          )}
+          {/* Right Primary Action */}
+          <button
+            onClick={() => setIsBuilderOpen(true)}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#28a745] hover:bg-[#218838] text-white text-xs font-bold font-poppins transition-all cursor-pointer shadow-lg shadow-green-950/30 shrink-0"
+          >
+            <Sparkles className="w-4 h-4" />
+            Crear Nueva Versión
+          </button>
         </div>
 
         {/* Row 2: Version Selector & View Mode Controls */}
@@ -347,32 +345,30 @@ export default function IdentityFormSimulator() {
             <div />
           )}
 
-          {/* Secondary Actions: View Mode (Admin Only) */}
+          {/* Secondary Actions: View Mode */}
           <div className="flex items-center gap-3 shrink-0">
-            {isAdmin && (
-              <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
-                <button
-                  onClick={() => setActiveViewMode("simulator")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeViewMode === "simulator"
-                       ? "bg-[#28a745] text-white shadow-md"
-                      : "text-white/60 hover:text-white"
-                  }`}
-                >
-                  Vista Dispositivo
-                </button>
-                <button
-                  onClick={() => setActiveViewMode("json")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeViewMode === "json"
-                      ? "bg-[#28a745] text-white shadow-md"
-                      : "text-white/60 hover:text-white"
-                  }`}
-                >
-                  Esquema JSON
-                </button>
-              </div>
-            )}
+            <div className="bg-black/30 p-1 rounded-xl border border-white/10 flex items-center">
+              <button
+                onClick={() => setActiveViewMode("simulator")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  activeViewMode === "simulator"
+                    ? "bg-[#28a745] text-white shadow-md"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Vista Dispositivo
+              </button>
+              <button
+                onClick={() => setActiveViewMode("json")}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  activeViewMode === "json"
+                    ? "bg-[#28a745] text-white shadow-md"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                Esquema JSON
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -801,21 +797,19 @@ export default function IdentityFormSimulator() {
         </div>
       )}
 
-      {/* Form Builder Modal (Admin Only) */}
-      {isAdmin && (
-        <FormBuilderModal
-          isOpen={isBuilderOpen}
-          onClose={() => setIsBuilderOpen(false)}
-          onSave={handleSaveFormVersion}
-          initialFields={activeFields}
-          existingTitle={formSchema?.title || ""}
-          existingVersion={
-            currentPreviewVersionObj?.version ||
-            formSchema?.activeVersion?.version ||
-            "1.0.0"
-          }
-        />
-      )}
+      {/* Form Builder Modal */}
+      <FormBuilderModal
+        isOpen={isBuilderOpen}
+        onClose={() => setIsBuilderOpen(false)}
+        onSave={handleSaveFormVersion}
+        initialFields={activeFields}
+        existingTitle={formSchema?.title || ""}
+        existingVersion={
+          currentPreviewVersionObj?.version ||
+          formSchema?.activeVersion?.version ||
+          "1.0.0"
+        }
+      />
     </div>
   );
 }
