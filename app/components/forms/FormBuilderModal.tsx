@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { X, Plus, Trash2, ArrowUp, ArrowDown, Save, Sparkles, Layers, Building2 } from "lucide-react";
 import { FormFieldDef } from "@/app/types/api";
-import { organizationsService, OrganizationRecord } from "@/app/services/organizationsService";
 import { useAuth } from "@/app/context/AuthContext";
 
 interface FormBuilderModalProps {
@@ -33,7 +32,7 @@ export function FormBuilderModal({
   defaultOngId = "GLOBAL",
 }: FormBuilderModalProps) {
   const { user } = useAuth();
-  const isAdmin = user?.role?.toUpperCase() === "ADMIN";
+  const orgSlug = user?.ongId || defaultOngId;
 
   const [title, setTitle] = useState(existingTitle || "Formulario de Captación");
   const [description, setDescription] = useState("Formulario dinámico de captación");
@@ -44,19 +43,8 @@ export function FormBuilderModal({
     }
     return "1.1.0";
   });
-  const [ongId, setOngId] = useState(isAdmin ? defaultOngId : (user?.ongId || defaultOngId));
+  const [ongId, setOngId] = useState(orgSlug);
   const [category, setCategory] = useState("IDENTITY");
-  const [orgList, setOrgList] = useState<OrganizationRecord[]>([]);
-
-  useEffect(() => {
-    if (isOpen && isAdmin) {
-      organizationsService.getOrganizations().then((orgs) => {
-        if (orgs && orgs.length > 0) {
-          setOrgList(orgs);
-        }
-      });
-    }
-  }, [isOpen, isAdmin]);
 
   const [fields, setFields] = useState<FormFieldDef[]>(initialFields);
 
@@ -131,14 +119,10 @@ export function FormBuilderModal({
             </div>
             <div>
               <h2 className="text-xl font-montserrat font-bold text-white">
-                {isAdmin
-                  ? "Creador de Versiones de Formulario (Admin)"
-                  : "Editor de Versiones de Formulario"}
+                Editor de Versiones de Formulario
               </h2>
               <p className="text-white/50 font-poppins text-xs">
-                {isAdmin
-                  ? "Diseña, modifica tipos de campos y publica una nueva versión para las organizaciones."
-                  : "Diseña y publica una nueva versión de formulario para tu organización."}
+                Diseña, personaliza campos y publica una nueva versión para tu organización.
               </p>
             </div>
           </div>
@@ -183,27 +167,12 @@ export function FormBuilderModal({
 
             <div>
               <label className="block text-xs font-bold text-white/60 mb-1">
-                {isAdmin ? "Organización Destino" : "Organización"}
+                Organización
               </label>
-              {isAdmin ? (
-                <select
-                  value={ongId}
-                  onChange={(e) => setOngId(e.target.value)}
-                  className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-white text-xs font-poppins focus:outline-none focus:ring-2 focus:ring-[#28a745]"
-                >
-                  <option value="GLOBAL">Todas las Organizaciones (GLOBAL)</option>
-                  {orgList.map((org) => (
-                    <option key={org.id} value={org.slug || org.id}>
-                      {org.name} ({org.slug})
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <div className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-emerald-400 text-xs font-mono font-bold flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-emerald-400" />
-                  <span>{user?.ongId || defaultOngId}</span>
-                </div>
-              )}
+              <div className="w-full bg-[#142612] border border-white/10 rounded-xl px-3 py-2 text-emerald-400 text-xs font-mono font-bold flex items-center gap-2">
+                <Building2 className="w-4 h-4 text-emerald-400" />
+                <span>{orgSlug}</span>
+              </div>
             </div>
           </div>
 

@@ -45,7 +45,7 @@ describe('webapp proxy', () => {
     expect(res.headers.get('location')).toBe('http://localhost:3002/es/home');
   });
 
-  it('redirects USER user from /es/admin-forms to /es/home', () => {
+  it('redirects USER user from legacy /es/admin-forms to /es/forms', () => {
     const userToken = createDummyJwt('USER');
     const req = new NextRequest(new URL('http://localhost:3002/es/admin-forms'), {
       headers: {
@@ -54,7 +54,19 @@ describe('webapp proxy', () => {
     });
     const res = proxy(req);
     expect(res.status).toBe(307);
-    expect(res.headers.get('location')).toBe('http://localhost:3002/es/home');
+    expect(res.headers.get('location')).toBe('http://localhost:3002/es/forms');
+  });
+
+  it('redirects ADMIN user from legacy /es/admin-forms to /es/organizations', () => {
+    const adminToken = createDummyJwt('ADMIN');
+    const req = new NextRequest(new URL('http://localhost:3002/es/admin-forms'), {
+      headers: {
+        cookie: `kp_token=${adminToken}`,
+      },
+    });
+    const res = proxy(req);
+    expect(res.status).toBe(307);
+    expect(res.headers.get('location')).toBe('http://localhost:3002/es/organizations');
   });
 
   it('allows USER user to access /es/forms without redirection', () => {

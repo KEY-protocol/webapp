@@ -88,12 +88,6 @@ export const PageHeader = ({ namespace }: PageHeaderProps) => {
               Organizaciones
             </Link>
             <Link
-              href="/admin-forms"
-              className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-poppins font-semibold text-xs transition-all border border-white/10"
-            >
-              Formularios Mobile
-            </Link>
-            <Link
               href="/admin-audit"
               className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-poppins font-semibold text-xs transition-all border border-white/10"
             >

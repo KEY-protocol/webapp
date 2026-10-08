@@ -33,8 +33,7 @@ export default function IdentityFormSimulator() {
   const { data } = useData();
   const { token, ongUrl, user } = useAuth();
 
-  const userRole = (data?.currentUser?.role || user?.role || "").toLowerCase();
-  const isAdmin = userRole === "admin";
+
 
   const [formSchema, setFormSchema] = useState<FormSchemaDto | null>(null);
   const [activeFields, setActiveFields] = useState<FormFieldDef[]>([]);
@@ -376,11 +375,7 @@ export default function IdentityFormSimulator() {
       {activeViewMode === "simulator" ? (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Smartphone Container */}
-          <div
-            className={`${
-              isAdmin ? "lg:col-span-6" : "lg:col-span-12 max-w-md mx-auto"
-            } flex justify-center w-full`}
-          >
+          <div className="lg:col-span-6 flex justify-center w-full">
             <div className="w-full max-w-[380px] bg-[#0c170b] border-[10px] border-[#1e381b] rounded-[48px] shadow-2xl overflow-hidden flex flex-col min-h-[640px] relative">
               {/* Top Speaker Bar & Camera Notch */}
               <div className="bg-[#142612] pt-3 pb-2 px-6 flex justify-between items-center border-b border-white/10">
@@ -662,9 +657,8 @@ export default function IdentityFormSimulator() {
             </div>
           </div>
 
-          {/* Right Column: Detailed Field Inspector & JSON (Admin Only) */}
-          {isAdmin && (
-            <div className="lg:col-span-6 space-y-6">
+          {/* Right Column: Detailed Field Inspector & JSON */}
+          <div className="lg:col-span-6 space-y-6">
               <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-6 space-y-4">
                 <div className="flex items-center justify-between border-b border-white/10 pb-3">
                   <div className="flex items-center gap-2">
@@ -749,10 +743,9 @@ export default function IdentityFormSimulator() {
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      ) : (
-        /* JSON View Mode (Admin Only) */
+          </div>
+        ) : (
+        /* JSON View Mode */
         <div className="bg-black/50 border border-white/10 rounded-2xl p-6 space-y-4">
           <div className="flex justify-between items-center border-b border-white/10 pb-3">
             <div>

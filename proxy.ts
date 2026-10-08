@@ -9,7 +9,6 @@ const ADMIN_ROUTES = [
   "/organizations",
   "/managers",
   "/admin-audit",
-  "/admin-forms",
 ];
 
 // Rutas exclusivas para usuarios de ONG (USER / ENCARGADO)
@@ -56,6 +55,19 @@ export default function proxy(request: NextRequest) {
 
   const localeMatch = pathname.match(/^\/(es|en)(\/|$)/);
   const localePrefix = localeMatch ? `/${localeMatch[1]}` : "";
+
+  // Redirigir ruta obsoleta /admin-forms a la vista correspondiente
+  if (pathname.includes("/admin-forms")) {
+    const token = request.cookies.get("kp_token")?.value;
+    const userRole = token ? getRoleFromToken(token) : null;
+    const isAdmin = userRole?.trim().toUpperCase() === "ADMIN";
+    const redirectUrl = new URL(
+      `${localePrefix}${isAdmin ? "/organizations" : "/forms"}`,
+      request.url
+    );
+    return NextResponse.redirect(redirectUrl);
+  }
+
   const isAdminRoute = ADMIN_ROUTES.some((route) =>
     pathname.includes(route)
   );

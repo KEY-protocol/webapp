@@ -20,9 +20,10 @@ El panel web implementa una arquitectura basada en roles puros (**`ADMIN`** y **
                           │   (Servidor Central)      │    │       (Servidor ONG)      │
                           ├───────────────────────────┤    ├───────────────────────────┤
                           │ • /organizations          │    │ • /home & /dashboard      │
-                          │ • /admin-forms            │    │ • /technicians            │
-                          │ • /admin-audit            │    │ • /training (cursos/clase)│
-                          │ • Diagnóstico Conexiones  │    │ • /audit-evidence         │
+                          │ • /admin-audit            │    │ • /technicians            │
+                          │ • Diagnóstico Conexiones  │    │ • /forms (gestión/versión)│
+                          │                           │    │ • /training (cursos/clase)│
+                          │                           │    │ • /audit-evidence         │
                           │                           │    │ • /reports                │
                           │                           │    │ • /mobile-form-preview    │
                           └───────────────────────────┘    └───────────────────────────┘
@@ -32,8 +33,8 @@ El panel web implementa una arquitectura basada en roles puros (**`ADMIN`** y **
 
 | Rol | Alcance | Rutas Principales | Responsabilidades |
 |---|---|---|---|
-| **`ADMIN`** | Servidor Central (Global) | `/organizations`<br>`/admin-forms`<br>`/admin-audit` | Alta y configuración de ONGs, credenciales de infraestructura (RPC, IPFS, TEE), pruebas de conexión en tiempo real, auditoría global y formularios base. |
-| **`USER`** | Servidor Institucional (ONG) | `/home`<br>`/technicians`<br>`/training`<br>`/audit-evidence`<br>`/reports`<br>`/mobile-form-preview` | Pre-registro y aprobación de técnicos de campo, seguimiento de cursos y clases, auditoría de evidencias territoriales, emisión de certificados y generación de reportes. |
+| **`ADMIN`** | Servidor Central (Global) | `/organizations`<br>`/admin-audit` | Alta y configuración de ONGs, credenciales de infraestructura (RPC, IPFS, TEE), pruebas de conexión en tiempo real y auditoría global. |
+| **`USER`** | Servidor Institucional (ONG) | `/home`<br>`/forms`<br>`/technicians`<br>`/training`<br>`/audit-evidence`<br>`/reports`<br>`/mobile-form-preview` | Gestión y publicación de versiones de formularios de la organización, pre-registro y aprobación de técnicos de campo, seguimiento de cursos y clases, auditoría de evidencias territoriales, emisión de certificados y generación de reportes. |
 
 > 📌 **Aclaración Semántica:**
 > - **Identidad (`Identity`):** Aplica únicamente a la identidad del Técnico enrolado por primera vez en campo.
